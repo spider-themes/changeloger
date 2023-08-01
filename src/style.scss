@@ -1,0 +1,11 @@
+@import "./common.scss";
+
+.changeloger-container {
+	& .changelog-wrapper {
+		& .changeloger-version-list-container {
+			position: sticky;
+			top: 50px;
+			height: 100%;
+		}
+	}
+}

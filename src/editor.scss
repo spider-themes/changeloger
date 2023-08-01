@@ -1,0 +1,53 @@
+@import "./common.scss";
+
+.changeloger-container {
+	& .placeholder-cancel-button {
+		margin-right: 10px;
+	}
+}
+
+.changeloger-version-list-container {
+	&.changeloger-version-list-position-right {
+		.changeloger-version-list-wrapper {
+			& > li {
+				&:first-child {
+					&::before {
+						left: -41px;
+					}
+				}
+			}
+		}
+	}
+	&.changeloger-version-list-position-left {
+		.changeloger-version-list-wrapper {
+			& > li {
+				&:first-child {
+					&::before {
+						left: 100%;
+					}
+				}
+			}
+		}
+	}
+	.changeloger-version-list-wrapper {
+		li {
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+		& > li {
+			&:first-child {
+				position: relative;
+				color: #4c4cf1 !important;
+
+				&::before {
+					content: "";
+					position: absolute;
+					width: 1px;
+					height: 100%;
+					background: #4c4cf1;
+					left: -41px;
+				}
+			}
+		}
+	}
+}
