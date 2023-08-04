@@ -16,10 +16,6 @@ class ChangelogerBlock {
 			'.changelog-info-item'
 		);
 
-		this.versionTreeWrapper = this.container.querySelector(
-			'.changeloger-version-list-wrapper'
-		);
-
 		this.changelogerPaginationWrapper = this.container.querySelector(
 			'.changeloger-pagination-wrapper'
 		);
@@ -43,6 +39,10 @@ class ChangelogerBlock {
 
 		this.activeStateOnStickyVersion();
 		this.fixParentOverflow();
+
+		window.addEventListener( 'scroll', () =>
+			this.activeStateOnStickyVersion()
+		);
 	}
 
 	fixParentOverflow() {
@@ -190,6 +190,7 @@ class ChangelogerBlock {
 					this.container.querySelectorAll( '.page-numbers' );
 
 				this.numberedPaginated();
+				this.activeStateOnStickyVersion();
 
 				history.replaceState( null, null, currentPage.toString() );
 			} )
@@ -199,25 +200,28 @@ class ChangelogerBlock {
 	}
 
 	activeStateOnStickyVersion() {
-		const versionTreeHeight = this.versionTreeWrapper?.offsetHeight;
+		const versionTreeHeight = this.container.querySelector(
+			'.changeloger-version-list-wrapper'
+		)?.offsetHeight;
 		const changelogerItem = this.container.querySelectorAll(
 			'.changelog-info-item'
 		);
-
+		const versionTreeWrapper = this.container.querySelector(
+			'.changeloger-version-list-wrapper'
+		);
 		const setActiveStateRecursive = ( sections, curPos ) => {
 			sections.forEach( ( section ) => {
 				const top = section.offsetTop - versionTreeHeight;
 				const bottom = top + section.offsetHeight;
 
 				if ( curPos >= top && curPos <= bottom ) {
-					const currentAnchor =
-						this.versionTreeWrapper?.querySelector(
-							':scope > li > a[href="#' +
-								section.getAttribute( 'id' ) +
-								'"]'
-						);
+					const currentAnchor = versionTreeWrapper?.querySelector(
+						':scope > li > a[href="#' +
+							section.getAttribute( 'id' ) +
+							'"]'
+					);
 					const mainAnchors =
-						this.versionTreeWrapper?.querySelectorAll(
+						versionTreeWrapper?.querySelectorAll(
 							':scope > li > a'
 						);
 
@@ -281,12 +285,8 @@ class ChangelogerBlock {
 			} );
 		};
 
-		const handleScroll = () => {
-			const curPos = window.scrollY;
-			setActiveStateRecursive( changelogerItem, curPos );
-		};
-		handleScroll();
-		window.addEventListener( 'scroll', handleScroll );
+		const curPos = window.scrollY;
+		setActiveStateRecursive( changelogerItem, curPos );
 	}
 }
 

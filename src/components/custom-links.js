@@ -146,35 +146,26 @@ function CustomLink( props ) {
 							<Button
 								style={ { marginRight: '10px' } }
 								isDestructive
-								onClick={ () =>
+								onClick={ () => {
 									setAttributes( {
 										customLinks: {
 											...customLinks,
-											[ version ]: currentLinks.map(
+											[ version ]: currentLinks.filter(
 												(
 													currentLink,
 													currentIndex
 												) => {
-													if (
-														currentIndex !==
+													return currentIndex ===
 														props.index
-													) {
-														return currentLink;
-													}
-
-													console.log(
-														'C',
-														currentLink
-													);
-													currentLinks.pop(
-														currentLink
-													);
-													setOpen( false );
+														? false
+														: true;
 												}
 											),
 										},
-									} )
-								}
+									} );
+
+									setOpen( false );
+								} }
 							>
 								{ __( 'Delete', 'changeloger' ) }
 							</Button>
