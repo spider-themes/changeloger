@@ -214,11 +214,31 @@ html {
     display: none;
   }
 }
-.changeloger-container .changelog-wrapper .changeloger-version-list-container {
-  position: sticky;
-  top: 50px;
-  height: 100%;
-  margin-left: 20px;
+.changeloger-container .placeholder-cancel-button {
+  margin-right: 10px;
 }
 
-/*# sourceMappingURL=style.css.map */
+.changeloger-version-list-container.changeloger-version-list-position-right .changeloger-version-list-wrapper > li:first-child::before {
+  left: -41px;
+}
+.changeloger-version-list-container.changeloger-version-list-position-left .changeloger-version-list-wrapper > li:first-child::before {
+  left: 100%;
+}
+.changeloger-version-list-container .changeloger-version-list-wrapper li {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.changeloger-version-list-container .changeloger-version-list-wrapper > li:first-child {
+  position: relative;
+  color: #4c4cf1 !important;
+}
+.changeloger-version-list-container .changeloger-version-list-wrapper > li:first-child::before {
+  content: "";
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  background: #4c4cf1;
+  left: -41px;
+}
+
+/*# sourceMappingURL=editor.css.map */

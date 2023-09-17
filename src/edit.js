@@ -73,132 +73,134 @@ function Edit( props ) {
 							</div>
 						) }
 						<div className="changeloger-info-inner-wrapper">
-							{ parsedChangelog.map( ( item, index ) => {
-								const { date, version, changes } = item;
+							<div className="changeloger-items">
+								{ parsedChangelog.map( ( item, index ) => {
+									const { date, version, changes } = item;
 
-								const currentLinks = get(
-									customLinks,
-									version,
-									[]
-								);
+									const currentLinks = get(
+										customLinks,
+										version,
+										[]
+									);
 
-								return (
-									<div className="changelog-info-item">
-										<div className="date">
-											<span>{ date }</span>
+									return (
+										<div className="changelog-info-item">
+											<div className="date">
+												<span>{ date }</span>
 
-											<RichText
-												tagName="span"
-												className="changeloger-version-name"
-												placeholder={ __(
-													'Version Name',
-													'changeloger'
-												) }
-												value={ versionName[ version ] }
-												onChange={ ( newContent ) =>
-													setAttributes( {
-														versionName: {
-															...versionName,
-															[ version ]:
-																newContent,
-														},
-													} )
-												}
-											/>
-										</div>
-										<div className="version">
-											<span className="version-tag">
-												{ version }
-											</span>
-											<span className="line"></span>
-										</div>
-										<div className="content">
-											{ changes.map( ( item ) => {
-												const currentCategory =
-													item.category.toLowerCase();
-
-												const hasCustomColor = has(
-													customLogTypeColors,
-													currentCategory
-												);
-
-												return (
-													<p>
-														<span
-															style={
-																hasCustomColor
-																	? {
-																			backgroundColor:
-																				get(
-																					customLogTypeColors,
-																					currentCategory
-																				),
-																	  }
-																	: {}
-															}
-															className={ `tag ${ currentCategory.replace(
-																' ',
-																'-'
-															) }` }
-														>
-															{ item.category }
-														</span>
-														{ item.change }
-													</p>
-												);
-											} ) }
-
-											<div className="changeloger-link-wrapper">
-												{ currentLinks.map(
-													( action, index ) => {
-														return (
-															<CustomLink
-																action={
-																	action
-																}
-																index={ index }
-																customLinks={
-																	customLinks
-																}
-																currentLinks={
-																	currentLinks
-																}
-																setAttributes={
-																	setAttributes
-																}
-																version={
-																	version
-																}
-															/>
-														);
-													}
-												) }
-
-												<Button
-													isSmall
-													isPressed
-													icon={ plus }
-													onClick={ () =>
+												<RichText
+													tagName="span"
+													className="changeloger-version-name"
+													placeholder={ __(
+														'Version Name',
+														'changeloger'
+													) }
+													value={ versionName[ version ] }
+													onChange={ ( newContent ) =>
 														setAttributes( {
-															customLinks: {
-																...customLinks,
-																[ version ]: [
-																	...currentLinks,
-																	{
-																		name: 'Link',
-																		link: '#',
-																		icon: '',
-																	},
-																],
+															versionName: {
+																...versionName,
+																[ version ]:
+																	newContent,
 															},
 														} )
 													}
-												></Button>
+												/>
+											</div>
+											<div className="version">
+												<span className="version-tag">
+													{ version }
+												</span>
+												<span className="line"></span>
+											</div>
+											<div className="content">
+												{ changes.map( ( item ) => {
+													const currentCategory =
+														item.category.toLowerCase();
+
+													const hasCustomColor = has(
+														customLogTypeColors,
+														currentCategory
+													);
+
+													return (
+														<p>
+															<span
+																style={
+																	hasCustomColor
+																		? {
+																				backgroundColor:
+																					get(
+																						customLogTypeColors,
+																						currentCategory
+																					),
+																		  }
+																		: {}
+																}
+																className={ `tag ${ currentCategory.replace(
+																	' ',
+																	'-'
+																) }` }
+															>
+																{ item.category }
+															</span>
+															{ item.change }
+														</p>
+													);
+												} ) }
+
+												<div className="changeloger-link-wrapper">
+													{ currentLinks.map(
+														( action, index ) => {
+															return (
+																<CustomLink
+																	action={
+																		action
+																	}
+																	index={ index }
+																	customLinks={
+																		customLinks
+																	}
+																	currentLinks={
+																		currentLinks
+																	}
+																	setAttributes={
+																		setAttributes
+																	}
+																	version={
+																		version
+																	}
+																/>
+															);
+														}
+													) }
+
+													<Button
+														isSmall
+														isPressed
+														icon={ plus }
+														onClick={ () =>
+															setAttributes( {
+																customLinks: {
+																	...customLinks,
+																	[ version ]: [
+																		...currentLinks,
+																		{
+																			name: 'Link',
+																			link: '#',
+																			icon: '',
+																		},
+																	],
+																},
+															} )
+														}
+													></Button>
+												</div>
 											</div>
 										</div>
-									</div>
-								);
-							} ) }
+									);
+								} ) }
+							</div>
 						</div>
 
 						{ isRight && (

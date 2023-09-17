@@ -10,10 +10,14 @@ html {
 		& .changeloger-info-inner-wrapper {
 			flex: 1;
 
-			& .changelog-info-item {
+			.changeloger-items .changelog-info-item {
 				display: flex;
 				flex-wrap: wrap;
 				box-sizing: border-box;
+
+				&:last-child .content {
+					margin-bottom: 0;
+				}
 
 				& .date {
 					flex-basis: 20%;
@@ -174,6 +178,7 @@ html {
 	& .changeloger-pagination-wrapper {
 		display: flex;
 		justify-content: center;
+		margin-top: 30px;
 
 		& .page-numbers {
 			background: var(--changeloger-pagination-bg-color) ;

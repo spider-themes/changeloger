@@ -16,7 +16,7 @@
 
 add_action( 'enqueue_block_editor_assets', function () {
 	wp_register_style(
-		'changeloger-style-css',
+		'changeloger',
 		plugins_url( '/', __FILE__ ) . 'build/style-index.css',
 		array(),
 		'initial'
@@ -40,7 +40,7 @@ function create_block_changeloger_block_init() {
 
 add_action( 'init', 'create_block_changeloger_block_init' );
 
-function changloger_convert_array_to_style_declaration( $array ) {
+function changloger_style_declaration( $array ) {
 	$styleDeclaration = '';
 
 	foreach ( $array as $key => $value ) {
@@ -114,19 +114,14 @@ function changeloger_version_tree( $versions, $paginated_changelog, $is_child = 
 
 
 function changeloger_render( $attributes, $content, $instance ) {
-	wp_register_style(
-		'changeloger-style-css',
-		plugins_url( '/', __FILE__ ) . 'build/style-index.css',
-		array(),
-		'initial'
-	);
+	wp_register_style( 'changeloger', plugins_url( '/', __FILE__ ) . 'build/style-index.css' );
 
 	$data              = json_decode( $content, true );
-	$changelog         = isset( $data['changelog'] ) ? $data['changelog'] : array();
-	$per_page          = isset( $attributes['perPage'] ) ? $attributes['perPage'] : 100;
-	$current_page      = isset( $_GET['cr-page'] ) ? $_GET['cr-page'] : 1;
+	$changelog         = $data['changelog'] ?? array();
+	$per_page          = $attributes['perPage'] ?? 100;
+	$current_page      = $_GET['cr-page'] ?? 1;
 	$total_page        = ceil( count( $changelog ) / $per_page );
-	$enable_pagination = isset( $attributes['enablePagination'] ) ? $attributes['enablePagination'] : false;
+	$enable_pagination = $attributes['enablePagination'] ?? false;
 
 	$data['props']['data-id'] = substr( md5( $content ), 0, 5 );
 
@@ -141,10 +136,10 @@ function changeloger_render( $attributes, $content, $instance ) {
 	}
 
 	if ( isset( $data['props']['style'] ) ) {
-		$data['props']['style'] = changloger_convert_array_to_style_declaration( $data['props']['style'] );
+		$data['props']['style'] = changloger_style_declaration( $data['props']['style'] );
 	}
 
-	$pagination_type = isset( $attributes['paginationType'] ) ? $attributes['paginationType'] : '';
+	$pagination_type = $attributes['paginationType'] ?? '';
 
 	$is_enable_pagination = true === $enable_pagination ? $paginated_changelog : $changelog;
 	$versioned_changelog  = $changelog;
@@ -159,8 +154,8 @@ function changeloger_render( $attributes, $content, $instance ) {
 
 	$wrapper_attributes = get_block_wrapper_attributes( $data['props'] );
 
-	$custom_links = isset( $attributes['customLinks'] ) ? $attributes['customLinks'] : array();
-	$verion_name  = isset( $attributes['versionName'] ) ? $attributes['versionName'] : array();
+	$custom_links = $attributes['customLinks'] ?? array();
+	$verion_name  = $attributes['versionName'] ?? array();
 
 	$args = array(
 		'base'               => '%_%',
@@ -171,8 +166,8 @@ function changeloger_render( $attributes, $content, $instance ) {
 		'end_size'           => 1,
 		'mid_size'           => 2,
 		'prev_next'          => true,
-		'prev_text'          => __( '&laquo; Previous' ),
-		'next_text'          => __( 'Next &raquo;' ),
+		'prev_text'          => __( '&laquo; Previous', 'changeloger' ),
+		'next_text'          => __( 'Next &raquo;', 'changeloger' ),
 		'type'               => 'plain',
 		'add_args'           => false,
 		'add_fragment'       => '',
@@ -180,39 +175,35 @@ function changeloger_render( $attributes, $content, $instance ) {
 		'after_page_number'  => '',
 	);
 
-	$pagination_styles = isset( $data['paginationStyles'] ) ? $data['paginationStyles'] : array();
-	$pagination_text   = isset( $attributes['paginationLoadMoreText'] ) ? $attributes['paginationLoadMoreText'] : 'Load More';
+	$pagination_styles = $data['paginationStyles'] ?? array();
+	$pagination_text   = $attributes['paginationLoadMoreText'] ?? esc_html__( 'Load More', 'changeloger' );
 
 	$numberd_pagination         = paginate_links( $args );
 	$load_more_button_markup    = 'load-more' === $attributes['paginationType'] ? '
-		<div class="wp-block-button">
-			<a style="' . changloger_convert_array_to_style_declaration( $pagination_styles )
-              . '" class="changeloger-pagination-button wp-block-button__link wp-element-button">'
-              . $pagination_text . '</a>
-		</div>
-	' : "";
+        <a style="' . changloger_style_declaration( $pagination_styles ) . '" class="changeloger-pagination-button wp-block-button__link">' . $pagination_text . '</a>' : "";
 	$numbered_pagination_markup = 'numbered' === $attributes['paginationType'] ? $numberd_pagination : '';
-	$version_position           = isset( $attributes['versionsPosition'] ) ? $attributes['versionsPosition'] : "right";
-	$enable_versions            = isset( $attributes['enableVersions'] ) ? $attributes['enableVersions'] : true;
+	$version_position           = $attributes['versionsPosition'] ?? "right";
+	$enable_versions            = ! isset( $attributes['enableVersions'] ) || $attributes['enableVersions'];
 	$is_left                    = $enable_versions && $version_position === 'left';
 	$is_right                   = $enable_versions && $version_position === 'right';
 
 	ob_start();
 
-	    ?>
-        <div <?php echo $wrapper_attributes ?> data-total-page=" <?php echo $total_page ?>" data-per-page="<?php echo $per_page ?>"
-                                               data-enable-pagination="<?php echo $attributes['enablePagination'] ? "true" : "false" ?>"
-                                               data-pagination-type="<?php echo $pagination_type ?>">
-            <div class="changelog-wrapper">
-                <?php if ( $is_left ) { ?>
-                    <div class="changeloger-version-list-container changeloger-version-list-position-left">
-                        <h6 class="version-title">Version</h6>
-                        <?php echo changeloger_version_tree( $data['version'], $versioned_changelog ) ?>
-                    </div>
-                <?php } ?>
+	?>
+    <div <?php echo $wrapper_attributes ?> data-total-page=" <?php echo $total_page ?>" data-per-page="<?php echo $per_page ?>"
+                                           data-enable-pagination="<?php echo $attributes['enablePagination'] ? "true" : "false" ?>"
+                                           data-pagination-type="<?php echo $pagination_type ?>">
+        <div class="changelog-wrapper">
+			<?php if ( $is_left ) { ?>
+                <div class="changeloger-version-list-container changeloger-version-list-position-left">
+                    <h6 class="version-title">Version</h6>
+					<?php echo changeloger_version_tree( $data['version'], $versioned_changelog ) ?>
+                </div>
+			<?php } ?>
 
-                <div class="changeloger-info-inner-wrapper">
-                    <?php foreach ( $is_enable_pagination as $item ) : ?>
+            <div class="changeloger-info-inner-wrapper">
+                <div class="changeloger-items">
+	                <?php foreach ( $is_enable_pagination as $item ) : ?>
                         <div id="<?php echo $item['version'] ?>" class="changelog-info-item">
                             <div class="date">
                                 <span><?php echo $item['date']; ?></span>
@@ -223,58 +214,58 @@ function changeloger_render( $attributes, $content, $instance ) {
                                 <span class="line"></span>
                             </div>
                             <div class="content">
-                                <?php foreach ( $item['changes'] as $change ) : ?>
+				                <?php foreach ( $item['changes'] as $change ) : ?>
                                     <p>
-                                        <span class="<?php echo 'tag ' . str_replace( " ", "-",
-                                                strtolower( $change['category'] ) ) ?>" <?php echo changeloger_get_custom_style( $attributes,
-                                            strtolower( $change['category'] ) ) ?>>
-                                            <?php echo $change['category']; ?>
-                                        </span>
-                                        <?php echo $change['change']; ?>
+                            <span class="<?php echo 'tag ' . str_replace( " ", "-",
+		                            strtolower( $change['category'] ) ) ?>" <?php echo changeloger_get_custom_style( $attributes,
+	                            strtolower( $change['category'] ) ) ?>>
+                                <?php echo $change['category']; ?>
+                            </span>
+						                <?php echo $change['change']; ?>
                                     </p>
-                                <?php endforeach; ?>
+				                <?php endforeach; ?>
 
-                                <div class="changeloger-link-wrapper">
-
-                                    <?php if ( isset( $custom_links[ $item['version'] ] ) ) {
-                                        foreach ( $custom_links[ $item['version'] ] as $custom_link ) : ?>
-                                            <?php if ( ! is_null( $custom_link ) ): ?>
+				                <?php
+				                if ( isset( $custom_links[ $item['version'] ] ) ) : ?>
+                                    <div class="changeloger-link-wrapper">
+						                <?php foreach ( $custom_links[ $item['version'] ] as $custom_link ) : ?>
+							                <?php if ( ! is_null( $custom_link ) ): ?>
                                                 <div class="changeloger-link-item">
                                                     <a target="_blank" href="<?php echo $custom_link['link'] ?>" class="changeloger-custom-link">
-                                                        <?php if ( isset( $custom_link['icon'] ) && ! empty( $custom_link['icon'] ) ): ?>
+										                <?php if ( isset( $custom_link['icon'] ) && ! empty( $custom_link['icon'] ) ): ?>
                                                             <span class="changeloger-custom-link-icon"
                                                                   style="-webkit-mask-image: url(<?php echo $custom_link['icon'] ?>)"></span>
-                                                        <?php endif; ?>
-                                                        <?php echo $custom_link['name'] ?>
+										                <?php endif; ?>
+										                <?php echo $custom_link['name'] ?>
                                                     </a>
                                                 </div>
-                                            <?php endif; ?>
-                                        <?php endforeach;
-                                    } ?>
-
-                                </div>
+							                <?php endif; ?>
+						                <?php endforeach; ?>
+                                    </div>
+				                <?php endif; ?>
                             </div>
                         </div>
-                    <?php endforeach; ?>
+	                <?php endforeach; ?>
                 </div>
 
-                <?php if ( $is_right ) { ?>
-                    <div class="changeloger-version-list-container changeloger-version-list-position-right">
-                        <h6 class="version-title">Version</h6>
-                        <?php echo changeloger_version_tree( $data['version'], $versioned_changelog ) ?>
+                <?php if ( $enable_pagination ) : ?>
+                    <div class="changeloger-pagination-wrapper">
+                        <?php echo $load_more_button_markup ?>
+                        <?php echo $numbered_pagination_markup ?>
                     </div>
-                <?php } ?>
+                <?php endif; ?>
             </div>
 
-            <?php if ( $enable_pagination ) : ?>
-                <div class="changeloger-pagination-wrapper">
-                    <?php echo $load_more_button_markup ?>
-                    <?php echo $numbered_pagination_markup ?>
+			<?php if ( $is_right ) { ?>
+                <div class="changeloger-version-list-container changeloger-version-list-position-right">
+                    <h6 class="version-title">Version</h6>
+					<?php echo changeloger_version_tree( $data['version'], $versioned_changelog ) ?>
                 </div>
-            <?php endif; ?>
-
+			<?php } ?>
         </div>
-        <?php
+
+    </div>
+	<?php
 
 	$content = ob_get_contents();
 
