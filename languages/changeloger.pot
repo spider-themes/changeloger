@@ -1,0 +1,135 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Changeloger\n"
+"POT-Creation-Date: 2023-12-09 20:06+0600\n"
+"PO-Revision-Date: 2023-12-09 20:05+0600\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Poedit 3.4.1\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: changeloger.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#: changeloger.php:184
+msgid "&laquo; Previous"
+msgstr ""
+
+#: changeloger.php:185
+msgid "Next &raquo;"
+msgstr ""
+
+#: changeloger.php:194
+msgid "Load More"
+msgstr ""
+
+#: changeloger.php:215
+msgid "Version"
+msgstr ""
+
+#: src/block-control.js:11
+msgid "Edit"
+msgstr ""
+
+#: src/edit.js:95
+msgid "Version Name"
+msgstr ""
+
+#: src/inspector.js:41
+msgid "Left"
+msgstr ""
+
+#: src/inspector.js:45
+msgid "Right"
+msgstr ""
+
+#: src/inspector.js:63
+msgid "General"
+msgstr ""
+
+#: src/inspector.js:65
+msgid "Enable Pagination"
+msgstr ""
+
+#: src/inspector.js:74
+msgid "Enable Versions"
+msgstr ""
+
+#: src/inspector.js:86
+msgid "Versions Position"
+msgstr ""
+
+#: src/inspector.js:107
+msgid "Pagination Type"
+msgstr ""
+
+#: src/inspector.js:120
+msgid "Per Page"
+msgstr ""
+
+#: src/inspector.js:132
+msgid "Colors"
+msgstr ""
+
+#: src/inspector.js:150
+msgid "Pagination Text Color"
+msgstr ""
+
+#: src/inspector.js:166
+msgid "Pagination Bg Color"
+msgstr ""
+
+#: src/inspector.js:183
+msgid "Pagination Active Text Color"
+msgstr ""
+
+#: src/inspector.js:201
+msgid "Pagination Active Bg Color"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+#: src/placeholder.js:31
+msgid "Changeloger"
+msgstr ""
+
+#: src/placeholder.js:33
+msgid "Paste your changelog here, or upload changelog from a text file."
+msgstr ""
+
+#: src/placeholder.js:42
+msgid "Upload"
+msgstr ""
+
+#: src/placeholder.js:54
+msgid "Paste"
+msgstr ""
+
+#: src/placeholder.js:63
+msgid "Paste your changelog Here"
+msgstr ""
+
+#: src/placeholder.js:79
+msgid "Cancel"
+msgstr ""
+
+#: src/placeholder.js:87
+msgid "Save"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "A Gutenberg block to display changelog"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "mdjwel"
+msgstr ""

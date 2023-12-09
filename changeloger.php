@@ -1,18 +1,25 @@
 <?php
-
 /**
  * Plugin Name:       Changeloger
- * Description:       Example block scaffolded with Create Block tool.
+ * Description:       A Gutenberg block to display changelog
  * Requires at least: 6.1
- * Requires PHP:      7.0
- * Version:           1.0.0
- * Author:            The WordPress Contributors
+ * Requires PHP:      7.4
+ * Version:           0.0.1
+ * Author:            mdjwel
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       changeloger
  *
  * @package           changeloger
  */
+
+/**
+ * Load text domain
+ */
+function changeloger_load_textdomain() {
+    load_plugin_textdomain( 'changeloger', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
+}
+add_action( 'plugins_loaded', 'changeloger_load_textdomain' );
 
 add_action( 'enqueue_block_editor_assets', function () {
 	wp_register_style(
@@ -23,7 +30,7 @@ add_action( 'enqueue_block_editor_assets', function () {
 	);
 } );
 
-function create_block_changeloger_block_init() {
+function changeloger_create_block_init() {
 	register_block_type(
 		__DIR__ . '/build',
 		array( 'render_callback' => 'changeloger_render' )
@@ -38,7 +45,7 @@ function create_block_changeloger_block_init() {
 	);
 }
 
-add_action( 'init', 'create_block_changeloger_block_init' );
+add_action( 'init', 'changeloger_create_block_init' );
 
 function changloger_style_declaration( $array ) {
 	$styleDeclaration = '';
@@ -112,7 +119,15 @@ function changeloger_version_tree( $versions, $paginated_changelog, $is_child = 
 	<?php
 }
 
-
+/**
+ * Render block
+ *
+ * @param $attributes
+ * @param $content
+ * @param $instance
+ *
+ * @return false|string
+ */
 function changeloger_render( $attributes, $content, $instance ) {
 	wp_register_style( 'changeloger', plugins_url( '/', __FILE__ ) . 'build/style-index.css' );
 
@@ -180,7 +195,8 @@ function changeloger_render( $attributes, $content, $instance ) {
 
 	$numberd_pagination         = paginate_links( $args );
 	$load_more_button_markup    = 'load-more' === $attributes['paginationType'] ? '
-        <a style="' . changloger_style_declaration( $pagination_styles ) . '" class="changeloger-pagination-button wp-block-button__link">' . $pagination_text . '</a>' : "";
+        <a style="' . changloger_style_declaration( $pagination_styles ) . '" class="changeloger-pagination-button wp-block-button__link">' . $pagination_text
+	                                                                              . '</a>' : "";
 	$numbered_pagination_markup = 'numbered' === $attributes['paginationType'] ? $numberd_pagination : '';
 	$version_position           = $attributes['versionsPosition'] ?? "right";
 	$enable_versions            = ! isset( $attributes['enableVersions'] ) || $attributes['enableVersions'];
@@ -196,64 +212,63 @@ function changeloger_render( $attributes, $content, $instance ) {
         <div class="changelog-wrapper">
 			<?php if ( $is_left ) { ?>
                 <div class="changeloger-version-list-container changeloger-version-list-position-left">
-                    <h6 class="version-title">Version</h6>
+                    <h6 class="version-title"> <?php esc_html_e('Version', 'changeloger'); ?> </h6>
 					<?php echo changeloger_version_tree( $data['version'], $versioned_changelog ) ?>
                 </div>
 			<?php } ?>
 
             <div class="changeloger-info-inner-wrapper">
                 <div class="changeloger-items">
-	                <?php foreach ( $is_enable_pagination as $item ) : ?>
-                        <div id="<?php echo $item['version'] ?>" class="changelog-info-item">
+					<?php foreach ( $is_enable_pagination as $item ) : ?>
+                        <div id="<?php echo esc_attr( $item['version'] ) ?>" class="changelog-info-item">
                             <div class="date">
-                                <span><?php echo $item['date']; ?></span>
-                                <span><?php echo isset( $verion_name[ $item['version'] ] ) ? $verion_name[ $item['version'] ] : ''; ?></span>
+                                <span><?php echo esc_html( $item['date'] ); ?></span>
+                                <span><?php echo esc_html( $verion_name[ $item['version'] ] ) ?? ''; ?></span>
                             </div>
                             <div class="version">
                                 <span class="version-tag"><?php echo $item['version']; ?></span>
                                 <span class="line"></span>
                             </div>
                             <div class="content">
-				                <?php foreach ( $item['changes'] as $change ) : ?>
+								<?php foreach ( $item['changes'] as $change ) : ?>
                                     <p>
-                            <span class="<?php echo 'tag ' . str_replace( " ", "-",
-		                            strtolower( $change['category'] ) ) ?>" <?php echo changeloger_get_custom_style( $attributes,
-	                            strtolower( $change['category'] ) ) ?>>
-                                <?php echo $change['category']; ?>
-                            </span>
-						                <?php echo $change['change']; ?>
+                                        <span class="<?php echo 'tag ' . str_replace( " ", "-",
+                                                strtolower( $change['category'] ) ) ?>" <?php echo changeloger_get_custom_style( $attributes, strtolower( $change['category'] ) ) ?>>
+                                            <?php echo $change['category']; ?>
+                                        </span>
+                                    <?php echo esc_html($change['change']); ?>
                                     </p>
-				                <?php endforeach; ?>
+								<?php endforeach; ?>
 
-				                <?php
-				                if ( isset( $custom_links[ $item['version'] ] ) ) : ?>
+								<?php
+								if ( isset( $custom_links[ $item['version'] ] ) ) : ?>
                                     <div class="changeloger-link-wrapper">
-						                <?php foreach ( $custom_links[ $item['version'] ] as $custom_link ) : ?>
-							                <?php if ( ! is_null( $custom_link ) ): ?>
+										<?php foreach ( $custom_links[ $item['version'] ] as $custom_link ) : ?>
+											<?php if ( ! is_null( $custom_link ) ): ?>
                                                 <div class="changeloger-link-item">
-                                                    <a target="_blank" href="<?php echo $custom_link['link'] ?>" class="changeloger-custom-link">
-										                <?php if ( isset( $custom_link['icon'] ) && ! empty( $custom_link['icon'] ) ): ?>
+                                                    <a target="_blank" href="<?php echo esc_url( $custom_link['link'] ) ?>" class="changeloger-custom-link">
+														<?php if ( isset( $custom_link['icon'] ) && ! empty( $custom_link['icon'] ) ): ?>
                                                             <span class="changeloger-custom-link-icon"
-                                                                  style="-webkit-mask-image: url(<?php echo $custom_link['icon'] ?>)"></span>
-										                <?php endif; ?>
-										                <?php echo $custom_link['name'] ?>
+                                                                  style="-webkit-mask-image: url(<?php echo esc_url( $custom_link['icon'] ) ?>)"></span>
+														<?php endif; ?>
+														<?php echo esc_html( $custom_link['name'] ) ?>
                                                     </a>
                                                 </div>
-							                <?php endif; ?>
-						                <?php endforeach; ?>
+											<?php endif; ?>
+										<?php endforeach; ?>
                                     </div>
-				                <?php endif; ?>
+								<?php endif; ?>
                             </div>
                         </div>
-	                <?php endforeach; ?>
+					<?php endforeach; ?>
                 </div>
 
-                <?php if ( $enable_pagination ) : ?>
+				<?php if ( $enable_pagination ) : ?>
                     <div class="changeloger-pagination-wrapper">
-                        <?php echo $load_more_button_markup ?>
-                        <?php echo $numbered_pagination_markup ?>
+						<?php echo $load_more_button_markup ?>
+						<?php echo $numbered_pagination_markup ?>
                     </div>
-                <?php endif; ?>
+				<?php endif; ?>
             </div>
 
 			<?php if ( $is_right ) { ?>
