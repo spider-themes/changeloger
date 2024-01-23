@@ -1,12 +1,12 @@
 === Changeloger ===
 Contributors: mdjwel, spiderdevs
 Tags: block, changelog, release, version, history, change-logger, changelogger
-Requires at least: 5.0
-Tested up to: 6.4
+Stable tag: 0.0.2
+Requires at least: 6.0
+Tested up to: 6.4.2
 Requires PHP: 7.4
-Stable tag: 0.0.1
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 The ultimate WordPress plugin designed to effortlessly transform plain text changelogs into visually stunning representations.
 
@@ -80,8 +80,3 @@ Yes, Changeloger is designed to work seamlessly with most WordPress themes. It e
 
 = 11. Can I use Changeloger for non-software related changelogs? =
 Absolutely! While Changeloger is ideal for software updates, it can be used for any changelog scenario where you want to visually present changes or updates to your audience.
-
-== Changelog ==
-
-= 1.0.0 =
-* Release

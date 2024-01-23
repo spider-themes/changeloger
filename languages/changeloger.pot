@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Changeloger\n"
-"POT-Creation-Date: 2023-12-09 20:06+0600\n"
+"POT-Creation-Date: 2024-01-23 18:45+0600\n"
 "PO-Revision-Date: 2023-12-09 20:05+0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -10,31 +10,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Poedit 3.4.1\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: changeloger.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 
-#: changeloger.php:184
+#: changeloger.php:108 changeloger.php:219 changeloger.php:297
+msgid "Version"
+msgstr ""
+
+#: changeloger.php:186
 msgid "&laquo; Previous"
 msgstr ""
 
-#: changeloger.php:185
+#: changeloger.php:187
 msgid "Next &raquo;"
 msgstr ""
 
-#: changeloger.php:194
+#: changeloger.php:196
 msgid "Load More"
-msgstr ""
-
-#: changeloger.php:215
-msgid "Version"
 msgstr ""
 
 #: src/block-control.js:11
