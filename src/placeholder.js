@@ -39,7 +39,7 @@ function CustomPlaceholder( props ) {
 						accept="text/plain"
 						onChange={ ( event ) => readFileContent( event ) }
 					>
-						{ __( 'Upload', 'changeloger' ) }
+						{ __( 'Upload Changelog (.txt file)', 'changeloger' ) }
 					</FormFileUpload>
 
 					<Button
@@ -51,7 +51,7 @@ function CustomPlaceholder( props ) {
 							} )
 						}
 					>
-						{ __( 'Paste', 'changeloger' ) }
+						{ __( 'Plain Text', 'changeloger' ) }
 					</Button>
 				</Placeholder>
 			) }
@@ -84,7 +84,7 @@ function CustomPlaceholder( props ) {
 							setAttributes( { showTextArea: false } )
 						}
 					>
-						{ __( 'Save', 'changeloger' ) }
+						{ __( 'View Visual Changelogs', 'changeloger' ) }
 					</Button>
 				</>
 			) }

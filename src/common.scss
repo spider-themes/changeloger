@@ -1,7 +1,3 @@
-html {
-	scroll-behavior: smooth;
-}
-
 .changeloger-container {
 	& .changelog-wrapper {
 		padding: 20px;
@@ -20,7 +16,6 @@ html {
 				}
 
 				& .date {
-					flex-basis: 20%;
 					text-align: center;
 					display: flex;
 					flex-direction: column;

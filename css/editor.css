@@ -1,6 +1,3 @@
-/*!***************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/style.scss ***!
-  \***************************************************************************************************************************************************************************************************************************************/
 .changeloger-container .changelog-wrapper {
   padding: 20px;
   display: flex;
@@ -107,11 +104,9 @@
   width: 16px;
   height: 16px;
   background: currentColor;
-  -webkit-mask-repeat: no-repeat;
-          mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
   display: block;
-  -webkit-mask-size: contain;
-          mask-size: contain;
+  mask-size: contain;
   margin-right: 5px;
 }
 .changeloger-container .changelog-wrapper .changeloger-version-list-container {
@@ -214,11 +209,31 @@
     display: none;
   }
 }
-.changeloger-container .changelog-wrapper .changeloger-version-list-container {
-  position: sticky;
-  top: 50px;
-  height: 100%;
-  margin-left: 30px;
+.changeloger-container .placeholder-cancel-button {
+  margin-right: 10px;
 }
 
-/*# sourceMappingURL=style-index.css.map*/
+.changeloger-version-list-container.changeloger-version-list-position-right .changeloger-version-list-wrapper > li:first-child::before {
+  left: -21px;
+}
+.changeloger-version-list-container.changeloger-version-list-position-left .changeloger-version-list-wrapper > li:first-child::before {
+  left: 100%;
+}
+.changeloger-version-list-container .changeloger-version-list-wrapper li {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.changeloger-version-list-container .changeloger-version-list-wrapper > li:first-child {
+  position: relative;
+  color: #4c4cf1 !important;
+}
+.changeloger-version-list-container .changeloger-version-list-wrapper > li:first-child::before {
+  content: "";
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  background: #4c4cf1;
+  left: -41px;
+}
+
+/*# sourceMappingURL=editor.css.map */

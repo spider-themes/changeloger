@@ -5,8 +5,7 @@
   "version": "0.1.0",
   "title": "Changeloger",
   "category": "widgets",
-  "icon": "smiley",
-  "description": "Example block scaffolded with Create Block tool.",
+  "description": "Transform plain text changelogs into visually stunning representations.",
   "attributes": {
     "changelog": {
       "type": "string",

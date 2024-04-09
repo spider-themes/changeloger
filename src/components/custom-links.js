@@ -130,10 +130,10 @@ function CustomLink( props ) {
 
 						<FormFileUpload
 							variant="secondary"
-							accept="application/svg"
+							accept="image/*"
 							onChange={ ( event ) => handleUploadIcon( event ) }
 						>
-							{ __( 'Upload SVG', 'changeloger' ) }
+							{ __( 'Upload Icon', 'changeloger' ) }
 						</FormFileUpload>
 
 						<div

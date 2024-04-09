@@ -62,16 +62,7 @@ function Inspector( props ) {
 		<InspectorControls>
 			<PanelBody title={ __( 'General', 'changeloger' ) }>
 				<ToggleControl
-					label={ __( 'Enable Pagination', 'changeloger' ) }
-					checked={ enablePagination }
-					onChange={ () =>
-						setAttributes( {
-							enablePagination: ! enablePagination,
-						} )
-					}
-				/>
-				<ToggleControl
-					label={ __( 'Enable Versions', 'changeloger' ) }
+					label={ __( 'Sidebar Versions', 'changeloger' ) }
 					checked={ enableVersions }
 					onChange={ () =>
 						setAttributes( {
@@ -101,6 +92,15 @@ function Inspector( props ) {
 					</ToggleGroupControl>
 				) }
 
+				<ToggleControl
+						label={ __( 'Pagination', 'changeloger' ) }
+						checked={ enablePagination }
+						onChange={ () =>
+								setAttributes( {
+									enablePagination: ! enablePagination,
+								} )
+						}
+				/>
 				{ enablePagination && (
 					<>
 						<SelectControl
@@ -129,7 +129,7 @@ function Inspector( props ) {
 			</PanelBody>
 
 			<PanelBody
-				title={ __( 'Colors', 'changeloger' ) }
+				title={ __( 'Log Tags Color', 'changeloger' ) }
 				initialOpen={ false }
 			>
 				<LogTypeColors
@@ -142,7 +142,12 @@ function Inspector( props ) {
 						} );
 					} }
 				/>
+			</PanelBody>
 
+			<PanelBody
+					title={ __( 'Pagination Styling', 'changeloger' ) }
+					initialOpen={ false }
+			>
 				{ enablePagination && (
 					<>
 						<BaseControl

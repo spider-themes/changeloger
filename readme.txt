@@ -1,14 +1,14 @@
 === Changeloger ===
 Contributors: mdjwel, spiderdevs
-Tags: block, changelog, release, version, history, change-logger, changelogger
-Stable tag: 0.0.2
+Tags: changelogs, changelog, release, version, history
+Stable tag: 0.1.0
 Requires at least: 6.0
 Tested up to: 6.4.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-The ultimate WordPress plugin designed to effortlessly transform plain text changelogs into visually stunning representations.
+Effortlessly transform plain text changelogs into visually stunning representations with pagination and version links.
 
 == Description ==
 
@@ -18,21 +18,21 @@ Changeloger streamlines the process of conveying complex updates by enabling use
 
 With its intuitive and user-friendly interface, Changeloger caters to all levels of expertise. Whether you're a seasoned WordPress pro or a newcomer, creating polished and professional changelogs has never been easier.
 
-Key Features:
+### Key Features: ###
 
-1. Seamless Integration: Changeloger effortlessly integrates into the WordPress block editor, allowing users to access its powerful features with just a few clicks.
+- **Seamless Integration:** Changeloger effortlessly integrates into the WordPress block editor, allowing users to access its powerful features with just a few clicks.
 
-2. Visual Design Options: Customize the appearance of your changelogs with various design options. Choose from pre-defined templates or create your own, ensuring that your changelogs match your website's style and branding.
+- **Visual Design Options:** Customize the appearance of your changelogs with various design options. Choose from pre-defined templates or create your own, ensuring that your changelogs match your website's style and branding.
 
-3. Time-Saving Automation: No more manual formatting or styling! Changeloger automates the process, converting plain text changelogs into visually appealing layouts with speed and precision.
+- **Time-Saving Automation:** No more manual formatting or styling! Changeloger automates the process, converting plain text changelogs into visually appealing layouts with speed and precision.
 
-4. Changelog Import: Users can upload their existing changelog text files, saving time and effort in the conversion process. Say goodbye to tedious copying and pasting!
+- **Changelog Import:** Users can upload their existing changelog text files, saving time and effort in the conversion process. Say goodbye to tedious copying and pasting!
 
-5. Version Management: Easily manage multiple versions of your software or product updates with Changeloger. Users can categorize and organize changelogs by version numbers, ensuring clarity and transparency.
+- **Version Management:** Easily manage multiple versions of your software or product updates with Changeloger. Users can categorize and organize changelogs by version numbers, ensuring clarity and transparency.
 
-6. Mobile Responsiveness: Changelogs created with Changeloger are optimized for mobile devices, providing an exceptional user experience across all platforms.
+- **Mobile Responsiveness:** Changelogs created with Changeloger are optimized for mobile devices, providing an exceptional user experience across all platforms.
 
-7. Real-time Preview: Instantly visualize your changelog changes as you make edits, allowing you to fine-tune the design to perfection.
+- **Real-time Preview:** Instantly visualize your changelog changes as you make edits, allowing you to fine-tune the design to perfection.
 
 Changeloger empowers WordPress users to present their software and product updates with elegance and clarity, enhancing user engagement and comprehension. Keep your audience informed, impressed, and delighted with Changeloger - the ultimate WordPress plugin for transforming plain text changelogs into visually designed masterpieces. Download Changeloger now and elevate your changelog game to new heights!
 
