@@ -2,15 +2,15 @@ export default class ChangelogParser {
 	constructor( changelog ) {
 		this.changelog = changelog;
 		this.datePattern =
-				/(\d{2} \w+ \d{4}|\d{4}-\d{2}-\d{2}|\d{1,2} \w+ \d{4})/;
-		this.versionPattern = /(?:=+\s*)?([\d.]+|v[\d.]+)(?:\s*\(.+\))?\s*=*/;
+				/(\d{2} \w+ \d{4}|\d{4}-\d{2}-\d{2}|\d{1,2} \w+ \d{4}|\d{2}\/\d{2}\/\d{4})/;
+		this.versionPattern = /(?:=+\s*)?([\d.]+|v[\d.]+)(?:\s*\(.+\))?\s*-*\s*=*/;
 	}
 
 	parseSection( section ) {
 		const rows = section.split( '\n' );
 		const hasEnoughRows = rows.length > 1;
 
-		if ( ! hasEnoughRows ) {
+		if ( !hasEnoughRows ) {
 			return false;
 		}
 
@@ -18,14 +18,17 @@ export default class ChangelogParser {
 		const dateMatch = this.datePattern.exec( headerRow );
 		const versionMatch = this.versionPattern.exec( headerRow );
 
-		if ( ! versionMatch ) {
+		if ( !versionMatch ) {
 			return false;
 		}
+
+		// Skip empty line after date and version
+		const contentRows = rows.slice( 1 ).filter( row => row.trim() !== '' );
 
 		const parsedSection = {
 			version: versionMatch[ 1 ],
 			date: dateMatch ? dateMatch[ 0 ] : null,
-			changes: this.parseChanges( rows.slice( 1 ) ),
+			changes: this.parseChanges( contentRows ),
 		};
 
 		return parsedSection;
@@ -43,19 +46,26 @@ export default class ChangelogParser {
 
 				const change = row.substring( splitIndex + 1 ).trim();
 				changes.push( { category, change } );
+			} else if ( row.trim().startsWith( '*' ) ) {
+				// Handle changes with categories, e.g., "* Added - Table Filter Options for all list table"
+				let change = row.trim().replace( /^[*\s-]+/, '' );
+				let categorySplitIndex = change.indexOf( ' - ' );
+				if ( categorySplitIndex !== -1 ) {
+					let category = change.substring( 0, categorySplitIndex ).trim();
+					let changeDetail = change.substring( categorySplitIndex + 3 ).trim();
+					changes.push( { category, change: changeDetail } );
+				} else {
+					changes.push( { category: 'General', change } );
+				}
 			}
 		} );
 		return changes;
 	}
 
 	parse() {
-		const cleanedChangelog = this.changelog.replace(
-				/\n\s*(?=\n.*:)/g,
-				''
-		);
-
+		const cleanedChangelog = this.changelog.replace( /\n\s*(?=\n.*:)/g, '' );
 		const sections = cleanedChangelog.split( /\n\s*\n/ );
-		let changes = [];
+		const changes = [];
 
 		sections.forEach( ( section ) => {
 			const parsedSection = this.parseSection( section );
@@ -69,7 +79,7 @@ export default class ChangelogParser {
 
 	getVersion( version ) {
 		const parsedChanges = this.parse();
-		for ( let change of parsedChanges ) {
+		for ( const change of parsedChanges ) {
 			if ( change.version === version ) {
 				return change;
 			}
@@ -78,7 +88,7 @@ export default class ChangelogParser {
 	}
 
 	normalizeVersion( version ) {
-		let segments = version.split( '.' );
+		const segments = version.split( '.' );
 		while ( segments[ segments.length - 1 ] === '0' ) {
 			segments.pop();
 		}
@@ -108,29 +118,16 @@ export default class ChangelogParser {
 		} );
 
 		// 2nd pass: Check for hierarchical relationships
-		for ( let change of parsedChanges ) {
-			const parentVersion = this.getParentVersion(
-					this.normalizeVersion( change.version )
-			);
+		parsedChanges.forEach( ( change ) => {
+			const parentVersion = this.getParentVersion( this.normalizeVersion( change.version ) );
 
-			if (
-					parentVersion &&
-					versionMap[ parentVersion ] &&
-					parentVersion !== this.normalizeVersion( change.version )
-			) {
-				if (
-						! versionMap[ parentVersion ].children.includes( change ) &&
-						! processedVersions.has( change.version )
-				) {
-					versionMap[ parentVersion ].children.push( change );
-					processedVersions.add( change.version );
-				}
+			if ( parentVersion && versionMap[ parentVersion ] ) {
+				versionMap[ parentVersion ].children.push( change );
+				processedVersions.add( change.version );
 			}
-		}
+		} );
 
 		// Filter out versions that have been nested
-		return hierarchicalChanges.filter(
-				( change ) => ! processedVersions.has( change.version )
-		);
+		return hierarchicalChanges.filter( ( change ) => !processedVersions.has( change.version ) );
 	}
 }

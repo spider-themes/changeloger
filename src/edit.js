@@ -144,7 +144,7 @@ function Edit( props ) {
 															>
 																{ item.category }
 															</span>
-															{ item.change }
+															<span className="change">{ item.change }</span>
 														</p>
 													);
 												} ) }
@@ -179,6 +179,7 @@ function Edit( props ) {
 														isSmall
 														isPressed
 														icon={ plus }
+														label="Add Link"
 														onClick={ () =>
 															setAttributes( {
 																customLinks: {

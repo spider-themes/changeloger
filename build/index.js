@@ -477,7 +477,9 @@ function Edit(props) {
           backgroundColor: (0,lodash__WEBPACK_IMPORTED_MODULE_2__.get)(customLogTypeColors, currentCategory)
         } : {},
         className: `tag ${currentCategory.replace(' ', '-')}`
-      }, item.category), item.change);
+      }, item.category), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+        className: "change"
+      }, item.change));
     }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "changeloger-link-wrapper"
     }, currentLinks.map((action, index) => {
@@ -493,6 +495,7 @@ function Edit(props) {
       isSmall: true,
       isPressed: true,
       icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_12__["default"],
+      label: "Add Link",
       onClick: () => setAttributes({
         customLinks: {
           ...customLinks,
@@ -1082,8 +1085,8 @@ __webpack_require__.r(__webpack_exports__);
 class ChangelogParser {
   constructor(changelog) {
     this.changelog = changelog;
-    this.datePattern = /(\d{2} \w+ \d{4}|\d{4}-\d{2}-\d{2}|\d{1,2} \w+ \d{4})/;
-    this.versionPattern = /(?:=+\s*)?([\d.]+|v[\d.]+)(?:\s*\(.+\))?\s*=*/;
+    this.datePattern = /(\d{2} \w+ \d{4}|\d{4}-\d{2}-\d{2}|\d{1,2} \w+ \d{4}|\d{2}\/\d{2}\/\d{4})/;
+    this.versionPattern = /(?:=+\s*)?([\d.]+|v[\d.]+)(?:\s*\(.+\))?\s*-*\s*=*/;
   }
   parseSection(section) {
     const rows = section.split('\n');
@@ -1097,10 +1100,13 @@ class ChangelogParser {
     if (!versionMatch) {
       return false;
     }
+
+    // Skip empty line after date and version
+    const contentRows = rows.slice(1).filter(row => row.trim() !== '');
     const parsedSection = {
       version: versionMatch[1],
       date: dateMatch ? dateMatch[0] : null,
-      changes: this.parseChanges(rows.slice(1))
+      changes: this.parseChanges(contentRows)
     };
     return parsedSection;
   }
@@ -1118,6 +1124,23 @@ class ChangelogParser {
           category,
           change
         });
+      } else if (row.trim().startsWith('*')) {
+        // Handle changes with categories, e.g., "* Added - Table Filter Options for all list table"
+        let change = row.trim().replace(/^[*\s-]+/, '');
+        let categorySplitIndex = change.indexOf(' - ');
+        if (categorySplitIndex !== -1) {
+          let category = change.substring(0, categorySplitIndex).trim();
+          let changeDetail = change.substring(categorySplitIndex + 3).trim();
+          changes.push({
+            category,
+            change: changeDetail
+          });
+        } else {
+          changes.push({
+            category: 'General',
+            change
+          });
+        }
       }
     });
     return changes;
@@ -1125,7 +1148,7 @@ class ChangelogParser {
   parse() {
     const cleanedChangelog = this.changelog.replace(/\n\s*(?=\n.*:)/g, '');
     const sections = cleanedChangelog.split(/\n\s*\n/);
-    let changes = [];
+    const changes = [];
     sections.forEach(section => {
       const parsedSection = this.parseSection(section);
       if (parsedSection) {
@@ -1136,7 +1159,7 @@ class ChangelogParser {
   }
   getVersion(version) {
     const parsedChanges = this.parse();
-    for (let change of parsedChanges) {
+    for (const change of parsedChanges) {
       if (change.version === version) {
         return change;
       }
@@ -1144,7 +1167,7 @@ class ChangelogParser {
     return null;
   }
   normalizeVersion(version) {
-    let segments = version.split('.');
+    const segments = version.split('.');
     while (segments[segments.length - 1] === '0') {
       segments.pop();
     }
@@ -1177,15 +1200,13 @@ class ChangelogParser {
     });
 
     // 2nd pass: Check for hierarchical relationships
-    for (let change of parsedChanges) {
+    parsedChanges.forEach(change => {
       const parentVersion = this.getParentVersion(this.normalizeVersion(change.version));
-      if (parentVersion && versionMap[parentVersion] && parentVersion !== this.normalizeVersion(change.version)) {
-        if (!versionMap[parentVersion].children.includes(change) && !processedVersions.has(change.version)) {
-          versionMap[parentVersion].children.push(change);
-          processedVersions.add(change.version);
-        }
+      if (parentVersion && versionMap[parentVersion]) {
+        versionMap[parentVersion].children.push(change);
+        processedVersions.add(change.version);
       }
-    }
+    });
 
     // Filter out versions that have been nested
     return hierarchicalChanges.filter(change => !processedVersions.has(change.version));
