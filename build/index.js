@@ -1112,8 +1112,9 @@ class ChangelogParser {
     const changes = [];
     rows.forEach(row => {
       if (row.trim() === '') {
-        return;
+        return; // Ignore empty rows
       }
+
       const splitIndexColon = row.indexOf(':');
       const splitIndexDash = row.indexOf(' - ');
       const splitIndex = splitIndexColon !== -1 && (splitIndexDash === -1 || splitIndexColon < splitIndexDash) ? splitIndexColon : splitIndexDash;
@@ -1128,7 +1129,7 @@ class ChangelogParser {
           change: this.processLinks(change)
         });
       } else if (row.trim().startsWith('*')) {
-        // Handle changes with categories, e.g., "* Added - Table Filter Options for all list table"
+        // Handle changes with categories, e.g.,
         let change = row.trim().replace(/^[*\s-]+/, '');
         let categorySplitIndex = change.indexOf(' - ');
         if (categorySplitIndex !== -1) {
@@ -1161,7 +1162,7 @@ class ChangelogParser {
   }
   parse() {
     const cleanedChangelog = this.changelog.replace(/\n\s*(?=\n.*:)/g, '');
-    const sections = cleanedChangelog.split(/\n\s*\n/);
+    const sections = cleanedChangelog.split(/\n(?=\s*\d{2} \w+ \d{4}|\s*=+\s*[\d.]+|v[\d.]+)/);
     const changes = [];
     sections.forEach(section => {
       const parsedSection = this.parseSection(section);
