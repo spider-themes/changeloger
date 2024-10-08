@@ -51,7 +51,7 @@ export default class ChangelogParser {
 				category = category.replace( /^[*->=]+/, '' ).trim();
 
 				const change = row.substring( splitIndex + (splitIndex === splitIndexDash ? 3 : 1) ).trim();
-				changes.push( { category, change: this.change } );
+				changes.push( { category, change: this.processLinks(change) } );
 			} else if ( row.trim().startsWith( '*' ) ) {
 				// Handle changes with categories, e.g.,
 				let change = row.trim().replace( /^[*\s-]+/, '' );
@@ -59,21 +59,21 @@ export default class ChangelogParser {
 				if ( categorySplitIndex !== -1 ) {
 					let category = change.substring( 0, categorySplitIndex ).trim();
 					let changeDetail = change.substring( categorySplitIndex + 3 ).trim();
-					changes.push( { category, change: this.changeDetail } );
+					changes.push( { category, change: this.processLinks(changeDetail) } );
 				} else {
-					changes.push( { category: 'General', change: this.change } );
+					changes.push( { category: 'General', change: this.processLinks(change) } );
 				}
 			} else if ( row.trim().startsWith( '*' ) ) {
 				// Handle changes that may contain links or additional props
 				let change = row.trim().replace( /^[*\s-]+/, '' );
-				changes.push( { category: 'General', change: this.change } );
+				changes.push( { category: 'General', change: this.processLinks(change) } );
 			}
 		} );
 		return changes;
 	}
 
 	processLinks( text ) {
-		// Regex to find links in the text and convert them to a standard format
+		// Regex to find Markdown-style links and convert them to HTML anchor tags
 		return text.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>');
 	}
 

@@ -61,6 +61,12 @@ function Edit( props ) {
 	const isLeft = enableVersions && versionsPosition === 'left';
 	const isRight = enableVersions && versionsPosition === 'right';
 
+	function htmlEntityDecode(encodedString) {
+		var parser = new DOMParser();
+		var doc = parser.parseFromString(encodedString, 'text/html');
+		return doc.documentElement.textContent;
+	}
+
 	return (
 		<div { ...blockProps }>
 			{ ! showPlaceholder && ! showTextArea && (
@@ -144,7 +150,7 @@ function Edit( props ) {
 															>
 																{ item.category }
 															</span>
-															<span className="change">{ item.change }</span>
+															<span className="change">{ htmlEntityDecode(item.change) }</span>
 														</p>
 													);
 												} ) }

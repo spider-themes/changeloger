@@ -425,6 +425,11 @@ function Edit(props) {
   const versions = parser.getVersions();
   const isLeft = enableVersions && versionsPosition === 'left';
   const isRight = enableVersions && versionsPosition === 'right';
+  function htmlEntityDecode(encodedString) {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(encodedString, 'text/html');
+    return doc.documentElement.textContent;
+  }
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ...blockProps
   }, !showPlaceholder && !showTextArea && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -479,7 +484,7 @@ function Edit(props) {
         className: `tag ${currentCategory.replace(' ', '-')}`
       }, item.category), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
         className: "change"
-      }, item.change));
+      }, htmlEntityDecode(item.change)));
     }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "changeloger-link-wrapper"
     }, currentLinks.map((action, index) => {
@@ -1127,7 +1132,7 @@ class ChangelogParser {
         const change = row.substring(splitIndex + (splitIndex === splitIndexDash ? 3 : 1)).trim();
         changes.push({
           category,
-          change: this.change
+          change: this.processLinks(change)
         });
       } else if (row.trim().startsWith('*')) {
         // Handle changes with categories, e.g.,
@@ -1138,12 +1143,12 @@ class ChangelogParser {
           let changeDetail = change.substring(categorySplitIndex + 3).trim();
           changes.push({
             category,
-            change: this.changeDetail
+            change: this.processLinks(changeDetail)
           });
         } else {
           changes.push({
             category: 'General',
-            change: this.change
+            change: this.processLinks(change)
           });
         }
       } else if (row.trim().startsWith('*')) {
@@ -1151,14 +1156,14 @@ class ChangelogParser {
         let change = row.trim().replace(/^[*\s-]+/, '');
         changes.push({
           category: 'General',
-          change: this.change
+          change: this.processLinks(change)
         });
       }
     });
     return changes;
   }
   processLinks(text) {
-    // Regex to find links in the text and convert them to a standard format
+    // Regex to find Markdown-style links and convert them to HTML anchor tags
     return text.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>');
   }
   parse() {
