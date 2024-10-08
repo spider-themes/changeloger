@@ -7,7 +7,7 @@ export default class ChangelogParser {
 	}
 
 	parseSection( section ) {
-		const rows = section.split( '\n' );
+		const rows = section.split( '\n' ).filter( row => row.trim() !== '' );
 		const hasEnoughRows = rows.length > 1;
 
 		if ( !hasEnoughRows ) {
@@ -22,8 +22,7 @@ export default class ChangelogParser {
 			return false;
 		}
 
-		// Skip empty line after date and version
-		const contentRows = rows.slice( 1 ).filter( row => row.trim() !== '' );
+		const contentRows = rows.slice( 1 );
 
 		const parsedSection = {
 			version: versionMatch[ 1 ],
@@ -37,15 +36,21 @@ export default class ChangelogParser {
 	parseChanges( rows ) {
 		const changes = [];
 		rows.forEach( ( row ) => {
-			const splitIndex = row.indexOf( ':' );
+			if ( row.trim() === '' ) {
+				return;
+			}
+			const splitIndexColon = row.indexOf( ':' );
+			const splitIndexDash = row.indexOf( ' - ' );
+			const splitIndex = (splitIndexColon !== -1 && (splitIndexDash === -1 || splitIndexColon < splitIndexDash)) ? splitIndexColon : splitIndexDash;
+
 			if ( splitIndex !== -1 ) {
 				let category = row.substring( 0, splitIndex ).trim();
 
 				// Remove any unwanted symbols at the beginning of the category
 				category = category.replace( /^[*->=]+/, '' ).trim();
 
-				const change = row.substring( splitIndex + 1 ).trim();
-				changes.push( { category, change } );
+				const change = row.substring( splitIndex + (splitIndex === splitIndexDash ? 3 : 1) ).trim();
+				changes.push( { category, change: this.processLinks(change) } );
 			} else if ( row.trim().startsWith( '*' ) ) {
 				// Handle changes with categories, e.g., "* Added - Table Filter Options for all list table"
 				let change = row.trim().replace( /^[*\s-]+/, '' );
@@ -53,13 +58,22 @@ export default class ChangelogParser {
 				if ( categorySplitIndex !== -1 ) {
 					let category = change.substring( 0, categorySplitIndex ).trim();
 					let changeDetail = change.substring( categorySplitIndex + 3 ).trim();
-					changes.push( { category, change: changeDetail } );
+					changes.push( { category, change: this.processLinks(changeDetail) } );
 				} else {
-					changes.push( { category: 'General', change } );
+					changes.push( { category: 'General', change: this.processLinks(change) } );
 				}
+			} else if ( row.trim().startsWith( '*' ) ) {
+				// Handle changes that may contain links or additional props
+				let change = row.trim().replace( /^[*\s-]+/, '' );
+				changes.push( { category: 'General', change: this.processLinks(change) } );
 			}
 		} );
 		return changes;
+	}
+
+	processLinks( text ) {
+		// Regex to find links in the text and convert them to a standard format
+		return text.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>');
 	}
 
 	parse() {
@@ -101,7 +115,7 @@ export default class ChangelogParser {
 			return null; // Base version, no parent (e.g., "1")
 		}
 		segments.pop(); // Remove the last segment
-		return segments.join( '.' ); // Reconstruct the parent version
+		return segments.join( '.' );
 	}
 
 	getVersions() {

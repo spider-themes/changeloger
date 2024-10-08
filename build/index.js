@@ -1089,7 +1089,7 @@ class ChangelogParser {
     this.versionPattern = /(?:=+\s*)?([\d.]+|v[\d.]+)(?:\s*\(.+\))?\s*-*\s*=*/;
   }
   parseSection(section) {
-    const rows = section.split('\n');
+    const rows = section.split('\n').filter(row => row.trim() !== '');
     const hasEnoughRows = rows.length > 1;
     if (!hasEnoughRows) {
       return false;
@@ -1100,9 +1100,7 @@ class ChangelogParser {
     if (!versionMatch) {
       return false;
     }
-
-    // Skip empty line after date and version
-    const contentRows = rows.slice(1).filter(row => row.trim() !== '');
+    const contentRows = rows.slice(1);
     const parsedSection = {
       version: versionMatch[1],
       date: dateMatch ? dateMatch[0] : null,
@@ -1113,16 +1111,21 @@ class ChangelogParser {
   parseChanges(rows) {
     const changes = [];
     rows.forEach(row => {
-      const splitIndex = row.indexOf(':');
+      if (row.trim() === '') {
+        return;
+      }
+      const splitIndexColon = row.indexOf(':');
+      const splitIndexDash = row.indexOf(' - ');
+      const splitIndex = splitIndexColon !== -1 && (splitIndexDash === -1 || splitIndexColon < splitIndexDash) ? splitIndexColon : splitIndexDash;
       if (splitIndex !== -1) {
         let category = row.substring(0, splitIndex).trim();
 
         // Remove any unwanted symbols at the beginning of the category
         category = category.replace(/^[*->=]+/, '').trim();
-        const change = row.substring(splitIndex + 1).trim();
+        const change = row.substring(splitIndex + (splitIndex === splitIndexDash ? 3 : 1)).trim();
         changes.push({
           category,
-          change
+          change: this.processLinks(change)
         });
       } else if (row.trim().startsWith('*')) {
         // Handle changes with categories, e.g., "* Added - Table Filter Options for all list table"
@@ -1133,17 +1136,28 @@ class ChangelogParser {
           let changeDetail = change.substring(categorySplitIndex + 3).trim();
           changes.push({
             category,
-            change: changeDetail
+            change: this.processLinks(changeDetail)
           });
         } else {
           changes.push({
             category: 'General',
-            change
+            change: this.processLinks(change)
           });
         }
+      } else if (row.trim().startsWith('*')) {
+        // Handle changes that may contain links or additional props
+        let change = row.trim().replace(/^[*\s-]+/, '');
+        changes.push({
+          category: 'General',
+          change: this.processLinks(change)
+        });
       }
     });
     return changes;
+  }
+  processLinks(text) {
+    // Regex to find links in the text and convert them to a standard format
+    return text.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>');
   }
   parse() {
     const cleanedChangelog = this.changelog.replace(/\n\s*(?=\n.*:)/g, '');
@@ -1180,9 +1194,8 @@ class ChangelogParser {
     }
 
     segments.pop(); // Remove the last segment
-    return segments.join('.'); // Reconstruct the parent version
+    return segments.join('.');
   }
-
   getVersions() {
     const parsedChanges = this.parse();
     const hierarchicalChanges = [];
