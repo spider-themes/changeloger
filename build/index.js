@@ -1083,7 +1083,7 @@ class ChangelogParser {
   constructor(changelog) {
     this.changelog = changelog;
     this.datePattern = /(\d{2} \w+ \d{4}|\d{4}-\d{2}-\d{2}|\d{1,2} \w+ \d{4})/;
-    this.versionPattern = /[\d.]+|v[\d.]+/;
+    this.versionPattern = /(?:=+\s*)?([\d.]+|v[\d.]+)(?:\s*\(.+\))?\s*=*/;
   }
   parseSection(section) {
     const rows = section.split('\n');
@@ -1091,15 +1091,15 @@ class ChangelogParser {
     if (!hasEnoughRows) {
       return false;
     }
-    const headerRow = rows[0];
+    const headerRow = rows[0].trim();
     const dateMatch = this.datePattern.exec(headerRow);
     const versionMatch = this.versionPattern.exec(headerRow);
-    if (!dateMatch || !versionMatch) {
+    if (!versionMatch) {
       return false;
     }
     const parsedSection = {
-      date: dateMatch[0],
-      version: versionMatch[0],
+      version: versionMatch[1],
+      date: dateMatch ? dateMatch[0] : null,
       changes: this.parseChanges(rows.slice(1))
     };
     return parsedSection;

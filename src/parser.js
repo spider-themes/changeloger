@@ -2,8 +2,8 @@ export default class ChangelogParser {
 	constructor( changelog ) {
 		this.changelog = changelog;
 		this.datePattern =
-			/(\d{2} \w+ \d{4}|\d{4}-\d{2}-\d{2}|\d{1,2} \w+ \d{4})/;
-		this.versionPattern = /[\d.]+|v[\d.]+/;
+				/(\d{2} \w+ \d{4}|\d{4}-\d{2}-\d{2}|\d{1,2} \w+ \d{4})/;
+		this.versionPattern = /(?:=+\s*)?([\d.]+|v[\d.]+)(?:\s*\(.+\))?\s*=*/;
 	}
 
 	parseSection( section ) {
@@ -14,17 +14,17 @@ export default class ChangelogParser {
 			return false;
 		}
 
-		const headerRow = rows[ 0 ];
+		const headerRow = rows[ 0 ].trim();
 		const dateMatch = this.datePattern.exec( headerRow );
 		const versionMatch = this.versionPattern.exec( headerRow );
 
-		if ( ! dateMatch || ! versionMatch ) {
+		if ( ! versionMatch ) {
 			return false;
 		}
 
 		const parsedSection = {
-			date: dateMatch[ 0 ],
-			version: versionMatch[ 0 ],
+			version: versionMatch[ 1 ],
+			date: dateMatch ? dateMatch[ 0 ] : null,
 			changes: this.parseChanges( rows.slice( 1 ) ),
 		};
 
@@ -50,8 +50,8 @@ export default class ChangelogParser {
 
 	parse() {
 		const cleanedChangelog = this.changelog.replace(
-			/\n\s*(?=\n.*:)/g,
-			''
+				/\n\s*(?=\n.*:)/g,
+				''
 		);
 
 		const sections = cleanedChangelog.split( /\n\s*\n/ );
@@ -110,17 +110,17 @@ export default class ChangelogParser {
 		// 2nd pass: Check for hierarchical relationships
 		for ( let change of parsedChanges ) {
 			const parentVersion = this.getParentVersion(
-				this.normalizeVersion( change.version )
+					this.normalizeVersion( change.version )
 			);
 
 			if (
-				parentVersion &&
-				versionMap[ parentVersion ] &&
-				parentVersion !== this.normalizeVersion( change.version )
+					parentVersion &&
+					versionMap[ parentVersion ] &&
+					parentVersion !== this.normalizeVersion( change.version )
 			) {
 				if (
-					! versionMap[ parentVersion ].children.includes( change ) &&
-					! processedVersions.has( change.version )
+						! versionMap[ parentVersion ].children.includes( change ) &&
+						! processedVersions.has( change.version )
 				) {
 					versionMap[ parentVersion ].children.push( change );
 					processedVersions.add( change.version );
@@ -130,7 +130,7 @@ export default class ChangelogParser {
 
 		// Filter out versions that have been nested
 		return hierarchicalChanges.filter(
-			( change ) => ! processedVersions.has( change.version )
+				( change ) => ! processedVersions.has( change.version )
 		);
 	}
 }
