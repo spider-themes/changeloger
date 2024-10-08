@@ -247,7 +247,7 @@ function changeloger_render( $attributes, $content, $instance ) {
                                                     <?php echo changeloger_get_custom_style( $attributes, esc_attr(strtolower( $change['category'] )) ) ?>>
                                                     <?php echo esc_html($change['category']); ?>
                                                 </span>
-                                                <span class="change"><?php echo esc_html($change['change']); ?></span>
+                                                <span class="change"><?php echo wp_kses_post($change['change']); ?></span>
                                             </p>
                                             <?php
                                         }

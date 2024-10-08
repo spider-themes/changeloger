@@ -2,8 +2,8 @@ export default class ChangelogParser {
 	constructor( changelog ) {
 		this.changelog = changelog;
 		this.datePattern =
-				/(\d{2} \w+ \d{4}|\d{4}-\d{2}-\d{2}|\d{1,2} \w+ \d{4}|\d{2}\/\d{2}\/\d{4})/;
-		this.versionPattern = /(?:=+\s*)?([\d.]+|v[\d.]+)(?:\s*\(.+\))?\s*-*\s*=*/;
+				/(\d{2} \w+ \d{4}|\d{4}-\d{2}-\d{2}|\d{1,2} \w+ \d{4}|\d{2}\/\d{2}\/\d{4}|\d{4}-\d{2}-\d{2})/;
+		this.versionPattern = /(?:=+\s*)?([\d.]+|v[\d.]+|#*\s*[\d.]+)(?:\s*-\s*\d{4}-\d{2}-\d{2})?\s*-*\s*=*/;
 	}
 
 	parseSection( section ) {
@@ -22,10 +22,11 @@ export default class ChangelogParser {
 			return false;
 		}
 
+		const version = versionMatch[ 1 ].replace( /#/g, '' );
 		const contentRows = rows.slice( 1 );
 
 		const parsedSection = {
-			version: versionMatch[ 1 ],
+			version: version,
 			date: dateMatch ? dateMatch[ 0 ] : null,
 			changes: this.parseChanges( contentRows ),
 		};
@@ -50,7 +51,7 @@ export default class ChangelogParser {
 				category = category.replace( /^[*->=]+/, '' ).trim();
 
 				const change = row.substring( splitIndex + (splitIndex === splitIndexDash ? 3 : 1) ).trim();
-				changes.push( { category, change: this.processLinks(change) } );
+				changes.push( { category, change: this.change } );
 			} else if ( row.trim().startsWith( '*' ) ) {
 				// Handle changes with categories, e.g.,
 				let change = row.trim().replace( /^[*\s-]+/, '' );
@@ -58,14 +59,14 @@ export default class ChangelogParser {
 				if ( categorySplitIndex !== -1 ) {
 					let category = change.substring( 0, categorySplitIndex ).trim();
 					let changeDetail = change.substring( categorySplitIndex + 3 ).trim();
-					changes.push( { category, change: this.processLinks(changeDetail) } );
+					changes.push( { category, change: this.changeDetail } );
 				} else {
-					changes.push( { category: 'General', change: this.processLinks(change) } );
+					changes.push( { category: 'General', change: this.change } );
 				}
 			} else if ( row.trim().startsWith( '*' ) ) {
 				// Handle changes that may contain links or additional props
 				let change = row.trim().replace( /^[*\s-]+/, '' );
-				changes.push( { category: 'General', change: this.processLinks(change) } );
+				changes.push( { category: 'General', change: this.change } );
 			}
 		} );
 		return changes;
@@ -78,7 +79,7 @@ export default class ChangelogParser {
 
 	parse() {
 		const cleanedChangelog = this.changelog.replace( /\n\s*(?=\n.*:)/g, '' );
-		const sections = cleanedChangelog.split( /\n(?=\s*\d{2} \w+ \d{4}|\s*=+\s*[\d.]+|v[\d.]+)/ );
+		const sections = cleanedChangelog.split( /\n(?=\s*\d{2} \w+ \d{4}|\s*=+\s*[\d.]+|v[\d.]+|#*\s*[\d.]+)/ );
 		const changes = [];
 
 		sections.forEach( ( section ) => {

@@ -1085,8 +1085,8 @@ __webpack_require__.r(__webpack_exports__);
 class ChangelogParser {
   constructor(changelog) {
     this.changelog = changelog;
-    this.datePattern = /(\d{2} \w+ \d{4}|\d{4}-\d{2}-\d{2}|\d{1,2} \w+ \d{4}|\d{2}\/\d{2}\/\d{4})/;
-    this.versionPattern = /(?:=+\s*)?([\d.]+|v[\d.]+)(?:\s*\(.+\))?\s*-*\s*=*/;
+    this.datePattern = /(\d{2} \w+ \d{4}|\d{4}-\d{2}-\d{2}|\d{1,2} \w+ \d{4}|\d{2}\/\d{2}\/\d{4}|\d{4}-\d{2}-\d{2})/;
+    this.versionPattern = /(?:=+\s*)?([\d.]+|v[\d.]+|#*\s*[\d.]+)(?:\s*-\s*\d{4}-\d{2}-\d{2})?\s*-*\s*=*/;
   }
   parseSection(section) {
     const rows = section.split('\n').filter(row => row.trim() !== '');
@@ -1100,9 +1100,10 @@ class ChangelogParser {
     if (!versionMatch) {
       return false;
     }
+    const version = versionMatch[1].replace(/#/g, '');
     const contentRows = rows.slice(1);
     const parsedSection = {
-      version: versionMatch[1],
+      version: version,
       date: dateMatch ? dateMatch[0] : null,
       changes: this.parseChanges(contentRows)
     };
@@ -1126,7 +1127,7 @@ class ChangelogParser {
         const change = row.substring(splitIndex + (splitIndex === splitIndexDash ? 3 : 1)).trim();
         changes.push({
           category,
-          change: this.processLinks(change)
+          change: this.change
         });
       } else if (row.trim().startsWith('*')) {
         // Handle changes with categories, e.g.,
@@ -1137,12 +1138,12 @@ class ChangelogParser {
           let changeDetail = change.substring(categorySplitIndex + 3).trim();
           changes.push({
             category,
-            change: this.processLinks(changeDetail)
+            change: this.changeDetail
           });
         } else {
           changes.push({
             category: 'General',
-            change: this.processLinks(change)
+            change: this.change
           });
         }
       } else if (row.trim().startsWith('*')) {
@@ -1150,7 +1151,7 @@ class ChangelogParser {
         let change = row.trim().replace(/^[*\s-]+/, '');
         changes.push({
           category: 'General',
-          change: this.processLinks(change)
+          change: this.change
         });
       }
     });
@@ -1162,7 +1163,7 @@ class ChangelogParser {
   }
   parse() {
     const cleanedChangelog = this.changelog.replace(/\n\s*(?=\n.*:)/g, '');
-    const sections = cleanedChangelog.split(/\n(?=\s*\d{2} \w+ \d{4}|\s*=+\s*[\d.]+|v[\d.]+)/);
+    const sections = cleanedChangelog.split(/\n(?=\s*\d{2} \w+ \d{4}|\s*=+\s*[\d.]+|v[\d.]+|#*\s*[\d.]+)/);
     const changes = [];
     sections.forEach(section => {
       const parsedSection = this.parseSection(section);
