@@ -1090,8 +1090,8 @@ __webpack_require__.r(__webpack_exports__);
 class ChangelogParser {
   constructor(changelog) {
     this.changelog = changelog;
-    this.datePattern = /(\d{2} \w+ \d{4}|\d{4}-\d{2}-\d{2}|\d{1,2} \w+ \d{4}|\d{2}\/\d{2}\/\d{4}|\d{4}-\d{2}-\d{2})/;
-    this.versionPattern = /(?:=+\s*)?([\d.]+|v[\d.]+|#*\s*[\d.]+)(?:\s*-\s*\d{4}-\d{2}-\d{2})?\s*-*\s*=*/;
+    this.datePattern = /\b(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{4}-\d{2}-\d{2}|\d{1,2} \w+ \d{4})\b/;
+    this.versionPattern = /(?:[vV]?\s*)?(\d+(\.\d+){0,3})(?:\s*\(.*\))?/;
   }
   parseSection(section) {
     const rows = section.split('\n').filter(row => row.trim() !== '');
@@ -1105,7 +1105,7 @@ class ChangelogParser {
     if (!versionMatch) {
       return false;
     }
-    const version = versionMatch[1].replace(/#/g, '');
+    const version = versionMatch[1].trim();
     const contentRows = rows.slice(1);
     const parsedSection = {
       version: version,
@@ -1168,7 +1168,7 @@ class ChangelogParser {
   }
   parse() {
     const cleanedChangelog = this.changelog.replace(/\n\s*(?=\n.*:)/g, '');
-    const sections = cleanedChangelog.split(/\n(?=\s*\d{2} \w+ \d{4}|\s*=+\s*[\d.]+|v[\d.]+|#*\s*[\d.]+)/);
+    const sections = cleanedChangelog.split(/\n(?=\s*\d{2} \w+ \d{4}|\s*=+\s*[\d.]+|v[\d.]+|#*\s*[\d.]+|-----\s*[\d.]+\s*\(.*\)\s*-----)/);
     const changes = [];
     sections.forEach(section => {
       const parsedSection = this.parseSection(section);
