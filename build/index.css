@@ -20,6 +20,7 @@
   text-align: center;
   display: flex;
   flex-direction: column;
+  flex-basis: 20%;
 }
 .changeloger-container .changelog-wrapper .changeloger-info-inner-wrapper .changeloger-items .changelog-info-item .version {
   flex-basis: 20%;
@@ -136,7 +137,8 @@
 .changeloger-container .changelog-wrapper .changeloger-version-list-container ul {
   list-style-type: none !important;
   padding-left: 20px !important;
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
+  gap: 5px;
 }
 .changeloger-container .changelog-wrapper .changeloger-version-list-container ul li {
   position: relative;

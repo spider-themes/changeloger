@@ -1168,7 +1168,7 @@ class ChangelogParser {
   }
   parse() {
     const cleanedChangelog = this.changelog.replace(/\n\s*(?=\n.*:)/g, '');
-    const sections = cleanedChangelog.split(/\n(?=\s*\d{2} \w+ \d{4}|\s*=+\s*[\d.]+|v[\d.]+|#*\s*[\d.]+|-----\s*[\d.]+\s*\(.*\)\s*-----)/);
+    const sections = cleanedChangelog.split(/\n(?=\s*\d{2} \w+ \d{4}|\s*=+\s*[\d.]+|v[\d.]+|#*\s*[\d.]+|-{1,12}\s*[\d.]+\s*\(.*\)\s*-{1,12})/);
     const changes = [];
     sections.forEach(section => {
       const parsedSection = this.parseSection(section);
