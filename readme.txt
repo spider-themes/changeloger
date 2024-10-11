@@ -1,7 +1,7 @@
 === Changeloger ===
 Contributors: mdjwel, spiderdevs
 Tags: changelogs, changelog, release, version, history
-Stable tag: 0.1.0
+Stable tag: 1.0.0
 Requires at least: 6.0
 Tested up to: 6.4.2
 Requires PHP: 7.4
@@ -80,3 +80,20 @@ Yes, Changeloger is designed to work seamlessly with most WordPress themes. It e
 
 = 11. Can I use Changeloger for non-software related changelogs? =
 Absolutely! While Changeloger is ideal for software updates, it can be used for any changelog scenario where you want to visually present changes or updates to your audience.
+
+== Screenshots ==
+1. Changeloger block initial screen in the WordPress block editor. You can choose between upload file and Paste plain text options.
+2. Plain text changelogs in the Changeloger block editor. You can edit/modify the existing changelog content.
+3. Changeloger block editor with a preview of the visually designed changelog. You can customize the design and layout options.
+
+== Changelog ==
+
+= 1.0.0 =
+Tweaked: Now the Date and Version format will detect more intelligently.
+Tweaked: Anchor tag support in the changelog item content.
+Tweaked: Ignore empty line in the changelog content. Unwanted empty line will be removed/skipped automatically.
+Tweaked: Design was breaking in the block editor, now fixed.
+New: Regex condition added to find Markdown-style links and convert them to HTML anchor tags in the changelog content.
+
+= 0.1.0 =
+* Initial release of Changeloger plugin.

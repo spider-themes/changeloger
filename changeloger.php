@@ -2,11 +2,11 @@
 /**
  * Plugin Name: Changeloger
  * Description: A Gutenberg block to display changelog
- * Author: mdjwel
+ * Author: spider-themes
  * Requires at least: 6.0
- * Tested up to: 6.4.2
+ * Tested up to: 6.6.2
  * Requires PHP: 7.4
- * Version: 0.1.0
+ * Version: 1.0.0
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text domain: changeloger
@@ -263,8 +263,9 @@ function changeloger_render( $attributes, $content, $instance ) {
                                                     ?>
                                                     <div class="changeloger-link-item">
                                                         <a href="<?php echo esc_url( $custom_link['link'] ) ?>" class="changeloger-custom-link" target="_blank">
-                                                            <?php if ( isset( $custom_link['icon'] ) && ! empty( $custom_link['icon'] ) ): ?>
-                                                                <span class="changeloger-custom-link-icon" style="-webkit-mask-image: url(<?php echo esc_url( $custom_link['icon'] ) ?>)"></span>
+                                                            <?php if ( ! empty( $custom_link['icon'] ) ):
+                                                                ?>
+                                                                <span class="changeloger-custom-link-icon" style="-webkit-mask-image: url(<?php echo $custom_link['icon'] ?>)"></span>
                                                             <?php endif; ?>
                                                             <?php echo esc_html( $custom_link['name'] ) ?>
                                                         </a>

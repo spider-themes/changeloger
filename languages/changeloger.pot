@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Changeloger\n"
-"POT-Creation-Date: 2024-01-23 18:45+0600\n"
+"POT-Creation-Date: 2024-10-11 19:10+0600\n"
 "PO-Revision-Date: 2023-12-09 20:05+0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.5\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: changeloger.php\n"
@@ -21,27 +21,242 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 
-#: changeloger.php:108 changeloger.php:219 changeloger.php:297
+#: changeloger.php:107 changeloger.php:218 changeloger.php:299
 msgid "Version"
 msgstr ""
 
-#: changeloger.php:186
+#: changeloger.php:185
 msgid "&laquo; Previous"
 msgstr ""
 
-#: changeloger.php:187
+#: changeloger.php:186
 msgid "Next &raquo;"
 msgstr ""
 
-#: changeloger.php:196
+#: changeloger.php:195
 msgid "Load More"
+msgstr ""
+
+#: node_modules/meow/node_modules/yargs-parser/index.js:372
+#: node_modules/stylelint/node_modules/yargs-parser/build/lib/yargs-parser.js:419
+#: node_modules/yargs-parser/build/lib/yargs-parser.js:422
+#, javascript-format
+msgid "Argument unexpected for: %s"
+msgstr ""
+
+#: node_modules/meow/node_modules/yargs-parser/index.js:382
+#: node_modules/meow/node_modules/yargs-parser/index.js:392
+#: node_modules/meow/node_modules/yargs-parser/index.js:446
+#: node_modules/stylelint/node_modules/yargs-parser/build/lib/yargs-parser.js:428
+#: node_modules/stylelint/node_modules/yargs-parser/build/lib/yargs-parser.js:442
+#: node_modules/stylelint/node_modules/yargs-parser/build/lib/yargs-parser.js:495
+#: node_modules/yargs-parser/build/lib/yargs-parser.js:431
+#: node_modules/yargs-parser/build/lib/yargs-parser.js:445
+#: node_modules/yargs-parser/build/lib/yargs-parser.js:498
+#, javascript-format
+msgid "Not enough arguments following: %s"
+msgstr ""
+
+#: node_modules/meow/node_modules/yargs-parser/index.js:591
+#: node_modules/stylelint/node_modules/yargs-parser/build/lib/yargs-parser.js:634
+#: node_modules/yargs-parser/build/lib/yargs-parser.js:635
+#, javascript-format
+msgid "Invalid JSON config file: %s"
+msgstr ""
+
+#: node_modules/meow/node_modules/yargs-parser/index.js:941
+#: node_modules/stylelint/node_modules/yargs-parser/build/lib/yargs-parser.js:963
+#: node_modules/yargs-parser/build/lib/yargs-parser.js:964
+#, javascript-format
+msgid "Invalid configuration: %s, opts.count excludes opts.array."
+msgstr ""
+
+#: node_modules/meow/node_modules/yargs-parser/index.js:944
+#: node_modules/stylelint/node_modules/yargs-parser/build/lib/yargs-parser.js:967
+#: node_modules/yargs-parser/build/lib/yargs-parser.js:968
+#, javascript-format
+msgid "Invalid configuration: %s, opts.count excludes opts.narg."
+msgstr ""
+
+#: node_modules/prettier/parser-angular.js:2
+msgid "NGMicrosyntaxKey"
+msgstr ""
+
+#: node_modules/prettier/parser-angular.js:2
+msgid "NGMicrosyntax"
+msgstr ""
+
+#: node_modules/prettier/parser-angular.js:2
+msgid "NGMicrosyntaxExpression"
+msgstr ""
+
+#: node_modules/prettier/parser-angular.js:2
+msgid "NGMicrosyntaxKeyedExpression"
+msgstr ""
+
+#: node_modules/prettier/parser-angular.js:2
+msgid "NGMicrosyntaxLet"
+msgstr ""
+
+#: node_modules/prettier/parser-angular.js:2
+msgid "NGMicrosyntaxAs"
+msgstr ""
+
+#: node_modules/prettier/parser-babel.js:22
+msgid "|>"
+msgstr ""
+
+#: node_modules/prettier/parser-babel.js:22
+msgid "??"
+msgstr ""
+
+#: node_modules/prettier/parser-babel.js:22
+msgid "||"
+msgstr ""
+
+#: node_modules/prettier/parser-babel.js:22
+msgid "&&"
+msgstr ""
+
+#: node_modules/prettier/parser-babel.js:22
+msgid "|"
+msgstr ""
+
+#: node_modules/prettier/parser-babel.js:22
+msgid "^"
+msgstr ""
+
+#: node_modules/prettier/parser-babel.js:22
+msgid "&"
+msgstr ""
+
+#: node_modules/prettier/parser-babel.js:22
+msgid "==/!=/===/!=="
+msgstr ""
+
+#: node_modules/prettier/parser-babel.js:22
+msgid "</>/<=/>="
+msgstr ""
+
+#: node_modules/prettier/parser-babel.js:22
+msgid "<</>>/>>>"
+msgstr ""
+
+#: node_modules/prettier/parser-babel.js:22
+msgid "/"
+msgstr ""
+
+#: node_modules/yargs/build/lib/usage.js:92
+msgid "Positionals:"
+msgstr ""
+
+#: node_modules/yargs/build/lib/usage.js:189
+#: node_modules/yargs/build/lib/usage.js:192
+msgid "command"
+msgstr ""
+
+#: node_modules/yargs/build/lib/usage.js:198
+msgid "Commands:"
+msgstr ""
+
+#: node_modules/yargs/build/lib/usage.js:217
+msgid "default"
+msgstr ""
+
+#: node_modules/yargs/build/lib/usage.js:219
+msgid "aliases:"
+msgstr ""
+
+#: node_modules/yargs/build/lib/usage.js:223
+#: node_modules/yargs/build/lib/usage.js:329
+#, javascript-format
+msgid "deprecated: %s"
+msgstr ""
+
+#: node_modules/yargs/build/lib/usage.js:226
+#: node_modules/yargs/build/lib/usage.js:330
+msgid "deprecated"
+msgstr ""
+
+#: node_modules/yargs/build/lib/usage.js:245
+msgid "Options:"
+msgstr ""
+
+#: node_modules/yargs/build/lib/usage.js:317
+msgid "boolean"
+msgstr ""
+
+#: node_modules/yargs/build/lib/usage.js:319
+msgid "count"
+msgstr ""
+
+#: node_modules/yargs/build/lib/usage.js:321
+#: node_modules/yargs/build/lib/usage.js:323
+msgid "string"
+msgstr ""
+
+#: node_modules/yargs/build/lib/usage.js:325
+msgid "array"
+msgstr ""
+
+#: node_modules/yargs/build/lib/usage.js:327
+msgid "number"
+msgstr ""
+
+#: node_modules/yargs/build/lib/usage.js:336
+msgid "required"
+msgstr ""
+
+#: node_modules/yargs/build/lib/usage.js:338
+msgid "choices:"
+msgstr ""
+
+#: node_modules/yargs/build/lib/usage.js:359
+msgid "Examples:"
+msgstr ""
+
+#: node_modules/yargs/build/lib/usage.js:464
+msgid "generated-value"
+msgstr ""
+
+#: node_modules/yargs/build/lib/usage.js:481
+msgid "default:"
+msgstr ""
+
+#: node_modules/yargs/build/lib/validation.js:160
+msgid "Invalid values:"
+msgstr ""
+
+#: node_modules/yargs/build/lib/validation.js:162
+#, javascript-format
+msgid "Argument: %s, Given: %s, Choices: %s"
+msgstr ""
+
+#: node_modules/yargs/build/lib/validation.js:221
+msgid "Implications failed:"
+msgstr ""
+
+#: node_modules/yargs/build/lib/validation.js:255
+#: node_modules/yargs/build/lib/validation.js:266
+#, javascript-format
+msgid "Arguments %s and %s are mutually exclusive"
+msgstr ""
+
+#: node_modules/yargs/build/lib/validation.js:285
+#, javascript-format
+msgid "Did you mean %s?"
+msgstr ""
+
+#: node_modules/yargs/build/lib/yargs-factory.js:183
+#, javascript-format
+msgid "Argument check failed: %s"
 msgstr ""
 
 #: src/block-control.js:11
 msgid "Edit"
 msgstr ""
 
-#: src/edit.js:95
+#: src/edit.js:101
 msgid "Version Name"
 msgstr ""
 
@@ -58,15 +273,15 @@ msgid "General"
 msgstr ""
 
 #: src/inspector.js:65
-msgid "Enable Pagination"
+msgid "Sidebar Versions"
 msgstr ""
 
-#: src/inspector.js:74
-msgid "Enable Versions"
-msgstr ""
-
-#: src/inspector.js:86
+#: src/inspector.js:77
 msgid "Versions Position"
+msgstr ""
+
+#: src/inspector.js:96
+msgid "Pagination"
 msgstr ""
 
 #: src/inspector.js:107
@@ -78,22 +293,26 @@ msgid "Per Page"
 msgstr ""
 
 #: src/inspector.js:132
-msgid "Colors"
+msgid "Log Tags Color"
 msgstr ""
 
-#: src/inspector.js:150
+#: src/inspector.js:148
+msgid "Pagination Styling"
+msgstr ""
+
+#: src/inspector.js:155
 msgid "Pagination Text Color"
 msgstr ""
 
-#: src/inspector.js:166
+#: src/inspector.js:171
 msgid "Pagination Bg Color"
 msgstr ""
 
-#: src/inspector.js:183
+#: src/inspector.js:188
 msgid "Pagination Active Text Color"
 msgstr ""
 
-#: src/inspector.js:201
+#: src/inspector.js:206
 msgid "Pagination Active Bg Color"
 msgstr ""
 
@@ -107,11 +326,11 @@ msgid "Paste your changelog here, or upload changelog from a text file."
 msgstr ""
 
 #: src/placeholder.js:42
-msgid "Upload"
+msgid "Upload Changelog (.txt file)"
 msgstr ""
 
 #: src/placeholder.js:54
-msgid "Paste"
+msgid "Plain Text"
 msgstr ""
 
 #: src/placeholder.js:63
@@ -123,7 +342,7 @@ msgid "Cancel"
 msgstr ""
 
 #: src/placeholder.js:87
-msgid "Save"
+msgid "View Visual Changelogs"
 msgstr ""
 
 #. Description of the plugin/theme
@@ -131,5 +350,5 @@ msgid "A Gutenberg block to display changelog"
 msgstr ""
 
 #. Author of the plugin/theme
-msgid "mdjwel"
+msgid "spider-themes"
 msgstr ""
