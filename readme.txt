@@ -16,7 +16,8 @@ Introducing Changeloger, the ultimate WordPress plugin designed to effortlessly 
 
 Changeloger streamlines the process of conveying complex updates by enabling users to upload their changelog text files directly into the plugin. Once uploaded, Changeloger instantly converts the plain text content into an eye-catching and visually designed changelog. Users can bid farewell to tedious manual formatting and focus on delivering the most crucial information to their audience.
 
-With its intuitive and user-friendly interface, Changeloger caters to all levels of expertise. Whether you're a seasoned WordPress pro or a newcomer, creating polished and professional changelogs has never been easier.
+### Video Overview / How to Use Changeloger: ###
+[youtube https://youtu.be/U9CsttxXifs]
 
 ### Key Features: ###
 
