@@ -1,4 +1,4 @@
-=== Changeloger ===
+=== Changeloger - Release Notes & Changelog Manager ===
 Contributors: mdjwel, spiderdevs
 Tags: changelogs, changelog, release, version, history
 Stable tag: 1.0.0
