@@ -86,6 +86,21 @@ function CustomPlaceholder( props ) {
 					>
 						{ __( 'View Visual Changelogs', 'changeloger' ) }
 					</Button>
+					<Button
+						className="placeholder-sample-button"
+						variant="tertiary"
+						onClick={ () =>
+							setAttributes( { changelog:`${changelog}\n` + '= 1.0.0  (01 March 2025) =\n' +
+									'New: Added a bulk edit feature for faster modifications.\n' +
+									'Tweaked: Adjusted UI spacing for better readability.\n' +
+									'Updated: Refreshed third-party dependencies for stability.\n' +
+									'Fixed: Resolved a bug causing layout shifts on mobile.\n' +
+									'improvement: Enhanced performance for faster load times.\n'
+							} )
+						}
+					>
+						{ __( 'Add Sample Data', 'changeloger' ) }
+					</Button>
 				</>
 			) }
 		</>

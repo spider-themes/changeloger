@@ -1058,7 +1058,7 @@ function Inspector(props) {
   });
   const parser = new _parser__WEBPACK_IMPORTED_MODULE_7__["default"](changelog);
   const parsedChangelog = parser.parse();
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.PanelBody, {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('General', 'changeloger')
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToggleControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Sidebar Versions', 'changeloger'),
@@ -1105,8 +1105,10 @@ function Inspector(props) {
     onChange: newValue => setAttributes({
       perPage: Number(newValue)
     })
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.PanelBody, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Log Tags Color', 'changeloger'),
+  })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InspectorControls, {
+    group: "styles"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.PanelBody, {
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Log Tags', 'changeloger'),
     initialOpen: false
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_log_type_colors__WEBPACK_IMPORTED_MODULE_8__["default"], {
     changelog: parsedChangelog,
@@ -1118,7 +1120,7 @@ function Inspector(props) {
       });
     }
   })), enablePagination && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.PanelBody, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Pagination Styling', 'changeloger'),
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Pagination', 'changeloger'),
     initialOpen: false
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_custom_color_control__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: "is-list is-first",
@@ -1152,6 +1154,9 @@ function Inspector(props) {
     onColorChange: newValue => setAttributes({
       paginationActiveBgColor: newValue
     })
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.ContrastChecker, {
+    backgroundColor: paginationBgColor,
+    textColor: paginationTextColor
   }))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Inspector);
@@ -1393,7 +1398,13 @@ function CustomPlaceholder(props) {
     onClick: () => setAttributes({
       showTextArea: false
     })
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('View Visual Changelogs', 'changeloger'))));
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('View Visual Changelogs', 'changeloger')), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+    className: "placeholder-sample-button",
+    variant: "tertiary",
+    onClick: () => setAttributes({
+      changelog: `${changelog}\n` + '= 1.0.0  (01 March 2025) =\n' + 'New: Added a bulk edit feature for faster modifications.\n' + 'Tweaked: Adjusted UI spacing for better readability.\n' + 'Updated: Refreshed third-party dependencies for stability.\n' + 'Fixed: Resolved a bug causing layout shifts on mobile.\n' + 'improvement: Enhanced performance for faster load times.\n'
+    })
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Add Sample Data', 'changeloger'))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CustomPlaceholder);
 

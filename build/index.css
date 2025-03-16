@@ -221,6 +221,9 @@
 .changeloger-container .placeholder-cancel-button {
   margin-right: 10px;
 }
+.changeloger-container .placeholder-sample-button {
+  margin-left: 10px;
+}
 
 .changeloger-version-list-container.changeloger-version-list-position-right .changeloger-version-list-wrapper > li:first-child::before {
   left: -21px;

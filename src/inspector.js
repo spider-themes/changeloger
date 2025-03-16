@@ -4,7 +4,7 @@ import {map} from 'lodash';
 import {__} from '@wordpress/i18n';
 
 import {useSelect} from '@wordpress/data';
-import {InspectorControls} from '@wordpress/block-editor';
+import {InspectorControls,ContrastChecker} from '@wordpress/block-editor';
 import {
     __experimentalToggleGroupControl as ToggleGroupControl,
     __experimentalToggleGroupControlOption as ToggleGroupControlOption,
@@ -60,152 +60,161 @@ function Inspector(props) {
     const parsedChangelog = parser.parse();
 
     return (
-        <InspectorControls>
-            <PanelBody title={__('General', 'changeloger')}>
-                <ToggleControl
-                    label={__('Sidebar Versions', 'changeloger')}
-                    checked={enableVersions}
-                    onChange={() =>
-                        setAttributes({
-                            enableVersions: !enableVersions,
-                        })
-                    }
-                />
-                {enableVersions && (
-                    <ToggleGroupControl
-                        isBlock
-                        value={versionsPosition}
-                        label={__('Versions Position', 'changeloger')}
-                    >
-                        {positions.map((position) => {
-                            return (
-                                <ToggleGroupControlOption
-                                    value={position.value}
-                                    label={position.label}
-                                    onClick={() =>
-                                        setAttributes({
-                                            versionsPosition: position.value,
-                                        })
-                                    }
-                                />
-                            );
-                        })}
-                    </ToggleGroupControl>
-                )}
-
-                <ToggleControl
-                    label={__('Pagination', 'changeloger')}
-                    checked={enablePagination}
-                    onChange={() =>
-                        setAttributes({
-                            enablePagination: !enablePagination,
-                        })
-                    }
-                />
-                {enablePagination && (
-                    <>
-                        <SelectControl
-                            label={__('Pagination Type', 'changeloger')}
-                            value={paginationType}
-                            options={[
-                                {label: 'Load More', value: 'load-more'},
-                                {label: 'Numbered', value: 'numbered'},
-                            ]}
-                            onChange={(newValue) =>
-                                setAttributes({paginationType: newValue})
-                            }
-                            __nextHasNoMarginBottom
-                        />
-
-                        <TextControl
-                            label={__('Per Page', 'changeloger')}
-                            value={perPage.toString()}
-                            type="number"
-                            onChange={(newValue) =>
-                                setAttributes({perPage: Number(newValue)})
-                            }
-                        />
-                    </>
-                )}
-            </PanelBody>
-
-
-            <PanelBody
-                title={__('Log Tags Color', 'changeloger')}
-                initialOpen={false}
-            >
-                <LogTypeColors
-                    changelog={parsedChangelog}
-                    colors={defaultColors}
-                    value={customLogTypeColors}
-                    onChange={(newCustomLogTypeColors) => {
-                        setAttributes({
-                            customLogTypeColors: newCustomLogTypeColors,
-                        });
-                    }}
-                />
-            </PanelBody>
-
-            {enablePagination && (
-                <PanelBody
-                    title={__('Pagination Styling', 'changeloger')}
-                    initialOpen={false}
-                >
-
-                    <CustomColorControl
-                        className='is-list is-first'
-                        colors={defaultColors}
-                        label={__('Pagination Text Color', 'changeloger')}
-                        colorValue={paginationTextColor}
-                        onColorChange={(newValue) =>
+        <>
+            <InspectorControls>
+                <PanelBody title={__('General', 'changeloger')}>
+                    <ToggleControl
+                        label={__('Sidebar Versions', 'changeloger')}
+                        checked={enableVersions}
+                        onChange={() =>
                             setAttributes({
-                                paginationTextColor: newValue,
+                                enableVersions: !enableVersions,
                             })
                         }
                     />
-                    <CustomColorControl
-                        className='is-list'
-                        colors={defaultColors}
-                        label={__('Pagination Bg Color', 'changeloger')}
-                        colorValue={paginationBgColor}
-                        onColorChange={(newValue) =>
+                    {enableVersions && (
+                        <ToggleGroupControl
+                            isBlock
+                            value={versionsPosition}
+                            label={__('Versions Position', 'changeloger')}
+                        >
+                            {positions.map((position) => {
+                                return (
+                                    <ToggleGroupControlOption
+                                        value={position.value}
+                                        label={position.label}
+                                        onClick={() =>
+                                            setAttributes({
+                                                versionsPosition: position.value,
+                                            })
+                                        }
+                                    />
+                                );
+                            })}
+                        </ToggleGroupControl>
+                    )}
+
+                    <ToggleControl
+                        label={__('Pagination', 'changeloger')}
+                        checked={enablePagination}
+                        onChange={() =>
                             setAttributes({
-                                paginationBgColor: newValue,
+                                enablePagination: !enablePagination,
                             })
                         }
                     />
-
-                    {'numbered' === paginationType && (
+                    {enablePagination && (
                         <>
-                            <CustomColorControl
-                                className='is-list'
-                                colors={defaultColors}
-                                label={__('Pagination Active Text Color', 'changeloger')}
-                                colorValue={paginationActiveTextColor}
-                                onColorChange={(newValue) =>
-                                    setAttributes({
-                                        paginationActiveTextColor: newValue,
-                                    })
+                            <SelectControl
+                                label={__('Pagination Type', 'changeloger')}
+                                value={paginationType}
+                                options={[
+                                    {label: 'Load More', value: 'load-more'},
+                                    {label: 'Numbered', value: 'numbered'},
+                                ]}
+                                onChange={(newValue) =>
+                                    setAttributes({paginationType: newValue})
                                 }
+                                __nextHasNoMarginBottom
                             />
-                            <CustomColorControl
-                                className='is-list'
-                                colors={defaultColors}
-                                label={__('Pagination Active Bg Color', 'changeloger')}
-                                colorValue={paginationActiveBgColor}
-                                onColorChange={(newValue) =>
-                                    setAttributes({
-                                        paginationActiveBgColor: newValue,
-                                    })
+
+                            <TextControl
+                                label={__('Per Page', 'changeloger')}
+                                value={perPage.toString()}
+                                type="number"
+                                onChange={(newValue) =>
+                                    setAttributes({perPage: Number(newValue)})
                                 }
                             />
                         </>
                     )}
-
-
                 </PanelBody>
-            )}
-        </InspectorControls>
+
+            </InspectorControls>
+
+            <InspectorControls group='styles'>
+
+                <PanelBody
+                    title={__('Log Tags', 'changeloger')}
+                    initialOpen={false}
+                >
+                    <LogTypeColors
+                        changelog={parsedChangelog}
+                        colors={defaultColors}
+                        value={customLogTypeColors}
+                        onChange={(newCustomLogTypeColors) => {
+                            setAttributes({
+                                customLogTypeColors: newCustomLogTypeColors,
+                            });
+                        }}
+                    />
+                </PanelBody>
+
+                {enablePagination && (
+                    <PanelBody
+                        title={__('Pagination', 'changeloger')}
+                        initialOpen={false}
+                    >
+
+                        <CustomColorControl
+                            className='is-list is-first'
+                            colors={defaultColors}
+                            label={__('Pagination Text Color', 'changeloger')}
+                            colorValue={paginationTextColor}
+                            onColorChange={(newValue) =>
+                                setAttributes({
+                                    paginationTextColor: newValue,
+                                })
+                            }
+                        />
+                        <CustomColorControl
+                            className='is-list'
+                            colors={defaultColors}
+                            label={__('Pagination Bg Color', 'changeloger')}
+                            colorValue={paginationBgColor}
+                            onColorChange={(newValue) =>
+                                setAttributes({
+                                    paginationBgColor: newValue,
+                                })
+                            }
+                        />
+
+                        {'numbered' === paginationType && (
+                            <>
+                                <CustomColorControl
+                                    className='is-list'
+                                    colors={defaultColors}
+                                    label={__('Pagination Active Text Color', 'changeloger')}
+                                    colorValue={paginationActiveTextColor}
+                                    onColorChange={(newValue) =>
+                                        setAttributes({
+                                            paginationActiveTextColor: newValue,
+                                        })
+                                    }
+                                />
+                                <CustomColorControl
+                                    className='is-list'
+                                    colors={defaultColors}
+                                    label={__('Pagination Active Bg Color', 'changeloger')}
+                                    colorValue={paginationActiveBgColor}
+                                    onColorChange={(newValue) =>
+                                        setAttributes({
+                                            paginationActiveBgColor: newValue,
+                                        })
+                                    }
+                                />
+                            </>
+                        )}
+                        <ContrastChecker
+                            backgroundColor={paginationBgColor}
+                            textColor={paginationTextColor}
+                        />
+
+
+                    </PanelBody>
+                )}
+            </InspectorControls>
+        </>
     );
 }
 
