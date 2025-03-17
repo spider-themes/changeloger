@@ -218,6 +218,42 @@
     display: none;
   }
 }
+.doc_rightsidebar .pageSideSection.hasVersionTree .changeloger-version-list-container {
+  flex: 0.32;
+}
+.doc_rightsidebar .pageSideSection.hasVersionTree .changeloger-version-list-container .version-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #9daab6;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+.doc_rightsidebar .pageSideSection.hasVersionTree .changeloger-version-list-container ul {
+  list-style-type: none !important;
+  margin-bottom: 0 !important;
+  gap: 5px;
+  padding-left: 0;
+}
+.doc_rightsidebar .pageSideSection.hasVersionTree .changeloger-version-list-container ul li {
+  position: relative;
+}
+.doc_rightsidebar .pageSideSection.hasVersionTree .changeloger-version-list-container ul li a {
+  text-decoration: none;
+  color: #677681;
+  cursor: pointer;
+  line-height: 22px;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 6px 0;
+}
+.doc_rightsidebar .pageSideSection.hasVersionTree .changeloger-version-list-container ul li .changeloger-active::before {
+  left: -25px;
+}
+
+.ezd-container .doc_rightsidebar .pageSideSection.hasVersionTree .changeloger-version-list-container ul li .changeloger-active::before {
+  left: -20px;
+}
+
 .changeloger-container .changelog-wrapper .changeloger-version-list-container {
   position: sticky;
   top: 50px;
