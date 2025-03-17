@@ -311,7 +311,7 @@ class ChangelogerBlock {
                         section.getAttribute('id') +
                         '"]'
                     );
-                    currentAnchor.classList.remove('changeloger-active');
+                    currentAnchor?.classList.remove('changeloger-active');
                 }
             });
         };
