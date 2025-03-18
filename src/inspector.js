@@ -36,6 +36,8 @@ function Inspector(props) {
         paginationTextColor,
         paginationActiveBgColor,
         paginationActiveTextColor,
+        paginationHoverBgColor,
+        paginationHoverTextColor
     } = attributes;
     const positions = [
         {
@@ -159,7 +161,7 @@ function Inspector(props) {
                         <CustomColorControl
                             className='is-list is-first'
                             colors={defaultColors}
-                            label={__('Pagination Text Color', 'changeloger')}
+                            label={__('Text Color', 'changeloger')}
                             colorValue={paginationTextColor}
                             onColorChange={(newValue) =>
                                 setAttributes({
@@ -170,11 +172,34 @@ function Inspector(props) {
                         <CustomColorControl
                             className='is-list'
                             colors={defaultColors}
-                            label={__('Pagination Bg Color', 'changeloger')}
+                            label={__('Bg Color', 'changeloger')}
                             colorValue={paginationBgColor}
                             onColorChange={(newValue) =>
                                 setAttributes({
                                     paginationBgColor: newValue,
+                                })
+                            }
+                        />
+
+                        <CustomColorControl
+                            className='is-list'
+                            colors={defaultColors}
+                            label={__('Text Hover Color', 'changeloger')}
+                            colorValue={paginationHoverTextColor}
+                            onColorChange={(newValue) =>
+                                setAttributes({
+                                    paginationHoverTextColor: newValue,
+                                })
+                            }
+                        />
+                        <CustomColorControl
+                            className='is-list'
+                            colors={defaultColors}
+                            label={__('Bg Hover Color', 'changeloger')}
+                            colorValue={paginationHoverBgColor}
+                            onColorChange={(newValue) =>
+                                setAttributes({
+                                    paginationHoverBgColor: newValue,
                                 })
                             }
                         />
@@ -184,7 +209,7 @@ function Inspector(props) {
                                 <CustomColorControl
                                     className='is-list'
                                     colors={defaultColors}
-                                    label={__('Pagination Active Text Color', 'changeloger')}
+                                    label={__('Active Text Color', 'changeloger')}
                                     colorValue={paginationActiveTextColor}
                                     onColorChange={(newValue) =>
                                         setAttributes({
@@ -195,7 +220,7 @@ function Inspector(props) {
                                 <CustomColorControl
                                     className='is-list'
                                     colors={defaultColors}
-                                    label={__('Pagination Active Bg Color', 'changeloger')}
+                                    label={__('Active Bg Color', 'changeloger')}
                                     colorValue={paginationActiveBgColor}
                                     onColorChange={(newValue) =>
                                         setAttributes({

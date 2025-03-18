@@ -8,6 +8,7 @@ import "./style.scss";
 import Edit from "./edit";
 import save from "./save";
 import metadata from "./block.json";
+import saveDep from "./deprecated";
 
 registerBlockType(metadata.name, {
 	icon: {
@@ -128,4 +129,75 @@ registerBlockType(metadata.name, {
 	 * @see ./save.js
 	 */
 	save,
+	deprecated: [
+		{
+			"attributes": {
+				"changelog": {
+					"type": "string",
+					"default": ""
+				},
+				"enablePagination": {
+					"type": "boolean",
+					"default": false
+				},
+				"paginationLoadMoreText": {
+					"type": "string",
+					"default": "Load More"
+				},
+				"perPage": {
+					"type": "number",
+					"default": 10
+				},
+				"paginationType": {
+					"type": "string",
+					"default": "load-more"
+				},
+				"showPlaceholder": {
+					"type": "boolean",
+					"default": true
+				},
+				"showTextArea": {
+					"type": "boolean",
+					"default": false
+				},
+				"paginationTextColor": {
+					"type": "string",
+					"default": "#ffffff"
+				},
+				"paginationBgColor": {
+					"type": "string",
+					"default": "#000000"
+				},
+				"paginationActiveTextColor": {
+					"type": "string",
+					"default": "#000000"
+				},
+				"paginationActiveBgColor": {
+					"type": "string",
+					"default": "#f5f5f5"
+				},
+				"customLogTypeColors": {
+					"type": "object",
+					"default": {}
+				},
+				"customLinks": {
+					"type": "object",
+					"default": {}
+				},
+				"versionName": {
+					"type": "object",
+					"default": {}
+				},
+				"enableVersions": {
+					"type": "boolean",
+					"default": "true"
+				},
+				"versionsPosition": {
+					"type": "string",
+					"default": "right"
+				}
+			},
+			save: saveDep,
+		}
+	]
 });

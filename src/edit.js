@@ -36,6 +36,8 @@ function Edit( props ) {
 		paginationLoadMoreText,
 		paginationActiveBgColor,
 		paginationActiveTextColor,
+		paginationHoverBgColor,
+		paginationHoverTextColor
 	} = attributes;
 
 	const blockProps = useBlockProps( {
@@ -43,9 +45,10 @@ function Edit( props ) {
 		style: {
 			'--changeloger-pagination-text-color': paginationTextColor,
 			'--changeloger-pagination-bg-color': paginationBgColor,
-			'--changeloger-pagination-active-text-color':
-				paginationActiveTextColor,
+			'--changeloger-pagination-active-text-color':paginationActiveTextColor,
 			'--changeloger-pagination-active-bg-color': paginationActiveBgColor,
+			'--changeloger-pagination-hover-text-color':paginationHoverTextColor,
+			'--changeloger-pagination-hover-bg-color': paginationHoverBgColor,
 			'--changeloger-improvement-tag-bg-color': improvementTagColor,
 			'--changeloger-new-tag-bg-color': newTagColor,
 			'--changeloger-update-tag-bg-color': updateTagColor,

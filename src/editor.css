@@ -162,7 +162,8 @@ html {
   text-decoration: none;
 }
 .changeloger-container .changeloger-pagination-wrapper .page-numbers:hover {
-  background: #333;
+  color: var(--changeloger-pagination-hover-text-color);
+  background: var( --changeloger-pagination-hover-bg-color);
 }
 .changeloger-container .changeloger-pagination-wrapper .page-numbers.current {
   color: var(--changeloger-pagination-active-text-color);

@@ -414,6 +414,66 @@ function VersionsTree(props) {
 
 /***/ }),
 
+/***/ "./src/deprecated.js":
+/*!***************************!*\
+  !*** ./src/deprecated.js ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./parser */ "./src/parser.js");
+
+
+function saveDep(props) {
+  const {
+    improvementTagColor,
+    newTagColor,
+    updateTagColor,
+    fixedTagColor,
+    tweakedTagColor,
+    paginationTextColor,
+    paginationBgColor,
+    paginationActiveTextColor,
+    paginationActiveBgColor,
+    paginationHoverTextColor,
+    paginationHoverBgColor
+  } = props.attributes;
+  const blockProps = _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.useBlockProps.save({
+    className: 'changeloger-container',
+    style: {
+      '--changeloger-pagination-text-color': paginationTextColor,
+      '--changeloger-pagination-bg-color': paginationBgColor,
+      '--changeloger-pagination-active-text-color': paginationActiveTextColor,
+      '--changeloger-pagination-active-bg-color': paginationActiveBgColor,
+      '--changeloger-improvement-tag-bg-color': improvementTagColor,
+      '--changeloger-new-tag-bg-color': newTagColor,
+      '--changeloger-update-tag-bg-color': updateTagColor,
+      '--changeloger-fixed-tag-bg-color': fixedTagColor,
+      '--changeloger-tweaked-tag-bg-color': tweakedTagColor
+    }
+  });
+  const parser = new _parser__WEBPACK_IMPORTED_MODULE_1__["default"](props.attributes.changelog);
+  const parsedChangelog = parser.parse();
+  return JSON.stringify({
+    changelog: parsedChangelog,
+    props: blockProps,
+    version: parser.getVersions(),
+    paginationStyles: {
+      color: paginationTextColor,
+      'background-color': paginationBgColor
+    }
+  });
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (saveDep);
+
+/***/ }),
+
 /***/ "./src/edit.js":
 /*!*********************!*\
   !*** ./src/edit.js ***!
@@ -481,7 +541,9 @@ function Edit(props) {
     customLogTypeColors,
     paginationLoadMoreText,
     paginationActiveBgColor,
-    paginationActiveTextColor
+    paginationActiveTextColor,
+    paginationHoverBgColor,
+    paginationHoverTextColor
   } = attributes;
   const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.useBlockProps)({
     className: 'changeloger-container',
@@ -490,6 +552,8 @@ function Edit(props) {
       '--changeloger-pagination-bg-color': paginationBgColor,
       '--changeloger-pagination-active-text-color': paginationActiveTextColor,
       '--changeloger-pagination-active-bg-color': paginationActiveBgColor,
+      '--changeloger-pagination-hover-text-color': paginationHoverTextColor,
+      '--changeloger-pagination-hover-bg-color': paginationHoverBgColor,
       '--changeloger-improvement-tag-bg-color': improvementTagColor,
       '--changeloger-new-tag-bg-color': newTagColor,
       '--changeloger-update-tag-bg-color': updateTagColor,
@@ -650,6 +714,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./edit */ "./src/edit.js");
 /* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./save */ "./src/save.js");
 /* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./block.json */ "./src/block.json");
+/* harmony import */ var _deprecated__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./deprecated */ "./src/deprecated.js");
 
 
 
@@ -657,6 +722,7 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * Internal dependencies
  */
+
 
 
 
@@ -980,7 +1046,76 @@ __webpack_require__.r(__webpack_exports__);
   /**
    * @see ./save.js
    */
-  save: _save__WEBPACK_IMPORTED_MODULE_4__["default"]
+  save: _save__WEBPACK_IMPORTED_MODULE_4__["default"],
+  deprecated: [{
+    "attributes": {
+      "changelog": {
+        "type": "string",
+        "default": ""
+      },
+      "enablePagination": {
+        "type": "boolean",
+        "default": false
+      },
+      "paginationLoadMoreText": {
+        "type": "string",
+        "default": "Load More"
+      },
+      "perPage": {
+        "type": "number",
+        "default": 10
+      },
+      "paginationType": {
+        "type": "string",
+        "default": "load-more"
+      },
+      "showPlaceholder": {
+        "type": "boolean",
+        "default": true
+      },
+      "showTextArea": {
+        "type": "boolean",
+        "default": false
+      },
+      "paginationTextColor": {
+        "type": "string",
+        "default": "#ffffff"
+      },
+      "paginationBgColor": {
+        "type": "string",
+        "default": "#000000"
+      },
+      "paginationActiveTextColor": {
+        "type": "string",
+        "default": "#000000"
+      },
+      "paginationActiveBgColor": {
+        "type": "string",
+        "default": "#f5f5f5"
+      },
+      "customLogTypeColors": {
+        "type": "object",
+        "default": {}
+      },
+      "customLinks": {
+        "type": "object",
+        "default": {}
+      },
+      "versionName": {
+        "type": "object",
+        "default": {}
+      },
+      "enableVersions": {
+        "type": "boolean",
+        "default": "true"
+      },
+      "versionsPosition": {
+        "type": "string",
+        "default": "right"
+      }
+    },
+    save: _deprecated__WEBPACK_IMPORTED_MODULE_6__["default"]
+  }]
 });
 
 /***/ }),
@@ -1040,7 +1175,9 @@ function Inspector(props) {
     customLogTypeColors,
     paginationTextColor,
     paginationActiveBgColor,
-    paginationActiveTextColor
+    paginationActiveTextColor,
+    paginationHoverBgColor,
+    paginationHoverTextColor
   } = attributes;
   const positions = [{
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Left', 'changeloger'),
@@ -1125,7 +1262,7 @@ function Inspector(props) {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_custom_color_control__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: "is-list is-first",
     colors: defaultColors,
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Pagination Text Color', 'changeloger'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Text Color', 'changeloger'),
     colorValue: paginationTextColor,
     onColorChange: newValue => setAttributes({
       paginationTextColor: newValue
@@ -1133,15 +1270,31 @@ function Inspector(props) {
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_custom_color_control__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: "is-list",
     colors: defaultColors,
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Pagination Bg Color', 'changeloger'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bg Color', 'changeloger'),
     colorValue: paginationBgColor,
     onColorChange: newValue => setAttributes({
       paginationBgColor: newValue
     })
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_custom_color_control__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    className: "is-list",
+    colors: defaultColors,
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Text Hover Color', 'changeloger'),
+    colorValue: paginationHoverTextColor,
+    onColorChange: newValue => setAttributes({
+      paginationHoverTextColor: newValue
+    })
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_custom_color_control__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    className: "is-list",
+    colors: defaultColors,
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bg Hover Color', 'changeloger'),
+    colorValue: paginationHoverBgColor,
+    onColorChange: newValue => setAttributes({
+      paginationHoverBgColor: newValue
+    })
   }), 'numbered' === paginationType && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_custom_color_control__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: "is-list",
     colors: defaultColors,
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Pagination Active Text Color', 'changeloger'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Active Text Color', 'changeloger'),
     colorValue: paginationActiveTextColor,
     onColorChange: newValue => setAttributes({
       paginationActiveTextColor: newValue
@@ -1149,7 +1302,7 @@ function Inspector(props) {
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_custom_color_control__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: "is-list",
     colors: defaultColors,
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Pagination Active Bg Color', 'changeloger'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Active Bg Color', 'changeloger'),
     colorValue: paginationActiveBgColor,
     onColorChange: newValue => setAttributes({
       paginationActiveBgColor: newValue
@@ -1438,7 +1591,9 @@ function save(props) {
     paginationTextColor,
     paginationBgColor,
     paginationActiveTextColor,
-    paginationActiveBgColor
+    paginationActiveBgColor,
+    paginationHoverTextColor,
+    paginationHoverBgColor
   } = props.attributes;
   const blockProps = _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.useBlockProps.save({
     className: 'changeloger-container',
@@ -1447,6 +1602,8 @@ function save(props) {
       '--changeloger-pagination-bg-color': paginationBgColor,
       '--changeloger-pagination-active-text-color': paginationActiveTextColor,
       '--changeloger-pagination-active-bg-color': paginationActiveBgColor,
+      '--changeloger-pagination-hover-text-color': paginationHoverTextColor,
+      '--changeloger-pagination-hover-bg-color': paginationHoverBgColor,
       '--changeloger-improvement-tag-bg-color': improvementTagColor,
       '--changeloger-new-tag-bg-color': newTagColor,
       '--changeloger-update-tag-bg-color': updateTagColor,
@@ -1671,7 +1828,7 @@ module.exports = window["wp"]["primitives"];
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"block/changeloger","version":"0.1.0","title":"Changeloger","category":"widgets","description":"Transform plain text changelogs into visually stunning representations.","attributes":{"changelog":{"type":"string","default":""},"enablePagination":{"type":"boolean","default":false},"paginationLoadMoreText":{"type":"string","default":"Load More"},"perPage":{"type":"number","default":10},"paginationType":{"type":"string","default":"load-more"},"showPlaceholder":{"type":"boolean","default":true},"showTextArea":{"type":"boolean","default":false},"paginationTextColor":{"type":"string","default":"#ffffff"},"paginationBgColor":{"type":"string","default":"#000000"},"paginationActiveTextColor":{"type":"string","default":"#000000"},"paginationActiveBgColor":{"type":"string","default":"#f5f5f5"},"customLogTypeColors":{"type":"object","default":{}},"customLinks":{"type":"object","default":{}},"versionName":{"type":"object","default":{}},"enableVersions":{"type":"boolean","default":"true"},"versionsPosition":{"type":"string","default":"right"}},"supports":{"html":false,"align":["wide","full"]},"textdomain":"changeloger","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":["changeloger"],"viewScript":"changeloger-frontend"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"block/changeloger","version":"0.1.0","title":"Changeloger","category":"widgets","description":"Transform plain text changelogs into visually stunning representations.","attributes":{"changelog":{"type":"string","default":""},"enablePagination":{"type":"boolean","default":false},"paginationLoadMoreText":{"type":"string","default":"Load More"},"perPage":{"type":"number","default":10},"paginationType":{"type":"string","default":"load-more"},"showPlaceholder":{"type":"boolean","default":true},"showTextArea":{"type":"boolean","default":false},"paginationTextColor":{"type":"string","default":"#ffffff"},"paginationBgColor":{"type":"string","default":"#000000"},"paginationActiveTextColor":{"type":"string","default":"#000000"},"paginationActiveBgColor":{"type":"string","default":"#f5f5f5"},"paginationHoverTextColor":{"type":"string","default":"#ffffff"},"paginationHoverBgColor":{"type":"string","default":"#333333"},"customLogTypeColors":{"type":"object","default":{}},"customLinks":{"type":"object","default":{}},"versionName":{"type":"object","default":{}},"enableVersions":{"type":"boolean","default":"true"},"versionsPosition":{"type":"string","default":"right"}},"supports":{"html":false,"align":["wide","full"]},"textdomain":"changeloger","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":["changeloger"],"viewScript":"changeloger-frontend"}');
 
 /***/ })
 

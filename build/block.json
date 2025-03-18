@@ -51,6 +51,14 @@
       "type": "string",
       "default": "#f5f5f5"
     },
+    "paginationHoverTextColor": {
+      "type": "string",
+      "default": "#ffffff"
+    },
+    "paginationHoverBgColor": {
+      "type": "string",
+      "default": "#333333"
+    },
     "customLogTypeColors": {
       "type": "object",
       "default": {}
