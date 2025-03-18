@@ -1,9 +1,9 @@
 === Changeloger - Release Notes & Changelog Manager ===
 Contributors: mdjwel, spiderdevs
 Tags: changelogs, changelog, release, version, history
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 Requires at least: 6.0
-Tested up to: 6.4.2
+Tested up to: 6.7.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -89,12 +89,18 @@ Absolutely! While Changeloger is ideal for software updates, it can be used for 
 
 == Changelog ==
 
-= 1.0.0 =
+= 1.0.1 (18 March 2025) =
+New: Added color control for pagination button on hover
+New: Added an option for Loading sample data (you can see the changeloer frontend view with sample data if you want)
+New: Integrate with EazyDocs
+Tweaked: Improved Color control
+
+= 1.0.0 (Oct 11 2024) =
 Tweaked: Now the Date and Version format will detect more intelligently.
 Tweaked: Anchor tag support in the changelog item content.
 Tweaked: Ignore empty line in the changelog content. Unwanted empty line will be removed/skipped automatically.
 Tweaked: Design was breaking in the block editor, now fixed.
 New: Regex condition added to find Markdown-style links and convert them to HTML anchor tags in the changelog content.
 
-= 0.1.0 =
+= 0.1.0 (Dec 9 2023) =
 * Initial release of Changeloger plugin.
