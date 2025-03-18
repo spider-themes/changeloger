@@ -1,5 +1,4 @@
-import {useState} from '@wordpress/element';
-import classnames from 'classnames';
+
 import {
     Button,
     ColorIndicator,
@@ -12,7 +11,8 @@ import {
 } from '@wordpress/block-editor';
 
 const CustomColorControl = ({
-                                label, colorValue,
+                                label,
+                                colorValue,
                                 onColorChange,
                                 colors = [],
                                 className
@@ -38,7 +38,7 @@ const CustomColorControl = ({
                     aria-expanded={isOpen}
                 >
                     <ColorIndicator
-                        colorValue={colorValue ?? gradientValue}
+                        colorValue={colorValue}
                     />
 
                     {label}
@@ -49,8 +49,6 @@ const CustomColorControl = ({
                     colors={colors}
                     colorValue={colorValue}
                     onColorChange={onColorChange}
-                    // gradientValue={ gradientValue }
-                    // onGradientChange={ onGradientChange }
                 />
             )}
         />
