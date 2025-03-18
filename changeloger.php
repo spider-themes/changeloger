@@ -216,7 +216,7 @@ function changeloger_render( $attributes, $content, $instance ) {
             <?php if ( $is_left ) { ?>
                 <div class="changeloger-version-list-container changeloger-version-list-position-left">
                     <h6 class="version-title"><?php esc_html_e('Version', 'changeloger'); ?></h6>
-                    <?php echo changeloger_version_tree( $data['version'], $versioned_changelog ) ?>
+                    <?php changeloger_version_tree( $data['version'], $versioned_changelog ) ?>
                 </div>
             <?php } ?>
 
@@ -297,7 +297,7 @@ function changeloger_render( $attributes, $content, $instance ) {
             <?php if ( $is_right ) { ?>
                 <div class="changeloger-version-list-container changeloger-version-list-position-right">
                     <h6 class="version-title"><?php esc_html_e('Version', 'changeloger'); ?></h6>
-                    <?php echo changeloger_version_tree( $data['version'], $versioned_changelog ) ?>
+                    <?php changeloger_version_tree( $data['version'], $versioned_changelog ) ?>
                 </div>
             <?php } ?>
         </div>
