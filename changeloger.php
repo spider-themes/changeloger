@@ -17,6 +17,46 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
+
+if ( ! function_exists( 'cha_fs' ) ) {
+	// Create a helper function for easy SDK access.
+	function cha_fs() {
+		global $cha_fs;
+
+		if ( ! isset( $cha_fs ) ) {
+			// Activate multisite network integration.
+			if ( ! defined( 'WP_FS__PRODUCT_18274_MULTISITE' ) ) {
+				define( 'WP_FS__PRODUCT_18274_MULTISITE', true );
+			}
+
+			// Include Freemius SDK.
+			require_once dirname( __FILE__ ) . '/vendor/fs/start.php';
+			$cha_fs = fs_dynamic_init( array(
+				'id'                  => '18274',
+				'slug'                => 'changeloger',
+				'type'                => 'plugin',
+				'public_key'          => 'pk_776f0d8257af65cd6c37c2b92c97b',
+				'is_premium'          => false,
+				'has_addons'          => false,
+				'has_paid_plans'      => false,
+				'menu'                => array(
+					'first-path'     => 'plugins.php',
+					'contact'        => false,
+					'support'        => false,
+				),
+			) );
+		}
+
+		return $cha_fs;
+	}
+
+	// Init Freemius.
+	cha_fs();
+	// Signal that SDK was initiated.
+	do_action( 'cha_fs_loaded' );
+}
+
+
 /**
  * Load text domain
  */

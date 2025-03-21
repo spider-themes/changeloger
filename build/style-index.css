@@ -255,6 +255,102 @@
   left: -20px;
 }
 
+.changeloger-filter-popover-button {
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 5px 12px;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  color: #202020;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.changeloger-filter-popover-button:focus {
+  box-shadow: none;
+}
+.changeloger-filter-popover-button svg {
+  fill: transparent;
+}
+
+.changeloger-filter-wrapper {
+  z-index: 99;
+  display: flex;
+}
+.changeloger-filter-wrapper.align-center {
+  justify-content: center;
+}
+.changeloger-filter-wrapper.align-left {
+  justify-content: left;
+}
+.changeloger-filter-wrapper.align-right {
+  justify-content: right;
+}
+.changeloger-filter-wrapper .components-button {
+  box-shadow: none !important;
+}
+
+.changeloger-filter-popover {
+  will-change: inherit;
+}
+.changeloger-filter-popover .components-button {
+  box-shadow: none !important;
+}
+.changeloger-filter-popover .components-popover__content {
+  width: 300px;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  padding-top: 8px;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1019607843);
+}
+.changeloger-filter-popover .drop-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #d9d9d9;
+  flex-direction: row;
+  padding: 0 8px 8px 16px;
+  position: sticky;
+}
+.changeloger-filter-popover .drop-title .title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+.changeloger-filter-popover .drop-body {
+  padding: 16px;
+}
+.changeloger-filter-popover .drop-body .title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+.changeloger-filter-popover .filter-button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.changeloger-filter-popover .filter-button-group button {
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 3px 8px;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  color: #202020;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+.changeloger-filter-popover .filter-button-group button.active {
+  background-color: #fafbff;
+  border-color: #525df9;
+  color: #525df9;
+}
+
 .changeloger-container .changelog-wrapper .changeloger-version-list-container {
   position: sticky;
   top: 50px;

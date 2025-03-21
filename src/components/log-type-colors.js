@@ -1,16 +1,8 @@
 /**
  * WordPress Dependencies
  */
-import classnames from 'classnames';
-import {
-    Button,
-    ColorIndicator,
-    Dropdown
-} from '@wordpress/components';
+
 import {get} from 'lodash';
-import {
-    __experimentalColorGradientControl as ColorGradientControl
-} from '@wordpress/block-editor';
 import CustomColorControl from "./custom-color-control";
 
 function LogTypeColors(props) {
@@ -36,7 +28,7 @@ function LogTypeColors(props) {
 
     return categories.map((category, index) => {
         const clrValue = get(props.value, category.toLowerCase(), '');
-// const onColorChange = get(props.onChange)
+
         return (
             <>
 

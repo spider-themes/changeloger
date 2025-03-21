@@ -8,6 +8,7 @@ import {InspectorControls,ContrastChecker} from '@wordpress/block-editor';
 import {
     __experimentalToggleGroupControl as ToggleGroupControl,
     __experimentalToggleGroupControlOption as ToggleGroupControlOption,
+    __experimentalToggleGroupControlOptionIcon as ToggleGroupControlOptionIcon,
 } from '@wordpress/components';
 import {
     PanelBody,
@@ -37,14 +38,33 @@ function Inspector(props) {
         paginationActiveBgColor,
         paginationActiveTextColor,
         paginationHoverBgColor,
-        paginationHoverTextColor
+        paginationHoverTextColor,
+        enableFilter,
+        filterPosition
     } = attributes;
-    const positions = [
+    const versionPositions = [
         {
             label: __('Left', 'changeloger'),
             value: 'left',
         },
         {
+            label: __('Right', 'changeloger'),
+            value: 'right',
+        },
+    ];
+    const filterPositions = [
+        {
+            icon:'editor-alignleft',
+            label: __('Left', 'changeloger'),
+            value: 'left',
+        },
+        {
+            icon:'editor-aligncenter',
+            label: __('Left', 'changeloger'),
+            value: 'center',
+        },
+        {
+            icon:'editor-alignright',
             label: __('Right', 'changeloger'),
             value: 'right',
         },
@@ -60,7 +80,6 @@ function Inspector(props) {
 
     const parser = new ChangelogParser(changelog);
     const parsedChangelog = parser.parse();
-
     return (
         <>
             <InspectorControls>
@@ -80,7 +99,7 @@ function Inspector(props) {
                             value={versionsPosition}
                             label={__('Versions Position', 'changeloger')}
                         >
-                            {positions.map((position) => {
+                            {versionPositions.map((position) => {
                                 return (
                                     <ToggleGroupControlOption
                                         value={position.value}
@@ -129,6 +148,39 @@ function Inspector(props) {
                                 }
                             />
                         </>
+                    )}
+
+
+                    <ToggleControl
+                        label={__('Filter', 'changeloger')}
+                        checked={enableFilter}
+                        onChange={() =>
+                            setAttributes({
+                                enableFilter: !enableFilter,
+                            })
+                        }
+                    />
+                    {enableFilter && (
+                        <ToggleGroupControl
+                            isBlock
+                            value={filterPosition}
+                            label={__('Filter Position', 'changeloger')}
+                        >
+                            {filterPositions.map((position) => {
+                                return (
+                                    <ToggleGroupControlOptionIcon
+                                        icon={position.icon}
+                                        value={position.value}
+                                        label={position.label}
+                                        onClick={() =>
+                                            setAttributes({
+                                                filterPosition: position.value,
+                                            })
+                                        }
+                                    />
+                                );
+                            })}
+                        </ToggleGroupControl>
                     )}
                 </PanelBody>
 
