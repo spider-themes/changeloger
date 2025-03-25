@@ -1,6 +1,4 @@
 import React from 'react';
-
-import {map} from 'lodash';
 import {__} from '@wordpress/i18n';
 
 import {useSelect} from '@wordpress/data';
@@ -14,8 +12,6 @@ import {
     PanelBody,
     TextControl,
     SelectControl,
-    BaseControl,
-    ColorPalette,
     ToggleControl,
 } from '@wordpress/components';
 
@@ -78,6 +74,11 @@ function Inspector(props) {
         };
     });
 
+    // Check if changeloger premium is true
+    const cha_premium = changeloger_local_object.licensing;
+    const is_disable = cha_premium ? '' : 'disabled';
+    const has_disabled_class = cha_premium ? '' : 'cha-pro-element';
+
     const parser = new ChangelogParser(changelog);
     const parsedChangelog = parser.parse();
     return (
@@ -118,13 +119,14 @@ function Inspector(props) {
                     <ToggleControl
                         label={__('Pagination', 'changeloger')}
                         checked={enablePagination}
+                        disabled={is_disable}
                         onChange={() =>
                             setAttributes({
                                 enablePagination: !enablePagination,
                             })
                         }
                     />
-                    {enablePagination && (
+                    {enablePagination && cha_premium && (
                         <>
                             <SelectControl
                                 label={__('Pagination Type', 'changeloger')}
@@ -154,13 +156,14 @@ function Inspector(props) {
                     <ToggleControl
                         label={__('Filter', 'changeloger')}
                         checked={enableFilter}
+                        disabled={is_disable}
                         onChange={() =>
                             setAttributes({
                                 enableFilter: !enableFilter,
                             })
                         }
                     />
-                    {enableFilter && (
+                    {enableFilter && cha_premium && (
                         <ToggleGroupControl
                             isBlock
                             value={filterPosition}
@@ -204,7 +207,7 @@ function Inspector(props) {
                     />
                 </PanelBody>
 
-                {enablePagination && (
+                {enablePagination && cha_premium && (
                     <PanelBody
                         title={__('Pagination', 'changeloger')}
                         initialOpen={false}

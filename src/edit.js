@@ -1,9 +1,9 @@
 import {__} from '@wordpress/i18n';
-import {has, get, isEmpty, filter, some, lowerCase} from 'lodash';
+import {has, get} from 'lodash';
 import {Button} from '@wordpress/components';
 import {useBlockProps, RichText} from '@wordpress/block-editor';
 import {plus} from '@wordpress/icons';
-
+import React from "react";
 import './editor.scss';
 import Inspector from './inspector';
 import CustomPlaceholder from './placeholder';
@@ -12,8 +12,6 @@ import ChangelogParser from './parser';
 import BlockControl from './block-control';
 import CustomLink from './components/custom-links';
 import VersionsTree from './components/versions-tree';
-import CustomColorControl from "./components/custom-color-control";
-import Filter from "./components/filter";
 import FilterButton from "./components/filter";
 import {useEffect} from "@wordpress/element";
 
@@ -42,7 +40,7 @@ function Edit(props) {
         paginationActiveTextColor,
         paginationHoverBgColor,
         paginationHoverTextColor,
-        filteredChangelog
+        enableFilter
     } = attributes;
 
     const blockProps = useBlockProps({
@@ -66,10 +64,6 @@ function Edit(props) {
     const parsedChangelog = parser.parse();
     const versions = parser.getVersions();
 
-    useEffect(() => {
-        setAttributes({ filteredChangelog: parsedChangelog });
-    }, []); // Runs only once on mount
-
 
     const isLeft = enableVersions && versionsPosition === 'left';
     const isRight = enableVersions && versionsPosition === 'right';
@@ -81,13 +75,13 @@ function Edit(props) {
     }
 
 
-
-
     return (
         <div {...blockProps}>
             {!showPlaceholder && !showTextArea && (
                 <>
-                  <FilterButton {...props} parsedChangelog={parsedChangelog} isEditor />
+                    {enableFilter &&
+                        <FilterButton {...props} parsedChangelog={parsedChangelog}/>
+                    }
                     <div className="changelog-wrapper">
                         {isLeft && (
                             <div className="changeloger-version-list-container changeloger-version-list-position-left">
@@ -97,7 +91,7 @@ function Edit(props) {
                         )}
                         <div className="changeloger-info-inner-wrapper">
                             <div className="changeloger-items">
-                                {filteredChangelog.map((item, index) => {
+                                {parsedChangelog.map((item, index) => {
                                     const {date, version, changes} = item;
 
                                     const currentLinks = get(
@@ -106,8 +100,10 @@ function Edit(props) {
                                         []
                                     );
 
+                                    const uniqueCategories = [...new Set(changes.map(item => item.category.toLowerCase()))];
+
                                     return (
-                                        <div className="changelog-info-item">
+                                        <div className="changelog-info-item" data-filter={uniqueCategories.join(" ")}>
                                             <div className="date">
                                                 <span>{date}</span>
 
@@ -145,6 +141,7 @@ function Edit(props) {
                                                         customLogTypeColors,
                                                         currentCategory
                                                     );
+
 
                                                     return (
                                                         <p>
@@ -239,9 +236,9 @@ function Edit(props) {
                     {enablePagination && (
                         <div className="changeloger-pagination-wrapper">
                             {'load-more' === paginationType && (
-                                <div class="wp-block-button">
+                                <div className="wp-block-button">
                                     <RichText
-                                        tagName="a"
+                                        tagName="button"
                                         style={{
                                             color: paginationTextColor,
                                             backgroundColor: paginationBgColor,
@@ -259,17 +256,11 @@ function Edit(props) {
                             )}
                             {'numbered' === paginationType && (
                                 <div className="changeloger-pagination-inner-wrapper">
-									<span className="changeloger-prev-button page-numbers">
-										« Previous
-									</span>
-                                    <span className="page-numbers current">
-										1
-									</span>
+									<span className="changeloger-prev-button page-navigator">« Previous</span>
+                                    <span className="page-numbers current">1</span>
                                     <span className="page-numbers">2</span>
                                     <span className="page-numbers">3</span>
-                                    <span className="changeloger-next-button page-numbers">
-										Next »
-									</span>
+                                    <span className="changeloger-next-button page-navigator">Next »</span>
                                 </div>
                             )}
                         </div>

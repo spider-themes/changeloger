@@ -152,20 +152,24 @@
   font-weight: 400;
   margin: 6px 0;
 }
+.changeloger-container .changelog-wrapper .changeloger-version-list-container ul li li a.changeloger-active::before {
+  display: none;
+}
 .changeloger-container .changeloger-pagination-wrapper {
   display: flex;
   justify-content: center;
   margin-top: 30px;
 }
-.changeloger-container .changeloger-pagination-wrapper .page-numbers {
+.changeloger-container .changeloger-pagination-wrapper .page-numbers, .changeloger-container .changeloger-pagination-wrapper .page-navigator {
   background: var(--changeloger-pagination-bg-color);
   color: var(--changeloger-pagination-text-color);
   padding: 8px 15px;
   margin-right: 10px;
   border-radius: 4px;
   text-decoration: none;
+  cursor: pointer;
 }
-.changeloger-container .changeloger-pagination-wrapper .page-numbers:hover {
+.changeloger-container .changeloger-pagination-wrapper .page-numbers:hover, .changeloger-container .changeloger-pagination-wrapper .page-navigator:hover {
   color: var(--changeloger-pagination-hover-text-color);
   background: var(--changeloger-pagination-hover-bg-color);
 }
@@ -266,6 +270,34 @@
   display: flex;
   align-items: center;
   gap: 7px;
+  position: relative;
+  z-index: 3;
+}
+.changeloger-filter-popover-button.active {
+  background: rgba(82, 93, 249, 0.15);
+  border-color: rgba(82, 93, 249, 0.15);
+  color: #525df9;
+}
+.changeloger-filter-popover-button.active .arrow-icon {
+  display: none !important;
+  visibility: hidden !important;
+}
+.changeloger-filter-popover-button.active .cross-icon {
+  display: inline-block;
+  visibility: visible;
+}
+.changeloger-filter-popover-button.show .arrow-icon {
+  transform: rotate(180deg);
+  display: inline-block;
+  visibility: visible;
+}
+.changeloger-filter-popover-button .arrow-icon {
+  transform: rotate(0);
+  transition: all 0.2s ease-in-out;
+}
+.changeloger-filter-popover-button .cross-icon {
+  display: none;
+  visibility: hidden;
 }
 .changeloger-filter-popover-button:focus {
   box-shadow: none;
@@ -275,24 +307,60 @@
 }
 
 .changeloger-filter-wrapper {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+}
+
+.changeloger-filter-alignment {
   z-index: 99;
   display: flex;
+  position: relative;
 }
-.changeloger-filter-wrapper.align-center {
+.changeloger-filter-alignment.align-center {
   justify-content: center;
 }
-.changeloger-filter-wrapper.align-left {
+.changeloger-filter-alignment.align-center .changeloger-filter-popover {
+  transform-origin: center;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50px) scale(0.5);
+}
+.changeloger-filter-alignment.align-left {
   justify-content: left;
 }
-.changeloger-filter-wrapper.align-right {
+.changeloger-filter-alignment.align-right {
   justify-content: right;
 }
-.changeloger-filter-wrapper .components-button {
+.changeloger-filter-alignment.align-right .changeloger-filter-popover {
+  left: inherit;
+  right: 0;
+  transform-origin: right;
+}
+.changeloger-filter-alignment .components-button {
   box-shadow: none !important;
 }
 
 .changeloger-filter-popover {
   will-change: inherit;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  z-index: 1;
+  width: 300px;
+  background: #fff;
+  box-shadow: 0 0 0 1px #ccc, 0 2px 3px rgba(0, 0, 0, 0.05), 0 4px 5px rgba(0, 0, 0, 0.04), 0 12px 12px rgba(0, 0, 0, 0.03), 0 16px 16px rgba(0, 0, 0, 0.02);
+  border-radius: 4px;
+  box-sizing: border-box;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-50px) scale(0.5);
+  transform-origin: left;
+  transition: all 0.2s ease-in-out;
+}
+.changeloger-filter-popover.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(4px) scale(1);
 }
 .changeloger-filter-popover .components-button {
   box-shadow: none !important;
@@ -303,7 +371,6 @@
   border: 1px solid #d9d9d9;
   border-radius: 10px;
   padding-top: 8px;
-  position: relative;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1019607843);
 }
 .changeloger-filter-popover .drop-title {
@@ -312,7 +379,7 @@
   align-items: center;
   border-bottom: 1px solid #d9d9d9;
   flex-direction: row;
-  padding: 0 8px 8px 16px;
+  padding: 8px 16px;
   position: sticky;
 }
 .changeloger-filter-popover .drop-title .title {

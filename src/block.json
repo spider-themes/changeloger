@@ -79,10 +79,6 @@
 			"type": "string",
 			"default": "right"
 		},
-		"filteredChangelog": {
-			"type": "array",
-			"default": []
-		},
 		"enableFilter": {
 			"type": "boolean",
 			"default": "false"
