@@ -1,12 +1,16 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "block/changeloger",
+	"name": "cha/changeloger",
 	"version": "0.1.0",
 	"title": "Changeloger",
 	"category": "widgets",
 	"description": "Transform plain text changelogs into visually stunning representations.",
 	"attributes": {
+		"uniqueId": {
+			"type": "string",
+			"default": ""
+		},
 		"changelog": {
 			"type": "string",
 			"default": ""

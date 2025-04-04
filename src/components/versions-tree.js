@@ -1,6 +1,7 @@
 import React from 'react';
 
 function VersionsTree(props) {
+    console.log(props)
     return (
         <ul
             className={
@@ -14,11 +15,12 @@ function VersionsTree(props) {
 
                 return (
                     <li key={version.version} className={props?.isChild ? "changeloger-version-list-main-item" : ""}>
-                        <a href={`#${version.version}`}>Version {version.version}</a>
+                        <a href={`#${props.uniqueId + '-' +version.version}`}>Version {version.version}</a>
                         {hasChildren ? (
                             <VersionsTree
                                 isChild
                                 versions={version?.children}
+                                uniqueId={props.uniqueId}
                             />
                         ) : null}
                     </li>

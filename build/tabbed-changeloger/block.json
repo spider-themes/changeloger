@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "cha/tabbed-changeloger",
+  "version": "0.1.0",
+  "title": "Tabbed Changeloger",
+  "category": "widgets",
+  "icon": "smiley",
+  "description": "Example block scaffolded with Create Block tool.",
+  "example": {},
+  "supports": {
+    "html": false
+  },
+  "textdomain": "tabbed-changeloger",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "tabbed-changeloger",
+  "viewScript": "tabbed-changeloger-frontend"
+}

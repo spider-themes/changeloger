@@ -4,13 +4,13 @@ import {useBlockProps, RichText} from '@wordpress/block-editor';
 import {Button} from '@wordpress/components';
 import React from "react";
 import ChangelogParser from './parser';
-import VersionsTree from "./components/versions-tree";
-import CustomLink from "./components/custom-links";
-import FilterButton from "./components/filter";
+import VersionsTree from "../components/versions-tree";
+import FilterButton from "../components/filter";
 import {plus} from "@wordpress/icons";
 
 function save(props) {
     const {
+        uniqueId,
         customLinks,
         newTagColor,
         versionName,
@@ -61,7 +61,7 @@ function save(props) {
     const cha_premium = changeloger_local_object.licensing;
 
     return (
-        <div {...blockProps}>
+        <div {...blockProps} id={uniqueId}>
             {enableFilter && cha_premium &&
                 <FilterButton {...props} parsedChangelog={parsedChangelog}/>
             }
@@ -86,7 +86,7 @@ function save(props) {
                             const uniqueCategories = [...new Set(changes.map(item => item.category.toLowerCase()))];
 
                             return (
-                                <div key={item.version} id={item.version} className="changelog-info-item"
+                                <div key={item.version} id={uniqueId + '-' + item.version} className="changelog-info-item"
                                      data-filter={uniqueCategories.join(" ")}>
                                     <div className="date">
                                         <span>{date}</span>
@@ -172,7 +172,7 @@ function save(props) {
                 {isRight && (
                     <div className="changeloger-version-list-container changeloger-version-list-position-right">
                         <h6 className="version-title">Versions</h6>
-                        <VersionsTree versions={versions}/>
+                        <VersionsTree versions={versions} uniqueId={uniqueId}/>
                     </div>
                 )}
             </div>

@@ -16,8 +16,8 @@ import {
 } from '@wordpress/components';
 
 import ChangelogParser from './parser';
-import LogTypeColors from './components/log-type-colors';
-import CustomColorControl from "./components/custom-color-control";
+import LogTypeColors from '../components/log-type-colors';
+import CustomColorControl from "../components/custom-color-control";
 
 function Inspector(props) {
     const {attributes, setAttributes} = props;

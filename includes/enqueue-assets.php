@@ -6,16 +6,34 @@ class Changeloger_Block_Assets {
 		add_action( 'enqueue_block_editor_assets', function () {
 			wp_register_style(
 				'changeloger',
-				plugins_url( '/', __FILE__ ) . 'build/style-index.css',
+				plugins_url( '/', __FILE__ ) . '../build/changeloger/style-index.css',
 				array(),
 				'initial'
 			);
+
+			wp_register_style(
+				'tabbed-changeloger',
+				plugins_url( '/', __FILE__ ) . '../build/tabbed-changeloger/style-index.css',
+				array(),
+				'initial'
+			);
+
 		} );
+
 		add_action( 'enqueue_block_assets', [ $this, 'external_libraries' ] );
 	}
 
 
 	public function external_libraries(): void {
+
+		wp_register_script(
+			'tabbed-changeloger-frontend',
+			plugins_url( '/', __FILE__ ) . '../script/tabbed-frontend.js',
+			array( 'jquery' ),
+			uniqid(),
+			true
+		);
+
 		wp_register_script(
 			'changeloger-frontend',
 			plugins_url( '/', __FILE__ ) . '../script/frontend.js',

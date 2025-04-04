@@ -25,18 +25,20 @@ jQuery(document).ready(function($) {
             $filterDropdown.toggleClass('show');
         });
 
-// Close dropdown if clicked outside
+        // Close dropdown if clicked outside
         $(document).on('click', function (event) {
             if (
                 !$filterDropdownButton.is(event.target) &&
                 !$filterDropdown.is(event.target) &&
-                $filterDropdown.has(event.target).length === 0
+                $filterDropdown.has(event.target).length === 0 &&
+                $filterDropdownButton.has(event.target).length === 0
             ) {
                 $filterDropdown.removeClass('show');
+                $filterDropdownButton.removeClass('show');
             }
         });
 
-// Apply filter
+        // Apply filter
         $filterButton.on('click', function () {
             let filterValue = $(this).data('filter');
 

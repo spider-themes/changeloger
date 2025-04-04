@@ -4,20 +4,20 @@ import {Button} from '@wordpress/components';
 import {useBlockProps, RichText} from '@wordpress/block-editor';
 import {plus} from '@wordpress/icons';
 import React from "react";
+import {useEffect} from "@wordpress/element";
 import './editor.scss';
 import Inspector from './inspector';
 import CustomPlaceholder from './placeholder';
-
 import ChangelogParser from './parser';
 import BlockControl from './block-control';
-import CustomLink from './components/custom-links';
-import VersionsTree from './components/versions-tree';
-import FilterButton from "./components/filter";
-import {useEffect} from "@wordpress/element";
+import CustomLink from '../components/custom-links';
+import VersionsTree from '../components/versions-tree';
+import FilterButton from "../components/filter";
 
 function Edit(props) {
     const {attributes, setAttributes} = props;
     const {
+        uniqueId,
         changelog,
         customLinks,
         newTagColor,
@@ -75,8 +75,19 @@ function Edit(props) {
     }
 
 
+    useEffect( () => {
+        if ( ! uniqueId ) {
+            // Generate a unique ID based on the current timestamp (in seconds) and a random string
+            const timestamp = Math.floor(Date.now() / 1000); // Current time in seconds
+            const randomString = Math.random().toString(36).substr(2, 6); // Random alphanumeric string of length 6
+            const generatedId = `cha-${timestamp}-${randomString}`;
+
+            setAttributes( { uniqueId: generatedId } );
+        }
+    }, [] );
+    console.log(uniqueId);
     return (
-        <div {...blockProps}>
+        <div {...blockProps} id={ uniqueId }>
             {!showPlaceholder && !showTextArea && (
                 <>
                     {enableFilter &&
@@ -209,7 +220,7 @@ function Edit(props) {
                                                                         ...currentLinks,
                                                                         {
                                                                             name: 'Link',
-                                                                            link: '#',
+                                                                            link: `${uniqueId}#`,
                                                                             icon: '',
                                                                         },
                                                                     ],
@@ -228,7 +239,7 @@ function Edit(props) {
                         {isRight && (
                             <div className="changeloger-version-list-container changeloger-version-list-position-right">
                                 <h6 className="version-title">Versions</h6>
-                                <VersionsTree versions={versions}/>
+                                <VersionsTree versions={versions} uniqueId={uniqueId}/>
                             </div>
                         )}
                     </div>
