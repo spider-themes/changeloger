@@ -4,13 +4,78 @@
 /**
  * The following styles get applied both on the front of your site
  * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
  */
-.wp-block-create-block-tabbed-changeloger {
-  background-color: #21759b;
-  color: #fff;
-  padding: 2px;
+.changeloger-tabs-frontend {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.changeloger-tabs-frontend .tabs-header {
+  display: flex;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  margin: 0;
+  padding: 0;
+}
+
+.changeloger-tabs-frontend .tab-button {
+  padding: 12px 20px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6c757d;
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+  position: relative;
+}
+
+.changeloger-tabs-frontend .tab-button:hover {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+.changeloger-tabs-frontend .tab-button.active {
+  background-color: #fff;
+  color: #007cba;
+  border-bottom-color: #007cba;
+}
+
+.changeloger-tabs-frontend .tabs-content {
+  padding: 0;
+}
+
+.changeloger-tabs-frontend .tab-panel {
+  padding: 24px;
+  background-color: #fff;
+  min-height: 200px;
+}
+
+.changeloger-tabs-frontend .tab-panel.hidden {
+  display: none;
+}
+
+.changeloger-tabs-frontend .tab-panel.active {
+  display: block;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .changeloger-tabs-frontend .tabs-header {
+    flex-wrap: wrap;
+  }
+  .changeloger-tabs-frontend .tab-button {
+    flex: 1;
+    text-align: center;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  .changeloger-tabs-frontend .tab-panel {
+    padding: 16px;
+  }
 }
 
 /*# sourceMappingURL=style-index.css.map*/

@@ -6,10 +6,29 @@
 	"title": "Tabbed Changeloger",
 	"category": "widgets",
 	"icon": "smiley",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "A tabbed interface for displaying multiple changelogs.",
 	"example": {},
+	"attributes": {
+		"activeTab": {
+			"type": "number",
+			"default": 0
+		},
+		"tabs": {
+			"type": "array",
+			"default": [
+				{
+					"title": "Tab 1",
+					"id": "tab-1"
+				}
+			]
+		}
+	},
 	"supports": {
 		"html": false
+	},
+	"providesContext": {
+		"cha/activeTab": "activeTab",
+		"cha/tabs": "tabs"
 	},
 	"textdomain": "tabbed-changeloger",
 	"editorScript": "file:./index.js",

@@ -4,7 +4,7 @@
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
-import { useBlockProps } from '@wordpress/block-editor';
+import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 
 /**
  * The save function defines the way in which the different attributes should
@@ -15,10 +15,31 @@ import { useBlockProps } from '@wordpress/block-editor';
  *
  * @return {Element} Element to render.
  */
-export default function save() {
+export default function save({ attributes }) {
+	const { activeTab, tabs } = attributes;
+
 	return (
-		<p { ...useBlockProps.save() }>
-			{ 'Tabbed Changeloger – hello from the saved content!' }
-		</p>
+		<div {...useBlockProps.save()}>
+			<div className="changeloger-tabs-frontend" data-active-tab={activeTab || 0}>
+				{/* Tab Navigation */}
+				<div className="tabs-header">
+					{tabs && tabs.map((tab, index) => (
+						<button
+							key={tab.id}
+							className={`tab-button ${index === (activeTab || 0) ? 'active' : ''}`}
+							data-tab-index={index}
+							type="button"
+						>
+							{tab.title}
+						</button>
+					))}
+				</div>
+
+				{/* Tab Content */}
+				<div className="tabs-content">
+					<InnerBlocks.Content />
+				</div>
+			</div>
+		</div>
 	);
 }

@@ -2,6 +2,68 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./node_modules/@wordpress/icons/build-module/library/plus.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@wordpress/icons/build-module/library/plus.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/primitives */ "@wordpress/primitives");
+/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__);
+
+
+/**
+ * WordPress dependencies
+ */
+
+const plus = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__.SVG, {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 24 24"
+}, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__.Path, {
+  d: "M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z"
+}));
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (plus);
+//# sourceMappingURL=plus.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@wordpress/icons/build-module/library/trash.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@wordpress/icons/build-module/library/trash.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/primitives */ "@wordpress/primitives");
+/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__);
+
+
+/**
+ * WordPress dependencies
+ */
+
+const trash = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__.SVG, {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 24 24"
+}, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__.Path, {
+  d: "M20 5h-5.7c0-1.3-1-2.3-2.3-2.3S9.7 3.7 9.7 5H4v2h1.5v.3l1.7 11.1c.1 1 1 1.7 2 1.7h5.7c1 0 1.8-.7 2-1.7l1.7-11.1V7H20V5zm-3.2 2l-1.7 11.1c0 .1-.1.2-.3.2H9.1c-.1 0-.3-.1-.3-.2L7.2 7h9.6z"
+}));
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (trash);
+//# sourceMappingURL=trash.js.map
+
+/***/ }),
+
 /***/ "./src/tabbed-changeloger/edit.js":
 /*!****************************************!*\
   !*** ./src/tabbed-changeloger/edit.js ***!
@@ -18,8 +80,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
-/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/trash.js");
+/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/plus.js");
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./editor.scss */ "./src/tabbed-changeloger/editor.scss");
+
 
 
 
@@ -31,68 +95,134 @@ function Edit({
   clientId
 }) {
   const {
-    activeTab
+    activeTab,
+    tabs
   } = attributes;
   const [selectedTab, setSelectedTab] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(activeTab || 0);
-  const [tabItems, setTabItems] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
 
-  // Ensure at least one tab exists when the component mounts
+  // Initialize with default tab if none exist
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    const blocks = wp.data.select('core/block-editor').getBlocksByClientId(clientId)[0]?.innerBlocks || [];
-
-    // Insert a default tab if no tabs exist
-    if (blocks.length === 0) {
-      const defaultTab = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_3__.createBlock)('cha/changeloger', {
-        title: 'Tab 1'
+    if (!tabs || tabs.length === 0) {
+      setAttributes({
+        tabs: [{
+          title: 'Tab 1',
+          id: 'tab-1'
+        }]
       });
-      wp.data.dispatch('core/block-editor').insertBlock(defaultTab, 0, clientId);
-    } else {
-      setTabItems(blocks);
     }
-  }, [clientId]); // This effect only runs once on mount
+  }, []);
 
-  // Add a new tab when the button is clicked
-  const addTab = () => {
-    const newTab = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_3__.createBlock)('cha/changeloger', {
-      title: `Tab ${tabItems.length + 1}`
+  // Update active tab when selectedTab changes
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    setAttributes({
+      activeTab: selectedTab
     });
-    wp.data.dispatch('core/block-editor').insertBlock(newTab, tabItems.length, clientId);
+  }, [selectedTab]);
+
+  // Add a new tab
+  const addTab = () => {
+    const newTabIndex = tabs.length + 1;
+    const newTab = {
+      title: `Tab ${newTabIndex}`,
+      id: `tab-${newTabIndex}-${Date.now()}`
+    };
+    const updatedTabs = [...tabs, newTab];
+    setAttributes({
+      tabs: updatedTabs
+    });
+
+    // Switch to the new tab
+    setSelectedTab(updatedTabs.length - 1);
   };
 
-  // Update tabItems after a new tab is added
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    const blocks = wp.data.select('core/block-editor').getBlocksByClientId(clientId)[0]?.innerBlocks || [];
-    setTabItems(blocks);
-  }, [clientId, tabItems.length]); // This will update tabItems every time the number of inner blocks changes
+  // Remove a tab
+  const removeTab = (index, event) => {
+    event.stopPropagation(); // Prevent tab click when removing
+    if (tabs.length <= 1) return; // Keep at least one tab
 
-  // Track the selected tab and update activeTab
+    const updatedTabs = tabs.filter((_, i) => i !== index);
+    setAttributes({
+      tabs: updatedTabs
+    });
+
+    // Adjust selected tab if necessary
+    if (selectedTab >= updatedTabs.length) {
+      setSelectedTab(updatedTabs.length - 1);
+    } else if (selectedTab === index) {
+      setSelectedTab(0);
+    }
+  };
+
+  // Update tab title
+  const updateTabTitle = (index, newTitle) => {
+    const updatedTabs = [...tabs];
+    updatedTabs[index] = {
+      ...updatedTabs[index],
+      title: newTitle
+    };
+    setAttributes({
+      tabs: updatedTabs
+    });
+  };
+
+  // Handle tab click
   const handleTabClick = index => {
     setSelectedTab(index);
-    setAttributes({
-      activeTab: index
-    }); // Track active tab in attributes
   };
 
+  // Create template array - one changeloger block for each tab
+  const template = tabs.map(() => ['cha/changeloger', {}]);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps)()
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changeloger-tabs-editor"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "tabs-header"
-  }, tabItems.map((tab, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
-    key: index,
-    className: selectedTab === index ? 'active' : '',
-    onClick: () => handleTabClick(index)
-  }, tab.attributes?.title || `Tab ${index + 1}`)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
-    className: "add-tab",
-    onClick: addTab
-  }, "+ Add Tab")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, tabs.map((tab, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    key: tab.id,
+    className: "tab-item"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    className: `tab-button ${selectedTab === index ? 'active' : ''}`,
+    onClick: () => handleTabClick(index),
+    type: "button"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "tab-title"
+  }, tab.title), tabs.length > 1 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_4__["default"],
+    onClick: event => removeTab(index, event),
+    className: "remove-tab-button-inline",
+    isDestructive: true,
+    size: "small",
+    title: "Remove Tab"
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "tab-controls"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
+    value: tab.title,
+    onChange: value => updateTabTitle(index, value),
+    className: "tab-title-input",
+    placeholder: "Tab Title"
+  })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__["default"],
+    onClick: addTab,
+    className: "add-tab-button",
+    variant: "secondary",
+    size: "small",
+    title: "Add New Tab"
+  }, "Add Tab")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "tabs-content"
-  }, tabItems.map((tab, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    key: index,
-    className: `tab-panel ${selectedTab === index ? 'active' : 'hidden'}`
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks, {
     allowedBlocks: ['cha/changeloger'],
-    template: [['cha/changeloger', {}]]
-  })))));
+    template: template,
+    templateLock: "all",
+    renderAppender: false
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("style", null, `
+						.changeloger-tabs-editor .tabs-content .wp-block-cha-changeloger {
+							display: none;
+						}
+						.changeloger-tabs-editor .tabs-content .wp-block-cha-changeloger:nth-child(${selectedTab + 1}) {
+							display: block;
+						}
+					`)));
 }
 
 /***/ }),
@@ -496,11 +626,41 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @return {Element} Element to render.
  */
-function save() {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+function save({
+  attributes
+}) {
+  const {
+    activeTab,
+    tabs
+  } = attributes;
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ..._wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps.save()
-  }, 'Tabbed Changeloger – hello from the saved content!');
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changeloger-tabs-frontend",
+    "data-active-tab": activeTab || 0
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "tabs-header"
+  }, tabs && tabs.map((tab, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    key: tab.id,
+    className: `tab-button ${index === (activeTab || 0) ? 'active' : ''}`,
+    "data-tab-index": index,
+    type: "button"
+  }, tab.title))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "tabs-content"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks.Content, null))));
 }
+
+/***/ }),
+
+/***/ "./src/tabbed-changeloger/editor.scss":
+/*!********************************************!*\
+  !*** ./src/tabbed-changeloger/editor.scss ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
 
 /***/ }),
 
@@ -556,13 +716,23 @@ module.exports = window["wp"]["element"];
 
 /***/ }),
 
+/***/ "@wordpress/primitives":
+/*!************************************!*\
+  !*** external ["wp","primitives"] ***!
+  \************************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["primitives"];
+
+/***/ }),
+
 /***/ "./src/tabbed-changeloger/block.json":
 /*!*******************************************!*\
   !*** ./src/tabbed-changeloger/block.json ***!
   \*******************************************/
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"cha/tabbed-changeloger","version":"0.1.0","title":"Tabbed Changeloger","category":"widgets","icon":"smiley","description":"Example block scaffolded with Create Block tool.","example":{},"supports":{"html":false},"textdomain":"tabbed-changeloger","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"tabbed-changeloger","viewScript":"tabbed-changeloger-frontend"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"cha/tabbed-changeloger","version":"0.1.0","title":"Tabbed Changeloger","category":"widgets","icon":"smiley","description":"A tabbed interface for displaying multiple changelogs.","example":{},"attributes":{"activeTab":{"type":"number","default":0},"tabs":{"type":"array","default":[{"title":"Tab 1","id":"tab-1"}]}},"supports":{"html":false},"providesContext":{"cha/activeTab":"activeTab","cha/tabs":"tabs"},"textdomain":"tabbed-changeloger","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"tabbed-changeloger","viewScript":"tabbed-changeloger-frontend"}');
 
 /***/ })
 
