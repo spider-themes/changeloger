@@ -16,13 +16,25 @@ import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
  * @return {Element} Element to render.
  */
 export default function save({ attributes }) {
-	const { activeTab, tabs } = attributes;
+	const { activeTab, tabs, tabAlignment } = attributes;
+
+	// Get alignment class
+	const getAlignmentClass = () => {
+		switch (tabAlignment) {
+			case 'center':
+				return 'center-aligned';
+			case 'right':
+				return 'right-aligned';
+			default:
+				return 'left-aligned';
+		}
+	};
 
 	return (
 		<div {...useBlockProps.save()}>
 			<div className="changeloger-tabs-frontend" data-active-tab={activeTab || 0}>
 				{/* Tab Navigation */}
-				<div className="tabs-header">
+				<div className={`tabs-header ${getAlignmentClass()}`}>
 					{tabs && tabs.map((tab, index) => (
 						<button
 							key={tab.id}

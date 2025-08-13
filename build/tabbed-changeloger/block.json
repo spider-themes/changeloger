@@ -21,6 +21,10 @@
           "id": "tab-1"
         }
       ]
+    },
+    "tabAlignment": {
+      "type": "string",
+      "default": "left"
     }
   },
   "supports": {
