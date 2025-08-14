@@ -1,7 +1,8 @@
 import { useBlockProps, InnerBlocks, InspectorControls } from '@wordpress/block-editor';
 import { useState, useEffect } from '@wordpress/element';
-import { Button, TextControl, PanelBody, ButtonGroup } from '@wordpress/components';
+import { Button, TextControl, PanelBody, __experimentalToggleGroupControl as ToggleGroupControl, __experimentalToggleGroupControlOptionIcon as ToggleGroupControlOptionIcon } from '@wordpress/components';
 import { plus, trash, alignLeft, alignCenter, alignRight } from '@wordpress/icons';
+import { __ } from '@wordpress/i18n';
 import './editor.scss';
 
 export default function Edit({ attributes, setAttributes, clientId }) {
@@ -90,29 +91,28 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			<InspectorControls>
 				<PanelBody title="Tab Settings" initialOpen={true}>
 					<div style={{ marginBottom: '16px' }}>
-						<label className='cha-label'>
-							{'Tab Alignment'};
-						</label>
-						<ButtonGroup>
-							<Button
+						<ToggleGroupControl
+							isBlock
+							value={tabAlignment}
+							onChange={handleAlignmentChange}
+							label={__('Tab Alignment', 'changeloger')}
+						>
+							<ToggleGroupControlOptionIcon
+								value="left"
 								icon={alignLeft}
-								isPrimary={tabAlignment === 'left'}
-								onClick={() => handleAlignmentChange('left')}
-								title="Align Left"
+								label="Align Left"
 							/>
-							<Button
+							<ToggleGroupControlOptionIcon
+								value="center"
 								icon={alignCenter}
-								isPrimary={tabAlignment === 'center'}
-								onClick={() => handleAlignmentChange('center')}
-								title="Align Center"
+								label="Align Center"
 							/>
-							<Button
+							<ToggleGroupControlOptionIcon
+								value="right"
 								icon={alignRight}
-								isPrimary={tabAlignment === 'right'}
-								onClick={() => handleAlignmentChange('right')}
-								title="Align Right"
+								label="Align Right"
 							/>
-						</ButtonGroup>
+						</ToggleGroupControl>
 					</div>
 				</PanelBody>
 			</InspectorControls>

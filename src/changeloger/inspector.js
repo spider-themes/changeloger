@@ -81,6 +81,7 @@ function Inspector(props) {
 
     const parser = new ChangelogParser(changelog);
     const parsedChangelog = parser.parse();
+
     return (
         <>
             <InspectorControls>

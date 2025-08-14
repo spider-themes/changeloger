@@ -85,7 +85,6 @@ function Edit(props) {
             setAttributes( { uniqueId: generatedId } );
         }
     }, [] );
-    console.log(uniqueId);
     return (
         <div {...blockProps} id={ uniqueId }>
             {!showPlaceholder && !showTextArea && (

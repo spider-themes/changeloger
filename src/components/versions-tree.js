@@ -1,7 +1,6 @@
 import React from 'react';
 
 function VersionsTree(props) {
-    console.log(props)
     return (
         <ul
             className={
