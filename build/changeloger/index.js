@@ -236,8 +236,15 @@ function Edit(props) {
     paginationActiveTextColor,
     paginationHoverBgColor,
     paginationHoverTextColor,
-    enableFilter
+    enableFilter,
+    enableSearch,
+    // ✅ নতুন toggle attribute
+    searchPlaceholder // ✅ search placeholder text
   } = attributes;
+
+  // Search state
+  const [searchTerm, setSearchTerm] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+  const [filteredChangelog, setFilteredChangelog] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.useBlockProps)({
     className: 'changeloger-container',
     style: {
@@ -257,6 +264,42 @@ function Edit(props) {
   const parser = new _parser__WEBPACK_IMPORTED_MODULE_9__["default"](changelog);
   const parsedChangelog = parser.parse();
   const versions = parser.getVersions();
+
+  // Filter changelog based on search term
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (!searchTerm.trim()) {
+      setFilteredChangelog(parsedChangelog);
+      return;
+    }
+    const filtered = parsedChangelog.map(item => {
+      const searchLower = searchTerm.toLowerCase();
+      let shouldInclude = false;
+      let allChanges = item.changes;
+      const versionMatches = item.version.toLowerCase().includes(searchLower);
+      const versionNameValue = versionName[item.version] || '';
+      const versionNameMatches = versionNameValue.toLowerCase().includes(searchLower);
+      const dateMatches = item.date.toLowerCase().includes(searchLower);
+      const categoryMatches = item.changes.some(change => change.category.toLowerCase().includes(searchLower));
+      if (versionMatches || versionNameMatches || dateMatches || categoryMatches) {
+        shouldInclude = true;
+        allChanges = item.changes;
+      } else {
+        const matchingChanges = item.changes.filter(change => change.change.toLowerCase().includes(searchLower));
+        if (matchingChanges.length > 0) {
+          shouldInclude = true;
+          allChanges = matchingChanges;
+        }
+      }
+      return shouldInclude ? {
+        ...item,
+        changes: allChanges
+      } : null;
+    }).filter(item => item !== null);
+    setFilteredChangelog(filtered);
+  }, [searchTerm, parsedChangelog, versionName]);
+  const getFilteredChanges = changes => {
+    return changes;
+  };
   const isLeft = enableVersions && versionsPosition === 'left';
   const isRight = enableVersions && versionsPosition === 'right';
   function htmlEntityDecode(encodedString) {
@@ -264,11 +307,17 @@ function Edit(props) {
     var doc = parser.parseFromString(encodedString, 'text/html');
     return doc.documentElement.textContent;
   }
+  const highlightSearchTerm = (text, searchTerm) => {
+    if (!searchTerm.trim()) {
+      return text;
+    }
+    const regex = new RegExp(`(${searchTerm})`, 'gi');
+    return text.replace(regex, '<mark>$1</mark>');
+  };
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     if (!uniqueId) {
-      // Generate a unique ID based on the current timestamp (in seconds) and a random string
-      const timestamp = Math.floor(Date.now() / 1000); // Current time in seconds
-      const randomString = Math.random().toString(36).substr(2, 6); // Random alphanumeric string of length 6
+      const timestamp = Math.floor(Date.now() / 1000);
+      const randomString = Math.random().toString(36).substr(2, 6);
       const generatedId = `cha-${timestamp}-${randomString}`;
       setAttributes({
         uniqueId: generatedId
@@ -278,7 +327,23 @@ function Edit(props) {
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ...blockProps,
     id: uniqueId
-  }, !showPlaceholder && !showTextArea && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, enableFilter && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_filter__WEBPACK_IMPORTED_MODULE_13__["default"], {
+  }, enableSearch && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changeloger-search-wrapper"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
+    placeholder: searchPlaceholder || (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Search your changelog...', 'changeloger'),
+    value: searchTerm,
+    onChange: value => setSearchTerm(value),
+    className: "changeloger-search-input"
+  }), searchTerm && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changeloger-search-results-info"
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)(`Found ${filteredChangelog.length} result(s) for "${searchTerm}"`, 'changeloger'), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+    isSmall: true,
+    variant: "link",
+    onClick: () => setSearchTerm(''),
+    style: {
+      marginLeft: '10px'
+    }
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Clear', 'changeloger')))), !showPlaceholder && !showTextArea && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, enableFilter && !searchTerm && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_filter__WEBPACK_IMPORTED_MODULE_13__["default"], {
     ...props,
     parsedChangelog: parsedChangelog
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -293,20 +358,26 @@ function Edit(props) {
     className: "changeloger-info-inner-wrapper"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "changeloger-items"
-  }, parsedChangelog.map((item, index) => {
+  }, filteredChangelog.length > 0 ? filteredChangelog.map((item, index) => {
     const {
       date,
       version,
       changes
     } = item;
     const currentLinks = (0,lodash__WEBPACK_IMPORTED_MODULE_2__.get)(customLinks, version, []);
-    const uniqueCategories = [...new Set(changes.map(item => item.category.toLowerCase()))];
+    const filteredChanges = getFilteredChanges(changes);
+    const uniqueCategories = [...new Set(filteredChanges.map(item => item.category.toLowerCase()))];
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      key: `${version}-${index}`,
       className: "changelog-info-item",
-      "data-filter": uniqueCategories.join(" ")
+      "data-filter": uniqueCategories.join(' ')
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "date"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, date), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      dangerouslySetInnerHTML: {
+        __html: highlightSearchTerm(date, searchTerm)
+      }
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
       tagName: "span",
       className: "changeloger-version-name",
       placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Version Name', 'changeloger'),
@@ -320,34 +391,44 @@ function Edit(props) {
     })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "version"
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-      className: "version-tag"
-    }, version), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      className: "version-tag",
+      dangerouslySetInnerHTML: {
+        __html: highlightSearchTerm(version, searchTerm)
+      }
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
       className: "line"
     })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "content"
-    }, changes.map(item => {
+    }, filteredChanges.map((item, changeIndex) => {
       const currentCategory = item.category.toLowerCase();
       const hasCustomColor = (0,lodash__WEBPACK_IMPORTED_MODULE_2__.has)(customLogTypeColors, currentCategory);
-      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+        key: changeIndex
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
         style: hasCustomColor ? {
           backgroundColor: (0,lodash__WEBPACK_IMPORTED_MODULE_2__.get)(customLogTypeColors, currentCategory)
         } : {},
-        className: `tag ${currentCategory.replace(' ', '-')}`
-      }, item.category), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-        className: "change"
-      }, htmlEntityDecode(item.change)));
+        className: `tag ${currentCategory.replace(' ', '-')}`,
+        dangerouslySetInnerHTML: {
+          __html: highlightSearchTerm(item.category, searchTerm)
+        }
+      }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+        className: "change",
+        dangerouslySetInnerHTML: {
+          __html: highlightSearchTerm(htmlEntityDecode(item.change), searchTerm)
+        }
+      }));
     }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "changeloger-link-wrapper"
-    }, currentLinks.map((action, index) => {
-      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_custom_links__WEBPACK_IMPORTED_MODULE_11__["default"], {
-        action: action,
-        index: index,
-        customLinks: customLinks,
-        currentLinks: currentLinks,
-        setAttributes: setAttributes,
-        version: version
-      });
-    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+    }, currentLinks.map((action, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_custom_links__WEBPACK_IMPORTED_MODULE_11__["default"], {
+      key: index,
+      action: action,
+      index: index,
+      customLinks: customLinks,
+      currentLinks: currentLinks,
+      setAttributes: setAttributes,
+      version: version
+    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
       isSmall: true,
       isPressed: true,
       icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_14__["default"],
@@ -363,14 +444,16 @@ function Edit(props) {
         }
       })
     }))));
-  }))), isRight && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }) : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changeloger-no-results"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('No changelog entries found matching your search.', 'changeloger'))))), isRight && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "changeloger-version-list-container changeloger-version-list-position-right"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h6", {
     className: "version-title"
   }, "Versions"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_versions_tree__WEBPACK_IMPORTED_MODULE_12__["default"], {
     versions: versions,
     uniqueId: uniqueId
-  }))), enablePagination && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }))), enablePagination && !searchTerm && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "changeloger-pagination-wrapper"
   }, 'load-more' === paginationType && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "wp-block-button"
@@ -885,7 +968,10 @@ function Inspector(props) {
     paginationHoverBgColor,
     paginationHoverTextColor,
     enableFilter,
-    filterPosition
+    filterPosition,
+    enableSearch,
+    // ✅ new
+    searchPlaceholder
   } = attributes;
   const versionPositions = [{
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Left', 'changeloger'),
@@ -989,7 +1075,19 @@ function Inspector(props) {
         filterPosition: position.value
       })
     });
-  })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.InspectorControls, {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.ToggleControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Enable Search', 'changeloger'),
+    checked: enableSearch,
+    onChange: () => setAttributes({
+      enableSearch: !enableSearch
+    })
+  }), enableSearch && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.TextControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Search Placeholder', 'changeloger'),
+    value: searchPlaceholder,
+    onChange: newVal => setAttributes({
+      searchPlaceholder: newVal
+    })
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.InspectorControls, {
     group: "styles"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Log Tags', 'changeloger'),

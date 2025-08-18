@@ -36,7 +36,9 @@ function Inspector(props) {
         paginationHoverBgColor,
         paginationHoverTextColor,
         enableFilter,
-        filterPosition
+        filterPosition,
+        enableSearch,          // ✅ new
+        searchPlaceholder
     } = attributes;
     const versionPositions = [
         {
@@ -185,6 +187,26 @@ function Inspector(props) {
                                 );
                             })}
                         </ToggleGroupControl>
+                    )}
+
+                    {/* ✅ Search Settings */}
+                    <ToggleControl
+                        label={__('Enable Search', 'changeloger')}
+                        checked={enableSearch}
+                        onChange={() =>
+                            setAttributes({ enableSearch: !enableSearch })
+                        }
+                    />
+
+                    {/*  search toggle*/}
+                    {enableSearch && (
+                        <TextControl
+                            label={__('Search Placeholder', 'changeloger')}
+                            value={searchPlaceholder}
+                            onChange={(newVal) =>
+                                setAttributes({ searchPlaceholder: newVal })
+                            }
+                        />
                     )}
                 </PanelBody>
 
