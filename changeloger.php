@@ -189,9 +189,9 @@ if ( ! class_exists( 'CHANGELOGER_BLOCKS_CLASS' ) ) {
 		function changeloger_frontend_search() {
   wp_enqueue_script(
     'changeloger-frontend-search',
-    plugin_dir_url( __FILE__ ) . 'src/js/frontend-search.js',
-    array( 'jquery' ), // dependency
-    filemtime( plugin_dir_path( __FILE__ ) . 'src/js/frontend-search.js' ),
+    plugin_dir_url( __FILE__ ) . 'src/components/frontend-search.js',
+    array( 'jquery' ),
+    filemtime( plugin_dir_path( __FILE__ ) . 'src/components/frontend-search.js' ),
     
   );
 }
