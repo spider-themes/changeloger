@@ -188,12 +188,22 @@ function Inspector(props) {
             </ToggleGroupControl>
           )}
 
-          {/* Search Settings  */}
-          <ToggleControl
-            label={__('Enable Search', 'changeloger')}
-            checked={enableSearch}
-            onChange={() => setAttributes({ enableSearch: !enableSearch })}
+          {/* Search Settings */}
+        <ToggleControl
+          label={__('Enable Search', 'changeloger')}
+          checked={enableSearch}
+          onChange={() => setAttributes({ enableSearch: !enableSearch })}
+        />
+
+        {enableSearch && (
+          <TextControl
+            label={__('Search Placeholder', 'changeloger')}
+            value={searchPlaceholder}
+            onChange={(value) => setAttributes({ searchPlaceholder: value })}
+            placeholder={__('Type your placeholder text…', 'changeloger')}
           />
+        )}
+
         </PanelBody>
       </InspectorControls>
 

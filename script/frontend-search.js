@@ -1,12 +1,15 @@
 jQuery(document).ready(function ($) {
-  $('.aagb-search-control').on('input', function () {
+  $('.changelog-search-control').on('input', function () {
     const searchTxt = $(this).val().toLowerCase();
     const targetId = $(this).attr('data-searchTarget');
 
-    const $items = $('#' + targetId + ' .changelog-info-item');
-    const $helpBlock = $('#' + targetId + ' #aagb-search-help-block');
+    const $targetContainer = $('#' + targetId);
+    const $items = $targetContainer.find('.changelog-info-item');
+    const $helpBlock = $targetContainer.find('#changelog-search-help-block');
 
     let matchCount = 0;
+
+    $targetContainer.unmark();
 
     $items.each(function () {
       const $item = $(this);
@@ -20,6 +23,11 @@ jQuery(document).ready(function ($) {
         changes.includes(searchTxt)
       ) {
         $item.show();
+
+        $item.mark(searchTxt, {
+          "separateWordSearch": false
+        });
+
         matchCount++;
       } else {
         $item.hide();

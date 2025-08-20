@@ -281,16 +281,16 @@ function Edit(props) {
     ...blockProps,
     id: uniqueId
   }, enableSearch && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "aagb_form_inner"
+    className: "changelog_form_inner"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "aagb_form_group"
+    className: "changelog_form_group"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "search",
     "data-searchTarget": uniqueId,
-    className: "aagb-search-control aagb_form_control noEnterSubmit",
+    className: "changelog-search-control changelog_form_control noEnterSubmit",
     placeholder: "Search your changelog..."
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    id: "aagb-search-help-block",
+    id: "changelog-search-help-block",
     className: "help-block"
   })), !showPlaceholder && !showTextArea && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, enableFilter && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_filter__WEBPACK_IMPORTED_MODULE_13__["default"], {
     ...props,
@@ -1011,6 +1011,13 @@ function Inspector(props) {
     onChange: () => setAttributes({
       enableSearch: !enableSearch
     })
+  }), enableSearch && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.TextControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Search Placeholder', 'changeloger'),
+    value: searchPlaceholder,
+    onChange: value => setAttributes({
+      searchPlaceholder: value
+    }),
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Type your placeholder text…', 'changeloger')
   }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.InspectorControls, {
     group: "styles"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.PanelBody, {
@@ -1392,8 +1399,7 @@ function save(props) {
     versionsPosition,
     perPage,
     enableSearch,
-    searchPlaceholder,
-    searchEnabled
+    searchPlaceholder
   } = props.attributes;
   const blockProps = _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps.save({
     className: 'changeloger-container',
@@ -1413,7 +1419,6 @@ function save(props) {
   });
   const parser = new _parser__WEBPACK_IMPORTED_MODULE_6__["default"](props.attributes.changelog);
   const parsedChangelog = parser.parse();
-  console.log(parsedChangelog);
   const versions = parser.getVersions();
   const isLeft = enableVersions && versionsPosition === 'left';
   const isRight = enableVersions && versionsPosition === 'right';
@@ -1423,20 +1428,20 @@ function save(props) {
     ...blockProps,
     id: uniqueId
   }, enableSearch && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "aagb_form_inner"
+    className: "changelog_form_inner"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "aagb_form_group"
+    className: "changelog_form_group"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "search",
     "data-searchTarget": uniqueId,
-    className: "aagb-search-control aagb_form_control noEnterSubmit",
+    className: "changelog-search-control changelog_form_control noEnterSubmit",
     placeholder: "Search your changelog...",
-    checked: searchEnabled,
+    checked: enableSearch,
     onChange: value => setAttributes({
-      searchEnabled: value
+      enableSearch: value
     })
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    id: "aagb-search-help-block",
+    id: "changelog-search-help-block",
     className: "help-block"
   })), enableFilter && cha_premium && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_filter__WEBPACK_IMPORTED_MODULE_8__["default"], {
     ...props,
@@ -2082,7 +2087,7 @@ module.exports = window["wp"]["primitives"];
   \************************************/
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"cha/changeloger","version":"0.1.0","title":"Changeloger","category":"widgets","description":"Transform plain text changelogs into visually stunning representations.","attributes":{"uniqueId":{"type":"string","default":""},"changelog":{"type":"string","default":""},"enablePagination":{"type":"boolean","default":false},"paginationLoadMoreText":{"type":"string","default":"Load More"},"perPage":{"type":"number","default":10},"paginationType":{"type":"string","default":"load-more"},"showPlaceholder":{"type":"boolean","default":true},"showTextArea":{"type":"boolean","default":false},"paginationTextColor":{"type":"string","default":"#ffffff"},"paginationBgColor":{"type":"string","default":"#000000"},"paginationActiveTextColor":{"type":"string","default":"#000000"},"paginationActiveBgColor":{"type":"string","default":"#f5f5f5"},"paginationHoverTextColor":{"type":"string","default":"#ffffff"},"paginationHoverBgColor":{"type":"string","default":"#333333"},"customLogTypeColors":{"type":"object","default":{}},"customLinks":{"type":"object","default":{}},"versionName":{"type":"object","default":{}},"enableVersions":{"type":"boolean","default":true},"versionsPosition":{"type":"string","default":"right"},"enableFilter":{"type":"boolean","default":false},"filterPosition":{"type":"string","default":"right"},"enableSearch":{"type":"boolean","default":false},"searchEnabled":{"type":"boolean","default":true}},"supports":{"html":false,"align":["wide","full"]},"textdomain":"changeloger","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":["changeloger"],"viewScript":"changeloger-frontend"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"cha/changeloger","version":"0.1.0","title":"Changeloger","category":"widgets","description":"Transform plain text changelogs into visually stunning representations.","attributes":{"uniqueId":{"type":"string","default":""},"changelog":{"type":"string","default":""},"enablePagination":{"type":"boolean","default":false},"paginationLoadMoreText":{"type":"string","default":"Load More"},"perPage":{"type":"number","default":10},"paginationType":{"type":"string","default":"load-more"},"showPlaceholder":{"type":"boolean","default":true},"showTextArea":{"type":"boolean","default":false},"paginationTextColor":{"type":"string","default":"#ffffff"},"paginationBgColor":{"type":"string","default":"#000000"},"paginationActiveTextColor":{"type":"string","default":"#000000"},"paginationActiveBgColor":{"type":"string","default":"#f5f5f5"},"paginationHoverTextColor":{"type":"string","default":"#ffffff"},"paginationHoverBgColor":{"type":"string","default":"#333333"},"customLogTypeColors":{"type":"object","default":{}},"customLinks":{"type":"object","default":{}},"versionName":{"type":"object","default":{}},"enableVersions":{"type":"boolean","default":true},"versionsPosition":{"type":"string","default":"right"},"enableFilter":{"type":"boolean","default":false},"filterPosition":{"type":"string","default":"right"},"enableSearch":{"type":"boolean","default":false}},"supports":{"html":false,"align":["wide","full"]},"textdomain":"changeloger","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":["changeloger"],"viewScript":"changeloger-frontend"}');
 
 /***/ })
 

@@ -34,7 +34,6 @@ function save(props) {
     perPage,
     enableSearch,
     searchPlaceholder,
-    searchEnabled
   } = props.attributes;
 
   const blockProps = useBlockProps.save({
@@ -56,7 +55,6 @@ function save(props) {
 
   const parser = new ChangelogParser(props.attributes.changelog);
   const parsedChangelog = parser.parse();
-  console.log(parsedChangelog);
   const versions = parser.getVersions();
 
   const isLeft = enableVersions && versionsPosition === 'left';
@@ -70,18 +68,18 @@ function save(props) {
       {/* filter option */}
 
       {enableSearch && (
-        <div className="aagb_form_inner">
-				<div className="aagb_form_group">
+        <div className="changelog_form_inner">
+				<div className="changelog_form_group">
 					<input
 						type="search"
 						data-searchTarget={uniqueId}
-						className="aagb-search-control aagb_form_control noEnterSubmit"
+						className="changelog-search-control changelog_form_control noEnterSubmit"
 						placeholder='Search your changelog...'
-            checked={searchEnabled}
-            onChange={(value) => setAttributes({ searchEnabled: value })}
+            checked={enableSearch}
+            onChange={(value) => setAttributes({ enableSearch: value })}
 					/>
 				</div>
-				<span id="aagb-search-help-block" className="help-block" />
+				<span id="changelog-search-help-block" className="help-block" />
 			</div>
       )}
 

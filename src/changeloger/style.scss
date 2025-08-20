@@ -14,12 +14,13 @@
 
 // front end styles input fields
 
-.aagb_form_inner {
+.changelog_form_inner {
 	max-width: 600px;
 	width: 100%;
 	margin: 0 auto 35px;
+	padding-top: 35px;
 
-	.aagb_form_group {
+	.changelog_form_group {
 		position: relative;
 
 		&:before {
@@ -34,7 +35,7 @@
 		}
 	}
 
-	.aagb_form_control {
+	.changelog_form_control {
 		font-size: 14px;
 		font-weight: 400;
 		height: 50px;
@@ -70,4 +71,10 @@
 		text-align: center;
 		margin-top: 6px;
 	}
+}
+
+// mark text highlishting styles
+mark {
+  background-color: yellow;
+  padding: 0 2px;
 }

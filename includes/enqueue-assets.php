@@ -22,7 +22,7 @@ class Changeloger_Block_Assets {
 
 		add_action( 'enqueue_block_assets', [ $this, 'external_libraries' ] );
 	}
-
+	
 
 	public function external_libraries(): void {
 
@@ -41,6 +41,7 @@ class Changeloger_Block_Assets {
 			uniqid(),
 			true
 		);
+		
 		wp_register_script(
 			'changeloger-filter',
 			plugins_url( '/', __FILE__ ) . '../script/filter.js',
@@ -49,6 +50,23 @@ class Changeloger_Block_Assets {
 			true
 		);
 
+		// for text highlighting
+	wp_enqueue_script(
+			'mark',
+			plugins_url( '/', __FILE__ ) . '../script/jquery.mark.min.js',
+			array( 'jquery' ),
+			true
+		);
+
+		// for search functionality
+  wp_enqueue_script(
+    'changeloger-frontend-search',
+    plugins_url('/', __FILE__ ) . '../script/frontend-search.js',
+    array( 'jquery' ),
+    true
+  );
+
+
 		$licensing = array( 'can_use_premium_code' => cha_fs()->can_use_premium_code() );
 		wp_localize_script( 'jquery', 'changeloger_local_object', array(
 			'ajax_url'  => admin_url( 'admin-ajax.php' ),
@@ -56,4 +74,6 @@ class Changeloger_Block_Assets {
 			'licensing' => 1
 		) );
 	}
+
+	
 }

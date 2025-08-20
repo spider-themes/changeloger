@@ -92,16 +92,16 @@ function Edit(props) {
 
           {/* search filter */}
             {enableSearch && (
-        <div className="aagb_form_inner">
-				<div className="aagb_form_group">
+        <div className="changelog_form_inner">
+				<div className="changelog_form_group">
 					<input
 						type="search"
 						data-searchTarget={uniqueId}
-						className="aagb-search-control aagb_form_control noEnterSubmit"
+						className="changelog-search-control changelog_form_control noEnterSubmit"
 						placeholder='Search your changelog...'
 					/>
 				</div>
-				<span id="aagb-search-help-block" className="help-block" />
+				<span id="changelog-search-help-block" className="help-block" />
 			</div>
       )}
 
