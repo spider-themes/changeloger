@@ -1,6 +1,6 @@
 import {__} from '@wordpress/i18n';
 import {has, get} from 'lodash';
-import {Button} from '@wordpress/components';
+import {Button, TextControl} from '@wordpress/components';
 import {useBlockProps, RichText} from '@wordpress/block-editor';
 import {plus} from '@wordpress/icons';
 import React from "react";
@@ -40,7 +40,9 @@ function Edit(props) {
         paginationActiveTextColor,
         paginationHoverBgColor,
         paginationHoverTextColor,
-        enableFilter
+        enableFilter,
+        enableSearch,
+        searchPlaceholder
     } = attributes;
 
     const blockProps = useBlockProps({
@@ -87,6 +89,22 @@ function Edit(props) {
     }, [] );
     return (
         <div {...blockProps} id={ uniqueId }>
+
+          {/* search filter */}
+            {enableSearch && (
+        <div className="aagb_form_inner">
+				<div className="aagb_form_group">
+					<input
+						type="search"
+						data-searchTarget={uniqueId}
+						className="aagb-search-control aagb_form_control noEnterSubmit"
+						placeholder='Search your changelog...'
+					/>
+				</div>
+				<span id="aagb-search-help-block" className="help-block" />
+			</div>
+      )}
+
             {!showPlaceholder && !showTextArea && (
                 <>
                     {enableFilter &&

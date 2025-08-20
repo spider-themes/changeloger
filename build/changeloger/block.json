@@ -90,6 +90,14 @@
     "filterPosition": {
       "type": "string",
       "default": "right"
+    },
+    "enableSearch": {
+      "type": "boolean",
+      "default": false
+    },
+    "searchEnabled": {
+      "type": "boolean",
+      "default": true
     }
   },
   "supports": {

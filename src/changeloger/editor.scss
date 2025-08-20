@@ -1,4 +1,4 @@
-@import "./common.scss";
+@import './common.scss';
 
 .changeloger-container {
   & .placeholder-cancel-button {
@@ -43,7 +43,7 @@
         color: #4c4cf1 !important;
 
         &::before {
-          content: "";
+          content: '';
           position: absolute;
           width: 1px;
           height: 100%;
@@ -55,9 +55,8 @@
   }
 }
 
-
 .changeloger-color-dropdown-control {
-  border: 1px solid rgba(0, 0, 0, .1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   display: block;
   padding: 0;
   &.is-list {
@@ -66,7 +65,6 @@
       border-top-width: 1px;
     }
   }
-
 
   .changeloger-color-dropdown-control-button {
     -webkit-appearance: none;
@@ -81,11 +79,91 @@
     padding: 9.2px 12px;
     text-align: left;
     width: 100%;
-  .component-color-indicator {
-    background: linear-gradient(45deg, #ddd 25%, transparent 0), linear-gradient(-45deg, #ddd 25%, transparent 0), linear-gradient(45deg, transparent 75%, #ddd 0), linear-gradient(-45deg, transparent 75%, #ddd 0);
-    background-position: 0 0, 0 5px, 5px -5px, -5px 0;
-    background-size: 10px 10px;
+    .component-color-indicator {
+      background: linear-gradient(45deg, #ddd 25%, transparent 0),
+        linear-gradient(-45deg, #ddd 25%, transparent 0),
+        linear-gradient(45deg, transparent 75%, #ddd 0),
+        linear-gradient(-45deg, transparent 75%, #ddd 0);
+      background-position: 0 0, 0 5px, 5px -5px, -5px 0;
+      background-size: 10px 10px;
       margin-right: 8px;
     }
   }
+}
+
+// search filter styles here
+.changeloger-search-wrapper {
+  margin-bottom: 20px;
+
+  .changeloger-search-input {
+    width: 100%;
+    margin-bottom: 10px;
+
+    input[type='text'] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e1e5e9;
+      border-radius: 8px;
+      font-size: 16px;
+      background-color: #ffffff;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+      &:focus {
+        outline: none;
+        border-color: #007cba;
+        box-shadow: 0 0 0 3px rgba(0, 124, 186, 0.1);
+        background-color: #ffffff;
+      }
+
+      &::placeholder {
+        color: #757575;
+        font-style: italic;
+      }
+    }
+
+    label {
+      display: none;
+    }
+  }
+
+  .changeloger-search-results-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+    padding: 8px 12px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border-left: 3px solid #007cba;
+
+    button {
+      color: #007cba;
+      text-decoration: underline;
+      font-size: 13px;
+
+      &:hover {
+        color: #005a87;
+      }
+    }
+  }
+}
+
+.changeloger-no-results {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px dashed #ddd;
+}
+
+mark {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-weight: 500;
 }
