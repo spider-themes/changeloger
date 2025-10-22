@@ -129,12 +129,12 @@
                 if (isInActivePath || hasActiveChild) {
                     // Keep it visible
                     if (!$dropdown.is(':visible')) {
-                        $dropdown.show();
+                        $dropdown.show(300);
                     }
                 } else {
                     // Hide only if it's currently visible (avoid unnecessary animations)
                     if ($dropdown.is(':visible')) {
-                        $dropdown.hide(300);
+                        $dropdown.hide();
                     }
                 }
             });

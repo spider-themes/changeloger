@@ -89,20 +89,20 @@ function Edit(props) {
     return (
         <div {...blockProps} id={ uniqueId }>
 
-            {/* search filter */}
+          {/* search filter */}
             {enableSearch && (
-                <div className="changelog_form_inner">
-                    <div className="changelog_form_group">
-                        <input
-                            type="search"
-                            data-searchTarget={uniqueId}
-                            className="changelog-search-control changelog_form_control noEnterSubmit"
-                            placeholder='Search your changelog...'
-                        />
-                    </div>
-                    <span id="changelog-search-help-block" className="help-block" />
-                </div>
-            )}
+        <div className="changelog_form_inner">
+				<div className="changelog_form_group">
+					<input
+						type="search"
+						data-searchTarget={uniqueId}
+						className="changelog-search-control changelog_form_control noEnterSubmit"
+						placeholder='Search your changelog...'
+					/>
+				</div>
+				<span id="changelog-search-help-block" className="help-block" />
+			</div>
+      )}
 
             {!showPlaceholder && !showTextArea && (
                 <>
@@ -282,7 +282,7 @@ function Edit(props) {
                             )}
                             {'numbered' === paginationType && (
                                 <div className="changeloger-pagination-inner-wrapper">
-                                    <span className="changeloger-prev-button page-navigator">« Previous</span>
+									<span className="changeloger-prev-button page-navigator">« Previous</span>
                                     <span className="page-numbers current">1</span>
                                     <span className="page-numbers">2</span>
                                     <span className="page-numbers">3</span>

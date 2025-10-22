@@ -90,7 +90,11 @@
 		"filterPosition": {
 			"type": "string",
 			"default": "right"
-		}
+		},
+		"enableSearch": {
+    "type": "boolean",
+    "default": false
+  }
 	},
 	"supports": {
 		"html": false,
