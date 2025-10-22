@@ -159,11 +159,12 @@
         list-style-type: none !important;
         padding-left: 20px !important;
         margin-bottom: 0 !important;
+        margin-left: 0;
         gap: 5px;
 
         & li {
           position: relative;
-
+          margin-bottom: 4px;
           & a {
             text-decoration: none;
             color: #677681;
@@ -425,7 +426,7 @@
   z-index: 99;
   display: flex;
   position: relative;
-
+  padding: 0 20px;
   &.align-center {
     justify-content: center;
 

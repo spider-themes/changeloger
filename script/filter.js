@@ -205,5 +205,6 @@ jQuery(document).ready(function($) {
 
         renderPagination();
         renderChangelog();
+
     });
 });

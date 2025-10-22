@@ -50,8 +50,8 @@
 	background: #e9ecef;
 	border: 1px solid #ddd;
 	border-bottom: none;
-	padding: 10px 16px;
-	margin: 0;
+    padding: 10px 12px 10px 16px;
+    margin: 0;
 	font-size: 14px;
 	font-weight: 500;
 	color: #495057;
@@ -113,16 +113,15 @@
 /* Show remove button only on tab hover */
 .tab-button .remove-tab-button-inline {
 	opacity: 0;
-	pointer-events: none;
+    display: none;
 }
 
-.tab-button:hover .remove-tab-button-inline,
 .tab-button.active .remove-tab-button-inline {
 	opacity: 0.7;
-	pointer-events: auto;
+    display: inline-flex;
 }
 
-.tab-button:hover .remove-tab-button-inline:hover {
+.tab-button.active .remove-tab-button-inline:hover {
 	opacity: 1;
 }
 

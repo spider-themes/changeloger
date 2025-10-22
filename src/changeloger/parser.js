@@ -110,51 +110,72 @@ export default class ChangelogParser {
     return null;
   }
 
-  normalizeVersion(version) {
-    const segments = version.split('.');
-    while (segments[segments.length - 1] === '0') {
-      segments.pop();
+    normalizeVersion(version) {
+        const segments = version.split('.');
+
+        // Ensure at least three parts (major.minor.patch)
+        if (segments.length === 1) {
+            segments.push('0', '0'); // Add patch version as 0 if only major
+        } else if (segments.length === 2) {
+            segments.push('0'); // Add patch version as 0 if only major and minor
+        }
+
+        return segments.join('.');
     }
-    return segments.join('.');
-  }
+    getVersions() {
+        const parsedChanges = this.parse(); // Assuming parsedChanges are your version data
+        const grouped = {};
 
-  getParentVersion(version) {
-    const segments = version.split('.');
-    if (segments.length <= 1) {
-      return null; // Base version, no parent (e.g., "1")
+        // Group versions by major.minor.x format
+        parsedChanges.forEach((change) => {
+            const normalizedVersion = this.normalizeVersion(change.version);
+
+            // Split the normalized version into major and minor (e.g., "2.7" from "2.7.0")
+            const parts = normalizedVersion.split(".");
+            const majorMinor = `${parts[0]}.${parts[1]}.x`; // Group by "major.minor.x"
+
+            // If the group doesn't exist, create it
+            if (!grouped[majorMinor]) {
+                grouped[majorMinor] = {
+                    version: majorMinor,
+                    children: []
+                };
+            }
+
+            // Push the full version into its group
+            grouped[majorMinor].children.push({
+                ...change,
+                version: normalizedVersion,
+                children: []
+            });
+        });
+
+        // Convert object to array & sort versions (descending order)
+        const result = Object.values(grouped).map(group => {
+            // Sort versions inside each group in descending order
+            group.children.sort((a, b) => this.compareVersions(b.version, a.version));
+            return group;
+        });
+
+        // Sort the groups themselves (major.minor.x) in descending order
+        result.sort((a, b) => this.compareVersions(b.version, a.version));
+
+        return result;
     }
-    segments.pop(); // Remove the last segment
-    return segments.join('.');
-  }
 
-  getVersions() {
-    const parsedChanges = this.parse();
-    const hierarchicalChanges = [];
-    const versionMap = {};
-    const processedVersions = new Set();
+// Function to compare versions in semantic versioning order
+    compareVersions(v1, v2) {
+        const a = v1.split('.').map(num => parseInt(num, 10)); // Convert to numbers
+        const b = v2.split('.').map(num => parseInt(num, 10)); // Convert to numbers
 
-    // 1st pass: Populate the versionMap and hierarchicalChanges
-    parsedChanges.forEach((change) => {
-      const normalizedVersion = this.normalizeVersion(change.version);
-      versionMap[normalizedVersion] = {...change, children: []};
-      hierarchicalChanges.push(versionMap[normalizedVersion]);
-    });
+        // Compare each part of the version (major, minor, patch)
+        for (let i = 0; i < Math.max(a.length, b.length); i++) {
+            if ((a[i] || 0) > (b[i] || 0)) return 1;
+            if ((a[i] || 0) < (b[i] || 0)) return -1;
+        }
 
-    // 2nd pass: Check for hierarchical relationships
-    parsedChanges.forEach((change) => {
-      const parentVersion = this.getParentVersion(
-          this.normalizeVersion(change.version),
-      );
+        return 0; // Versions are equal
+    }
 
-      if (parentVersion && versionMap[parentVersion]) {
-        versionMap[parentVersion].children.push(change);
-        processedVersions.add(change.version);
-      }
-    });
 
-    // Filter out versions that have been nested
-    return hierarchicalChanges.filter(
-        (change) => !processedVersions.has(change.version),
-    );
-  }
 }

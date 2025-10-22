@@ -1,12 +1,12 @@
-import {__} from '@wordpress/i18n';
-import {has, get} from 'lodash';
-import {useBlockProps, RichText} from '@wordpress/block-editor';
-import {Button} from '@wordpress/components';
-import React from "react";
+import { __ } from '@wordpress/i18n';
+import { has, get } from 'lodash';
+import { useBlockProps, RichText } from '@wordpress/block-editor';
+import { Button, TextControl } from '@wordpress/components';
+import React from 'react';
 import ChangelogParser from './parser';
-import VersionsTree from "../components/versions-tree";
-import FilterButton from "../components/filter";
-import {plus} from "@wordpress/icons";
+import VersionsTree from '../components/versions-tree';
+import FilterButton from '../components/filter';
+import { plus } from '@wordpress/icons';
 
 function save(props) {
     const {
@@ -31,7 +31,9 @@ function save(props) {
         enableFilter,
         enableVersions,
         versionsPosition,
-        perPage
+        perPage,
+        enableSearch,
+        searchPlaceholder,
     } = props.attributes;
 
     const blockProps = useBlockProps.save({
@@ -60,57 +62,70 @@ function save(props) {
     // Check if changeloger premium is true
     const cha_premium = changeloger_local_object.licensing;
 
+
     return (
         <div {...blockProps} id={uniqueId}>
-            {enableFilter && cha_premium &&
-                <FilterButton {...props} parsedChangelog={parsedChangelog}/>
-            }
+            {/* filter option */}
+
+            {enableSearch && (
+                <div className="changelog_form_inner">
+                    <div className="changelog_form_group">
+                        <input
+                            type="search"
+                            data-searchTarget={uniqueId}
+                            className="changelog-search-control changelog_form_control noEnterSubmit"
+                            placeholder='Search your changelog...'
+                        />
+                    </div>
+                    <span id="changelog-search-help-block" className="help-block" />
+                </div>
+            )}
+
+            {enableFilter && cha_premium && (
+                <FilterButton {...props} parsedChangelog={parsedChangelog} />
+            )}
             <div className="changelog-wrapper">
                 {isLeft && (
                     <div className="changeloger-version-list-container changeloger-version-list-position-left">
                         <h6 className="version-title">Versions</h6>
-                        <VersionsTree versions={versions}/>
+                        <VersionsTree versions={versions} />
                     </div>
                 )}
                 <div className="changeloger-info-inner-wrapper">
                     <div className="changeloger-items">
                         {parsedChangelog.map((item, index) => {
-                            const {date, version, changes} = item;
+                            const { date, version, changes } = item;
 
-                            const currentLinks = get(
-                                customLinks,
-                                version,
-                                []
-                            );
+                            const currentLinks = get(customLinks, version, []);
 
-                            const uniqueCategories = [...new Set(changes.map(item => item.category.toLowerCase()))];
+                            const uniqueCategories = [
+                                ...new Set(changes.map((item) => item.category.toLowerCase())),
+                            ];
 
                             return (
-                                <div key={item.version} id={uniqueId + '-' + item.version} className="changelog-info-item"
-                                     data-filter={uniqueCategories.join(" ")}>
+                                <div
+                                    key={item.version}
+                                    id={uniqueId + '-' + item.version}
+                                    className="changelog-info-item"
+                                    data-filter={uniqueCategories.join(' ')}
+                                >
                                     <div className="date">
                                         <span>{date}</span>
 
                                         <RichText.Content
                                             tagName="span"
                                             className="changeloger-version-name"
-                                            placeholder={__(
-                                                'Version Name',
-                                                'changeloger'
-                                            )}
+                                            placeholder={__('Version Name', 'changeloger')}
                                             value={versionName[version]}
                                         />
                                     </div>
                                     <div className="version">
-												<span className="version-tag">
-													{version}
-												</span>
+                                        <span className="version-tag">{version}</span>
                                         <span className="line"></span>
                                     </div>
                                     <div className="content">
                                         {changes.map((item) => {
-                                            const currentCategory =
-                                                item.category.toLowerCase();
+                                            const currentCategory = item.category.toLowerCase();
 
                                             const hasCustomColor = has(
                                                 customLogTypeColors,
@@ -119,48 +134,47 @@ function save(props) {
 
                                             return (
                                                 <p>
-                                                    <span
-                                                        style={
-                                                            hasCustomColor
-                                                                ? {
-                                                                    backgroundColor:
-                                                                        get(
-                                                                            customLogTypeColors,
-                                                                            currentCategory
-                                                                        ),
-                                                                }
-                                                                : {}
-                                                        }
-                                                        className={`tag ${currentCategory.toLowerCase().replace(/\s/g, '-')}`}
-                                                    >
-																{item.category}
-													</span>
+                          <span
+                              style={
+                                  hasCustomColor
+                                      ? {
+                                          backgroundColor: get(
+                                              customLogTypeColors,
+                                              currentCategory
+                                          ),
+                                      }
+                                      : {}
+                              }
+                              className={`tag ${currentCategory
+                                  .toLowerCase()
+                                  .replace(/\s/g, '-')}`}
+                          >
+                            {item.category}
+                          </span>
                                                     <span className="change">{item.change}</span>
                                                 </p>
                                             );
                                         })}
                                         <div className="changeloger-link-wrapper">
-                                            {currentLinks.map(
-                                                (itemLink, index) => {
-                                                    return (
-                                                        <a
-                                                            href={itemLink.link}
-                                                            className="changeloger-custom-link"
-                                                            target="_blank"
-                                                        >
-                                                            {itemLink.icon && (
-                                                                <span
-                                                                    className="changeloger-custom-link-icon"
-                                                                    style={{
-                                                                        WebkitMaskImage: `url(${itemLink.icon})`,
-                                                                    }}
-                                                                ></span>
-                                                            )}
-                                                            {itemLink.name}
-                                                        </a>
-                                                    );
-                                                }
-                                            )}
+                                            {currentLinks.map((itemLink, index) => {
+                                                return (
+                                                    <a
+                                                        href={itemLink.link}
+                                                        className="changeloger-custom-link"
+                                                        target="_blank"
+                                                    >
+                                                        {itemLink.icon && (
+                                                            <span
+                                                                className="changeloger-custom-link-icon"
+                                                                style={{
+                                                                    WebkitMaskImage: `url(${itemLink.icon})`,
+                                                                }}
+                                                            ></span>
+                                                        )}
+                                                        {itemLink.name}
+                                                    </a>
+                                                );
+                                            })}
                                         </div>
                                     </div>
                                 </div>
@@ -172,7 +186,7 @@ function save(props) {
                 {isRight && (
                     <div className="changeloger-version-list-container changeloger-version-list-position-right">
                         <h6 className="version-title">Versions</h6>
-                        <VersionsTree versions={versions} uniqueId={uniqueId}/>
+                        <VersionsTree versions={versions} uniqueId={uniqueId} />
                     </div>
                 )}
             </div>
@@ -194,22 +208,19 @@ function save(props) {
                     )}
                     {'numbered' === paginationType && (
                         <div className="changeloger-pagination-inner-wrapper">
-									<span className="changeloger-prev-button page-navigator">
-										« Previous
-									</span>
-                            <span className="page-numbers current">
-										1
-									</span>
+              <span className="changeloger-prev-button page-navigator">
+                « Previous
+              </span>
+                            <span className="page-numbers current">1</span>
                             <span className="page-numbers">2</span>
                             <span className="page-numbers">3</span>
-                            <span className="changeloger-next-button page-navigator" >
-										Next »
-									</span>
+                            <span className="changeloger-next-button page-navigator">
+                Next »
+              </span>
                         </div>
                     )}
                 </div>
             )}
-
         </div>
     );
 

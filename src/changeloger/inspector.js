@@ -1,8 +1,8 @@
 import React from 'react';
-import {__} from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 
-import {useSelect} from '@wordpress/data';
-import {InspectorControls,ContrastChecker} from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
+import { InspectorControls, ContrastChecker } from '@wordpress/block-editor';
 import {
     __experimentalToggleGroupControl as ToggleGroupControl,
     __experimentalToggleGroupControlOption as ToggleGroupControlOption,
@@ -17,10 +17,10 @@ import {
 
 import ChangelogParser from './parser';
 import LogTypeColors from '../components/log-type-colors';
-import CustomColorControl from "../components/custom-color-control";
+import CustomColorControl from '../components/custom-color-control';
 
 function Inspector(props) {
-    const {attributes, setAttributes} = props;
+    const { attributes, setAttributes } = props;
     const {
         perPage,
         changelog,
@@ -37,8 +37,8 @@ function Inspector(props) {
         paginationHoverTextColor,
         enableFilter,
         filterPosition,
-        enableSearch,          // ✅ new
-        searchPlaceholder
+        enableSearch,
+        searchPlaceholder,
     } = attributes;
     const versionPositions = [
         {
@@ -52,27 +52,27 @@ function Inspector(props) {
     ];
     const filterPositions = [
         {
-            icon:'editor-alignleft',
+            icon: 'editor-alignleft',
             label: __('Left', 'changeloger'),
             value: 'left',
         },
         {
-            icon:'editor-aligncenter',
+            icon: 'editor-aligncenter',
             label: __('Left', 'changeloger'),
             value: 'center',
         },
         {
-            icon:'editor-alignright',
+            icon: 'editor-alignright',
             label: __('Right', 'changeloger'),
             value: 'right',
         },
     ];
 
-    const {defaultColors} = useSelect((select) => {
+    const { defaultColors } = useSelect((select) => {
         return {
             defaultColors:
-            select('core/block-editor')?.getSettings()
-                ?.__experimentalFeatures?.color?.palette?.default,
+            select('core/block-editor')?.getSettings()?.__experimentalFeatures
+                ?.color?.palette?.default,
         };
     });
 
@@ -135,11 +135,11 @@ function Inspector(props) {
                                 label={__('Pagination Type', 'changeloger')}
                                 value={paginationType}
                                 options={[
-                                    {label: 'Load More', value: 'load-more'},
-                                    {label: 'Numbered', value: 'numbered'},
+                                    { label: 'Load More', value: 'load-more' },
+                                    { label: 'Numbered', value: 'numbered' },
                                 ]}
                                 onChange={(newValue) =>
-                                    setAttributes({paginationType: newValue})
+                                    setAttributes({ paginationType: newValue })
                                 }
                                 __nextHasNoMarginBottom
                             />
@@ -149,12 +149,11 @@ function Inspector(props) {
                                 value={perPage.toString()}
                                 type="number"
                                 onChange={(newValue) =>
-                                    setAttributes({perPage: Number(newValue)})
+                                    setAttributes({ perPage: Number(newValue) })
                                 }
                             />
                         </>
                     )}
-
 
                     <ToggleControl
                         label={__('Filter', 'changeloger')}
@@ -189,35 +188,27 @@ function Inspector(props) {
                         </ToggleGroupControl>
                     )}
 
-                    {/* ✅ Search Settings */}
+                    {/* Search Settings */}
                     <ToggleControl
                         label={__('Enable Search', 'changeloger')}
                         checked={enableSearch}
-                        onChange={() =>
-                            setAttributes({ enableSearch: !enableSearch })
-                        }
+                        onChange={() => setAttributes({ enableSearch: !enableSearch })}
                     />
 
-                    {/*  search toggle*/}
                     {enableSearch && (
                         <TextControl
                             label={__('Search Placeholder', 'changeloger')}
                             value={searchPlaceholder}
-                            onChange={(newVal) =>
-                                setAttributes({ searchPlaceholder: newVal })
-                            }
+                            onChange={(value) => setAttributes({ searchPlaceholder: value })}
+                            placeholder={__('Type your placeholder text…', 'changeloger')}
                         />
                     )}
-                </PanelBody>
 
+                </PanelBody>
             </InspectorControls>
 
-            <InspectorControls group='styles'>
-
-                <PanelBody
-                    title={__('Log Tags', 'changeloger')}
-                    initialOpen={false}
-                >
+            <InspectorControls group="styles">
+                <PanelBody title={__('Log Tags', 'changeloger')} initialOpen={false}>
                     <LogTypeColors
                         changelog={parsedChangelog}
                         colors={defaultColors}
@@ -235,9 +226,8 @@ function Inspector(props) {
                         title={__('Pagination', 'changeloger')}
                         initialOpen={false}
                     >
-
                         <CustomColorControl
-                            className='is-list is-first'
+                            className="is-list is-first"
                             colors={defaultColors}
                             label={__('Text Color', 'changeloger')}
                             colorValue={paginationTextColor}
@@ -248,7 +238,7 @@ function Inspector(props) {
                             }
                         />
                         <CustomColorControl
-                            className='is-list'
+                            className="is-list"
                             colors={defaultColors}
                             label={__('Bg Color', 'changeloger')}
                             colorValue={paginationBgColor}
@@ -260,7 +250,7 @@ function Inspector(props) {
                         />
 
                         <CustomColorControl
-                            className='is-list'
+                            className="is-list"
                             colors={defaultColors}
                             label={__('Text Hover Color', 'changeloger')}
                             colorValue={paginationHoverTextColor}
@@ -271,7 +261,7 @@ function Inspector(props) {
                             }
                         />
                         <CustomColorControl
-                            className='is-list'
+                            className="is-list"
                             colors={defaultColors}
                             label={__('Bg Hover Color', 'changeloger')}
                             colorValue={paginationHoverBgColor}
@@ -285,7 +275,7 @@ function Inspector(props) {
                         {'numbered' === paginationType && (
                             <>
                                 <CustomColorControl
-                                    className='is-list'
+                                    className="is-list"
                                     colors={defaultColors}
                                     label={__('Active Text Color', 'changeloger')}
                                     colorValue={paginationActiveTextColor}
@@ -296,7 +286,7 @@ function Inspector(props) {
                                     }
                                 />
                                 <CustomColorControl
-                                    className='is-list'
+                                    className="is-list"
                                     colors={defaultColors}
                                     label={__('Active Bg Color', 'changeloger')}
                                     colorValue={paginationActiveBgColor}
@@ -312,8 +302,6 @@ function Inspector(props) {
                             backgroundColor={paginationBgColor}
                             textColor={paginationTextColor}
                         />
-
-
                     </PanelBody>
                 )}
             </InspectorControls>

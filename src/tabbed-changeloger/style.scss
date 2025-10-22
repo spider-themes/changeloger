@@ -16,6 +16,19 @@
 	border-bottom: 1px solid #e0e0e0;
 	margin: 0;
 	padding: 0;
+
+  /* Tab Alignment Classes */
+  &.left-aligned {
+    justify-content: flex-start;
+  }
+
+  &.center-aligned {
+    justify-content: center;
+  }
+
+  &.right-aligned {
+    justify-content: flex-end;
+  }
 }
 
 .changeloger-tabs-frontend .tab-button {
