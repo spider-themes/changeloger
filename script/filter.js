@@ -7,17 +7,58 @@ jQuery(document).ready(function($) {
         let $loadMoreButton = $container.find('.changeloger-pagination-button');
         let currentPage = 1;
         let changelogData = $container.find(".changelog-info-item").toArray();
+        let filteredData = changelogData.slice(); // Copy of original data for filtering
         let perPage = parseInt($paginationWrapper.attr("data-per-page"), 10) || changelogData.length ;
-        let totalPages = Math.ceil(changelogData.length / perPage);
+        let totalPages = Math.ceil(filteredData.length / perPage);
         let loadedItems = perPage; // Initial value for loaded items (to load the first chunk)
 
         // Filter system
         let selectedFilters = new Set();
+        let searchQuery = '';
 
         const $filterButton = $container.find('.filter-button-group button');
         const $filterDropdownButton = $container.find('.changeloger-filter-popover-button').first();
         const $filterDropdown = $container.find('.changeloger-filter-popover').first();
         const $changelogerItem = $container.find('.changelog-info-item');
+        const $searchControl = $container.find('.changelog-search-control');
+        const $helpBlock = $container.find('#changelog-search-help-block');
+
+        // Search functionality
+        let searchTimer = null;
+        $searchControl.on('input', function() {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(function() {
+                searchQuery = $searchControl.val().toLowerCase();
+
+                // Clear previous search highlights
+                $container.unmark();
+
+                applyFilters();
+                renderChangelog();
+
+                // Update search help block
+                updateSearchHelpBlock();
+            }, 300);
+        });
+
+        function updateSearchHelpBlock() {
+            if (searchQuery.length > 0) {
+                if (filteredData.length > 0) {
+                    $helpBlock.text(filteredData.length + ' result(s) found.').show();
+                } else {
+                    $helpBlock.text('No results found.').show();
+                }
+            } else {
+                $helpBlock.hide();
+            }
+        }
+
+        function clearSearch() {
+            searchQuery = '';
+            $searchControl.val('');
+            $container.unmark();
+            updateSearchHelpBlock();
+        }
 
         // Toggle filter dropdown visibility
         $filterDropdownButton.on('click', function () {
@@ -75,12 +116,15 @@ jQuery(document).ready(function($) {
             renderChangelog();
         });
 
-// Reset filters when cross icon is clicked
+        // Reset filters when cross icon is clicked
         $filterDropdownButton.on('click', 'span.cross-icon', function () {
             selectedFilters.clear();
             $filterButton.removeClass('active');
             $filterDropdownButton.removeClass('active');
             $filterButton.filter('[data-filter="all"]').addClass('active');
+
+            // Also clear search when filters are reset
+            clearSearch();
 
             applyFilters();
             renderChangelog();
@@ -93,12 +137,42 @@ jQuery(document).ready(function($) {
 
 
 
-        // Function to apply filters to the changelog items
+        // Function to apply filters and search to the changelog items
         function applyFilters() {
-            $changelogerItem.each(function () {
-                let itemFilters = $(this).data('filter').split(' ');
-                $(this).toggle(selectedFilters.size === 0 || [...selectedFilters].some(f => itemFilters.includes(f)));
+            // Update filteredData based on current filters and search
+            filteredData = changelogData.filter(function(item) {
+                const $item = $(item);
+
+                // Check filter criteria
+                let matchesFilter = true;
+                if (selectedFilters.size > 0) {
+                    let itemFilters = $item.data('filter').split(' ');
+                    matchesFilter = [...selectedFilters].some(f => itemFilters.includes(f));
+                }
+
+                // Check search criteria
+                let matchesSearch = true;
+                if (searchQuery.length > 0) {
+                    const date = $item.find('.date span:first').text().toLowerCase();
+                    const version = $item.find('.version-tag').text().toLowerCase();
+                    const changes = $item.find('.content').text().toLowerCase();
+
+                    matchesSearch = date.includes(searchQuery) ||
+                                  version.includes(searchQuery) ||
+                                  changes.includes(searchQuery);
+                }
+
+                return matchesFilter && matchesSearch;
             });
+
+            // Update total pages based on filtered data
+            totalPages = Math.ceil(filteredData.length / perPage);
+
+            // Reset to page 1 when filters change
+            currentPage = 1;
+
+            // Re-render pagination with new total pages
+            renderPagination();
         }
 
         // Render pagination
@@ -127,52 +201,62 @@ jQuery(document).ready(function($) {
             // Hide all items first
             $changelogerItem.hide();
 
-            // Show only items for the current page after applying filters
-            $(changelogData.slice(start, end)).each(function() {
-                let item = $(this);
-                let itemFilters = item.data('filter').split(' ');
+            // Show only items for the current page from filtered data
+            $(filteredData.slice(start, end)).each(function() {
+                const $item = $(this);
+                $item.show();
 
-                // Only show the item if it matches the selected filters
-                if (selectedFilters.size === 0 || [...selectedFilters].some(f => itemFilters.includes(f))) {
-                    item.show();
+                // Apply search highlighting if there's a search query
+                if (searchQuery.length > 0) {
+                    $item.mark(searchQuery, {
+                        "separateWordSearch": false
+                    });
                 }
             });
 
             // Update the page numbers
             $paginationWrapper.find(".page-numbers").removeClass("current");
-            $paginationWrapper.find(".page-numbers").eq(currentPage - 1).addClass("current");
+            $paginationWrapper.find(".page-numbers").not($prevButton).not($nextButton).eq(currentPage - 1).addClass("current");
 
             // Toggle visibility of prev/next buttons
             $prevButton.toggle(currentPage > 1);
             $nextButton.toggle(currentPage < totalPages);
 
-            // Only show the 'Load More' button if there are more items to load
-            $loadMoreButton.toggle(end < changelogData.length);
+            // Only show the 'Load More' button if there are more items to load from filtered data
+            $loadMoreButton.toggle(end < filteredData.length);
 
+            // Update version tree and search help
             checkVersionTree();
+            updateSearchHelpBlock();
         }
 
 
-       function checkVersionTree() {
-            let visibleIds = $container.find('.changelog-info-item:visible').map(function () {
-                return $(this).attr('id');
-            }).get();
+        function checkVersionTree() {
+            // Build visible IDs set for O(1) lookup
+            const visibleIds = new Set();
+            $container.find('.changelog-info-item:visible').each(function() {
+                const id = $(this).attr('id');
+                if (id) visibleIds.add(id);
+            });
 
-            $container.find('.changeloger-version-list-wrapper li').each(function () {
-                let $li = $(this);
-                let $link = $li.children('a');
-                let targetId = $link.attr('href')?.replace('#', '');
+            // Single pass through all list items
+            $container.find('.changeloger-version-list-wrapper li').each(function() {
+                const $li = $(this);
+                const $link = $li.children('a');
+                const targetId = $link.attr('href')?.replace('#', '');
 
-                let hasVisibleChildren = $li.find('a').filter(function () {
-                    let childId = $(this).attr('href')?.replace('#', '');
-                    return visibleIds.includes(childId);
-                }).length > 0;
+                // Check if this item or any descendant should be visible
+                let shouldShow = targetId && visibleIds.has(targetId);
 
-                if (visibleIds.includes(targetId) || hasVisibleChildren) {
-                    $li.show();
-                } else {
-                    $li.hide();
+                if (!shouldShow) {
+                    // Check descendants using find() instead of recursive iteration
+                    shouldShow = $li.find('a').toArray().some(anchor => {
+                        const childId = $(anchor).attr('href')?.replace('#', '');
+                        return childId && visibleIds.has(childId);
+                    });
                 }
+
+                $li.toggle(shouldShow);
             });
         }
 
@@ -195,14 +279,29 @@ jQuery(document).ready(function($) {
         // Handle "Load More" button click
         $loadMoreButton.on("click", function() {
             loadedItems += perPage;
-            let nextItems = changelogData.slice(0, loadedItems);
-            $(nextItems).show();
+            let nextItems = filteredData.slice(0, loadedItems);
 
-            if (nextItems.length >= changelogData.length) {
+            // Show items and apply search highlighting if needed
+            $(nextItems).each(function() {
+                const $item = $(this);
+                $item.show();
+
+                if (searchQuery.length > 0) {
+                    $item.mark(searchQuery, {
+                        "separateWordSearch": false
+                    });
+                }
+            });
+
+            if (nextItems.length >= filteredData.length) {
                 $(this).hide();
             }
+
+            checkVersionTree();
         });
 
+        // Initialize filtered data on page load
+        applyFilters();
         renderPagination();
         renderChangelog();
 

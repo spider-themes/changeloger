@@ -138,10 +138,12 @@
   list-style-type: none !important;
   padding-left: 20px !important;
   margin-bottom: 0 !important;
+  margin-left: 0;
   gap: 5px;
 }
 .changeloger-container .changelog-wrapper .changeloger-version-list-container ul li {
   position: relative;
+  margin-bottom: 4px;
 }
 .changeloger-container .changelog-wrapper .changeloger-version-list-container ul li a {
   text-decoration: none;
@@ -156,15 +158,19 @@
   display: none;
 }
 .changeloger-container .changeloger-pagination-wrapper {
+  margin-top: 30px;
+}
+.changeloger-container .changeloger-pagination-wrapper .changeloger-pagination-inner-wrapper {
   display: flex;
   justify-content: center;
-  margin-top: 30px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 .changeloger-container .changeloger-pagination-wrapper .page-numbers, .changeloger-container .changeloger-pagination-wrapper .page-navigator {
   background: var(--changeloger-pagination-bg-color);
   color: var(--changeloger-pagination-text-color);
   padding: 8px 15px;
-  margin-right: 10px;
   border-radius: 4px;
   text-decoration: none;
   cursor: pointer;
@@ -316,6 +322,7 @@
   z-index: 99;
   display: flex;
   position: relative;
+  padding: 0 20px;
 }
 .changeloger-filter-alignment.align-center {
   justify-content: center;
@@ -423,6 +430,65 @@
   top: 50px;
   height: 100%;
   margin-left: 30px;
+}
+
+.changelog_form_inner {
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto 35px;
+  padding-top: 35px;
+}
+.changelog_form_inner .changelog_form_group {
+  position: relative;
+}
+.changelog_form_inner .changelog_form_group:before {
+  position: absolute;
+  left: 18px;
+  font-size: 24px;
+  color: var(--brand_color, #00a19a);
+  top: 50%;
+  transform: translateY(-50%);
+  content: "\f179";
+  font-family: dashicons;
+}
+.changelog_form_inner .changelog_form_control {
+  font-size: 14px;
+  font-weight: 400;
+  height: 50px;
+  line-height: 50px;
+  box-shadow: 0 1px 1px rgba(11, 80, 115, 0.3), 0 1px 5px rgba(60, 64, 67, 0.1);
+  padding-right: 30px;
+  background: #fff;
+  border: 0;
+  padding-left: 52px;
+  width: 100%;
+  border-radius: 45px;
+  color: #242729;
+}
+.changelog_form_inner .changelog_form_control::-moz-placeholder {
+  color: #848d95 !important;
+}
+.changelog_form_inner .changelog_form_control::placeholder {
+  color: #848d95 !important;
+}
+.changelog_form_inner input[type=search]::-webkit-search-cancel-button {
+  -webkit-appearance: searchfield-cancel-button !important;
+  height: 18px;
+  width: 18px;
+  margin-left: 0.4em;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27%23777%27><path d=%27M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z%27/></svg>");
+  cursor: pointer;
+}
+.changelog_form_inner .help-block {
+  font-size: 16px;
+  display: block;
+  text-align: center;
+  margin-top: 6px;
+}
+
+mark {
+  background-color: yellow;
+  padding: 0 2px;
 }
 
 /*# sourceMappingURL=style-index.css.map*/

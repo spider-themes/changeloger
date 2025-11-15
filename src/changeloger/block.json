@@ -77,7 +77,7 @@
 		},
 		"enableVersions": {
 			"type": "boolean",
-			"default": true
+			"default": false
 		},
 		"versionsPosition": {
 			"type": "string",
@@ -92,9 +92,9 @@
 			"default": "right"
 		},
 		"enableSearch": {
-    "type": "boolean",
-    "default": false
-  }
+            "type": "boolean",
+            "default": false
+        }
 	},
 	"supports": {
 		"html": false,

@@ -7,6 +7,7 @@ import ChangelogParser from './parser';
 import VersionsTree from '../components/versions-tree';
 import FilterButton from '../components/filter';
 import { plus } from '@wordpress/icons';
+import {isProChangeloger} from "../utils/constants";
 
 function save(props) {
   const {
@@ -59,14 +60,10 @@ function save(props) {
 
   const isLeft = enableVersions && versionsPosition === 'left';
   const isRight = enableVersions && versionsPosition === 'right';
-  // Check if changeloger premium is true
-  const cha_premium = changeloger_local_object.licensing;
   
 
   return (
     <div {...blockProps} id={uniqueId}>
-      {/* filter option */}
-
       {enableSearch && (
         <div className="changelog_form_inner">
 				<div className="changelog_form_group">
@@ -75,22 +72,22 @@ function save(props) {
 						data-searchTarget={uniqueId}
 						className="changelog-search-control changelog_form_control noEnterSubmit"
 						placeholder='Search your changelog...'
-            checked={enableSearch}
-            onChange={(value) => setAttributes({ enableSearch: value })}
+                        checked={enableSearch}
+                        onChange={(value) => setAttributes({ enableSearch: value })}
 					/>
 				</div>
 				<span id="changelog-search-help-block" className="help-block" />
 			</div>
       )}
 
-      {enableFilter && cha_premium && (
+      {enableFilter && isProChangeloger && (
         <FilterButton {...props} parsedChangelog={parsedChangelog} />
       )}
       <div className="changelog-wrapper">
         {isLeft && (
           <div className="changeloger-version-list-container changeloger-version-list-position-left">
             <h6 className="version-title">Versions</h6>
-            <VersionsTree versions={versions} />
+            <VersionsTree versions={versions} uniqueId={uniqueId}/>
           </div>
         )}
         <div className="changeloger-info-inner-wrapper">
@@ -193,7 +190,7 @@ function save(props) {
         )}
       </div>
 
-      {enablePagination && cha_premium && (
+      {enablePagination && isProChangeloger && (
         <div className="changeloger-pagination-wrapper" data-per-page={perPage}>
           {'load-more' === paginationType && (
             <div className="wp-block-button">

@@ -240,6 +240,13 @@ function Edit({
     event.stopPropagation(); // Prevent tab click when removing
     if (tabs.length <= 1) return; // Keep at least one tab
 
+    // Show confirmation dialog
+    const tabName = tabs[index].title || `Tab ${index + 1}`;
+    const confirmed = window.confirm(`Are you sure you want to delete the '${tabName}' tab?`);
+    if (!confirmed) {
+      return; // User cancelled the deletion
+    }
+
     const updatedTabs = tabs.filter((_, i) => i !== index);
     setAttributes({
       tabs: updatedTabs

@@ -52,7 +52,7 @@ export default class ChangelogParser {
         let category = row.substring(0, splitIndex).trim();
 
         // Remove any unwanted symbols at the beginning of the category
-        category = category.replace(/^[*->=]+/, '').trim();
+        category = category.trim();
 
         const change = row.substring(
             splitIndex + (splitIndex === splitIndexDash ? 3 : 1)).trim();
@@ -100,15 +100,15 @@ export default class ChangelogParser {
     return changes;
   }
 
-  getVersion(version) {
-    const parsedChanges = this.parse();
-    for (const change of parsedChanges) {
-      if (change.version === version) {
-        return change;
-      }
-    }
-    return null;
-  }
+  // getVersion(version) {
+  //   const parsedChanges = this.parse();
+  //   for (const change of parsedChanges) {
+  //     if (change.version === version) {
+  //       return change;
+  //     }
+  //   }
+  //   return null;
+  // }
 
     normalizeVersion(version) {
         const segments = version.split('.');

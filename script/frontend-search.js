@@ -1,3 +1,9 @@
+/*
+ * This search functionality has been integrated into filter.js
+ * to work with filters and pagination. This file is disabled.
+ */
+
+/*
 jQuery(document).ready(function ($) {
   $('.changelog-search-control').on('input', function () {
     const searchTxt = $(this).val().toLowerCase();
@@ -46,3 +52,4 @@ jQuery(document).ready(function ($) {
     }
   });
 });
+*/

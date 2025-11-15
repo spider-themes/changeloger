@@ -71,7 +71,7 @@ class Changeloger_Block_Assets {
 		wp_localize_script( 'jquery', 'changeloger_local_object', array(
 			'ajax_url'  => admin_url( 'admin-ajax.php' ),
 			'nonce'     => wp_create_nonce( 'changeloger_nonce' ),
-			'licensing' => 1
+			'licensing' => $licensing
 		) );
 	}
 

@@ -17,7 +17,6 @@
 
             // Throttle/debounce timers
             this.scrollTimer = null;
-            this.searchTimer = null;
 
             if (this.$ezdSidebarWrapper.length) {
                 this.$ezdSidebarWrapper.addClass('hasVersionTree');
@@ -39,14 +38,6 @@
                     this.scrollTimer = null;
                 }, 100);
             });
-
-            // Debounce search input (wait 300ms after user stops typing)
-            $('.changelog-search-control').on('input', () => {
-                clearTimeout(this.searchTimer);
-                this.searchTimer = setTimeout(() => {
-                    this.checkVersionTree();
-                }, 300);
-            });
         }
 
         fixParentOverflow() {
@@ -63,7 +54,7 @@
 
         setupVersionClickHandlers() {
             // Set up click handlers once, use event delegation
-            this.$versionWrapper.on('click', 'li > a', function (e) {
+            this.$versionWrapper.on('click', 'li > a', function () {
                 const $parentLi = $(this).closest('li');
                 const $childUl = $parentLi.children('ul');
 
@@ -137,35 +128,6 @@
                         $dropdown.hide();
                     }
                 }
-            });
-        }
-
-        checkVersionTree() {
-            // Build visible IDs set for O(1) lookup
-            const visibleIds = new Set();
-            this.$container.find('.changelog-info-item:visible').each(function() {
-                const id = $(this).attr('id');
-                if (id) visibleIds.add(id);
-            });
-
-            // Single pass through all list items
-            this.$versionWrapper.find('li').each(function() {
-                const $li = $(this);
-                const $link = $li.children('a');
-                const targetId = $link.attr('href')?.replace('#', '');
-
-                // Check if this item or any descendant should be visible
-                let shouldShow = targetId && visibleIds.has(targetId);
-
-                if (!shouldShow) {
-                    // Check descendants using find() instead of recursive iteration
-                    shouldShow = $li.find('a').toArray().some(anchor => {
-                        const childId = $(anchor).attr('href')?.replace('#', '');
-                        return childId && visibleIds.has(childId);
-                    });
-                }
-
-                $li.toggle(shouldShow);
             });
         }
     }
