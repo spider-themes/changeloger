@@ -5,7 +5,7 @@ import '../changeloger/editor.scss';
 function VersionLimitModal({ isOpen, onClose }) {
     if (!isOpen) return null;
 
-    const proLink = 'https://wpdeveloper.com/in/upgrade-changeloger'; // Replace with your actual pro upgrade link
+    const proLink = window.location.href.substring(0, window.location.href.lastIndexOf('/wp-admin')) + '/wp-admin/admin.php?page=changeloger-pricing';
 
     return (
         <Modal

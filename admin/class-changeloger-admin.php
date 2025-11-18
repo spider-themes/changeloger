@@ -105,3 +105,17 @@ class Changeloger_Admin {
 
 // Initialize the admin
 Changeloger_Admin::get_instance();
+
+
+add_action( 'admin_init', 'cha_hide_notices_on_dashboard' );
+
+if ( ! function_exists( 'cha_hide_notices_on_dashboard' ) ) {
+	function cha_hide_notices_on_dashboard(): void {
+		$page = $_GET['page'] ?? '';
+		if ( in_array( $page, [ 'changeloger', 'changeloger-settings', 'changeloger-usage' ] ) ) {
+			// Remove all admin notices
+			remove_all_actions( 'admin_notices' );
+			remove_all_actions( 'all_admin_notices' );
+		}
+	}
+}

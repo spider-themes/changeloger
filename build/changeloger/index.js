@@ -1028,7 +1028,7 @@ function Inspector(props) {
     group: "styles"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Log Tags', 'changeloger'),
-    initialOpen: false
+    initialOpen: true
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_log_type_colors__WEBPACK_IMPORTED_MODULE_7__["default"], {
     changelog: parsedChangelog,
     colors: defaultColors,
@@ -1378,7 +1378,7 @@ function CustomPlaceholder(props) {
     className: "placeholder-sample-button",
     variant: "tertiary",
     onClick: () => {
-      const sampleData = `${changelog}\n` + '= 1.0.0 (01 March 2025) =\n' + 'New: Added a bulk edit feature for faster modifications.\n' + 'Tweaked: Adjusted UI spacing for better readability.\n' + 'Updated: Refreshed third-party dependencies for stability.\n' + 'Fixed: Resolved a bug causing layout shifts on mobile.\n' + 'improvement: Enhanced performance for faster load times.\n' + '\n' + '= 2.0.0 (01 April 2025) =\n' + 'New: Added a bulk edit feature for faster modifications.\n' + 'Tweaked: Adjusted UI spacing for better readability.\n' + 'Updated: Refreshed third-party dependencies for stability.\n' + 'Fixed: Resolved a bug causing layout shifts on mobile.\n' + 'improvement: Enhanced performance for faster load times.\n';
+      const sampleData = `${changelog}\n` + '= 2.0.0 (01 April 2025) =\n' + 'New: Added a bulk edit feature for faster modifications.\n' + 'Tweaked: Adjusted UI spacing for better readability.\n' + 'Updated: Refreshed third-party dependencies for stability.\n' + 'Fixed: Resolved a bug causing layout shifts on mobile.\n' + 'improvement: Enhanced performance for faster load times.\n' + '\n' + '= 1.0.0 (01 March 2025) =\n' + 'New: Added a bulk edit feature for faster modifications.\n' + 'Tweaked: Adjusted UI spacing for better readability.\n' + 'Updated: Refreshed third-party dependencies for stability.\n' + 'Fixed: Resolved a bug causing layout shifts on mobile.\n' + 'improvement: Enhanced performance for faster load times.\n';
       const limitedData = limitChangelogVersions(sampleData);
       setAttributes({
         showPlaceholder: false,
@@ -2033,8 +2033,7 @@ function VersionLimitModal({
   onClose
 }) {
   if (!isOpen) return null;
-  const proLink = 'https://wpdeveloper.com/in/upgrade-changeloger'; // Replace with your actual pro upgrade link
-
+  const proLink = window.location.href.substring(0, window.location.href.lastIndexOf('/wp-admin')) + '/wp-admin/admin.php?page=changeloger-pricing';
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Modal, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Version Limit Reached', 'changeloger'),
     onRequestClose: onClose,

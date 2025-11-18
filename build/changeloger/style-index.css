@@ -159,6 +159,7 @@
 }
 .changeloger-container .changeloger-pagination-wrapper {
   margin-top: 30px;
+  text-align: center;
 }
 .changeloger-container .changeloger-pagination-wrapper .changeloger-pagination-inner-wrapper {
   display: flex;
@@ -330,7 +331,7 @@
 .changeloger-filter-alignment.align-center .changeloger-filter-popover {
   transform-origin: center;
   left: 50%;
-  transform: translateX(-50%) translateY(-50px) scale(0.5);
+  transform: translateX(-50%) translateY(0);
 }
 .changeloger-filter-alignment.align-left {
   justify-content: left;

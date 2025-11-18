@@ -41,7 +41,7 @@
         }
 
         fixParentOverflow() {
-            let $parentSelector = $('.changeloger-version-list-container');
+            let $parentSelector = this.$container.find('.changeloger-version-list-container');
             if (!$parentSelector.length) return;
 
             // Use parentsUntil to avoid manual loop

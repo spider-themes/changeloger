@@ -93,14 +93,14 @@ function CustomPlaceholder( props ) {
 						className="placeholder-sample-button"
 						variant="tertiary"
 						onClick={ () => {
-							const sampleData = `${changelog}\n` + '= 1.0.0 (01 March 2025) =\n' +
+							const sampleData = `${changelog}\n` + '= 2.0.0 (01 April 2025) =\n' +
 								'New: Added a bulk edit feature for faster modifications.\n' +
 								'Tweaked: Adjusted UI spacing for better readability.\n' +
 								'Updated: Refreshed third-party dependencies for stability.\n' +
 								'Fixed: Resolved a bug causing layout shifts on mobile.\n' +
 								'improvement: Enhanced performance for faster load times.\n'+
 								'\n' +
-								'= 2.0.0 (01 April 2025) =\n' +
+								'= 1.0.0 (01 March 2025) =\n' +
 								'New: Added a bulk edit feature for faster modifications.\n' +
 								'Tweaked: Adjusted UI spacing for better readability.\n' +
 								'Updated: Refreshed third-party dependencies for stability.\n' +

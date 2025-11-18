@@ -111,7 +111,6 @@ jQuery(document).ready(function($) {
                     $filterDropdownButton.addClass('active'); // Add active class to dropdown button
                 }
             }
-
             applyFilters();
             renderChangelog();
         });
@@ -130,12 +129,10 @@ jQuery(document).ready(function($) {
             renderChangelog();
         });
 
-// On page load, make sure the "all" filter is active by default
+        // On page load, make sure the "all" filter is active by default
         $(document).ready(function() {
             $filterButton.filter('[data-filter="all"]').addClass('active');
         });
-
-
 
         // Function to apply filters and search to the changelog items
         function applyFilters() {
@@ -230,7 +227,6 @@ jQuery(document).ready(function($) {
             updateSearchHelpBlock();
         }
 
-
         function checkVersionTree() {
             // Build visible IDs set for O(1) lookup
             const visibleIds = new Set();
@@ -238,7 +234,6 @@ jQuery(document).ready(function($) {
                 const id = $(this).attr('id');
                 if (id) visibleIds.add(id);
             });
-
             // Single pass through all list items
             $container.find('.changeloger-version-list-wrapper li').each(function() {
                 const $li = $(this);
@@ -298,6 +293,16 @@ jQuery(document).ready(function($) {
             }
 
             checkVersionTree();
+        });
+
+        const $tabButtons = $('.changeloger-tabs-frontend').find('.tab-button');
+        // Add click event listeners to tab buttons
+        $tabButtons.each(function(index) {
+            $(this).on('click', function() {
+                setTimeout(function() {
+                    checkVersionTree();
+                }, 100);
+            });
         });
 
         // Initialize filtered data on page load

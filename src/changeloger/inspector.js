@@ -212,7 +212,7 @@ function Inspector(props) {
             </InspectorControls>
 
             <InspectorControls group="styles">
-                <PanelBody title={__('Log Tags', 'changeloger')} initialOpen={false}>
+                <PanelBody title={__('Log Tags', 'changeloger')} initialOpen={true}>
                     <LogTypeColors
                         changelog={parsedChangelog}
                         colors={defaultColors}

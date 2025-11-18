@@ -58,20 +58,13 @@ class Changeloger_Block_Assets {
 					true
 				);
 
-				// for search functionality
-		  wp_enqueue_script(
-		    'changeloger-frontend-search',
-		    plugins_url('/', __FILE__ ) . '../script/frontend-search.js',
-		    array( 'jquery' ),
-		    true
-		  );
 
 
 		$licensing = array( 'can_use_premium_code' => cha_fs()->can_use_premium_code() );
 		wp_localize_script( 'jquery', 'changeloger_local_object', array(
 			'ajax_url'  => admin_url( 'admin-ajax.php' ),
 			'nonce'     => wp_create_nonce( 'changeloger_nonce' ),
-			'licensing' => $licensing
+			'licensing' => $licensing['can_use_premium_code']
 		) );
 	}
 

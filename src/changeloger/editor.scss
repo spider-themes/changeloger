@@ -202,7 +202,7 @@ mark {
   }
 
   .components-modal__header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #131548 0%, #C364FE 100%);
     color: #fff;
     padding: 20px 24px;
     border-bottom: none;
@@ -248,7 +248,7 @@ mark {
       align-items: center;
 
       .changeloger-upgrade-button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #B639EF 0%, #131548 70%);
         border: none;
         color: #fff;
         padding: 10px 24px;
@@ -261,7 +261,7 @@ mark {
         &:hover {
           transform: translateY(-2px);
           box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-          background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+          background: linear-gradient(135deg, #131548 0%, #C364FE 100%);
         }
 
         &:focus {
