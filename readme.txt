@@ -1,7 +1,7 @@
 === Changeloger - Release Notes & Changelog Manager ===
 Contributors: mdjwel, spiderdevs
 Tags: changelogs, changelog, release, version, history
-Stable tag: 1.0.1
+Stable tag: 1.1.0
 Requires at least: 6.0
 Tested up to: 6.7.2
 Requires PHP: 7.4
@@ -88,6 +88,14 @@ Absolutely! While Changeloger is ideal for software updates, it can be used for 
 3. Changeloger block editor with a preview of the visually designed changelog. You can customize the design and layout options.
 
 == Changelog ==
+
+= 1.0.1 (18 March 2025) =
+New: Filter added for extended customization options
+New: Changeloger dashboard, usage table, and settings panel introduced
+New: Search functionality implemented for faster changelog lookup
+New: Alignment option added for tab customization
+Enhanced: Tabbed Changeloger interface development in progress for a more organized viewing experience
+Updated: Freemius SDK updated to 2.13.0
 
 = 1.0.1 (18 March 2025) =
 New: Added color control for pagination button on hover
