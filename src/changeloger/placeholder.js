@@ -4,16 +4,24 @@ import {
 	Button,
 	FormFileUpload,
 	TextareaControl,
+    TextControl,
+    Modal,
 } from '@wordpress/components';
 import { more } from '@wordpress/icons';
 import { useState } from '@wordpress/element';
 import ChangelogParser from './parser';
 import { isProChangeloger } from '../utils/constants';
 import VersionLimitModal from '../components/version-limit-modal';
+import TextUrl from '../components/text-url';
 
 function CustomPlaceholder( props ) {
 	const { attributes, setAttributes } = props;
-	const { changelog, showPlaceholder, showTextArea } = attributes;
+	const { changelog, showPlaceholder, showTextArea,textUrl } = attributes;
+    const [ isOpenTextUrl, setIsOpenTextUrl ] = useState( false );
+    const [ textUrlState, setTextUrlState ] = useState( '' );
+
+    // Function to open the modal
+    const openModal = () => setIsOpenTextUrl( true );
 
 	// State for version limit modal
 	const [showVersionLimitModal, setShowVersionLimitModal] = useState(false);
@@ -21,6 +29,7 @@ function CustomPlaceholder( props ) {
 
 	// Function to limit changelog to max versions for free users
 	const limitChangelogVersions = (changelogText) => {
+
 		if (!isProChangeloger && changelogText) {
 			const parser = new ChangelogParser(changelogText);
 			const parsedChangelog = parser.parse();
@@ -58,6 +67,26 @@ function CustomPlaceholder( props ) {
 		fr.readAsText( event.target.files[ 0 ] );
 	};
 
+    const handleUrlChange = ( url ) => {
+        // if url is empty, do not update state
+        if(!url) return;
+        setTextUrlState( url );
+    };
+
+    const handleUrlFile = () => {
+        setAttributes({ textUrl: textUrlState }); 
+        fetch(textUrl)
+            .then(res => res.text())
+            .then(data => { 
+                const limitedData = limitChangelogVersions(data);
+                setAttributes({ changelog: limitedData, showPlaceholder: false });
+                setIsOpenTextUrl(false); 
+            })
+            .catch(err => {
+                console.log("Fetch error:", err);
+            });
+    };
+
 	return (
 		<>
 			{ showPlaceholder && (
@@ -70,6 +99,17 @@ function CustomPlaceholder( props ) {
 						'changeloger'
 					) }
 				>
+                    <Button variant="secondary" onClick={ openModal }>
+                        Open Modal
+                    </Button>
+                    <TextUrl
+                        isOpen={ isOpenTextUrl }
+                        onClose={ () => setIsOpenTextUrl( false ) }
+                        handleUrlFile={ handleUrlFile }
+                        handleUrlChange={ handleUrlChange }
+                        textUrl={ textUrlState }
+                    />
+
 					<FormFileUpload
 						variant="secondary"
 						accept="text/plain"
@@ -158,7 +198,7 @@ function CustomPlaceholder( props ) {
 			{/* Version Limit Modal */}
 			<VersionLimitModal
 				isOpen={showVersionLimitModal}
-				onClose={() => setShowVersionLimitModal(false)}
+				onClose={() =>  (false)}
 			/>
 		</>
 	);

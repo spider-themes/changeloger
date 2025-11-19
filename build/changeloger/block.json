@@ -94,6 +94,10 @@
     "enableSearch": {
       "type": "boolean",
       "default": false
+    },
+    "textUrl": {
+      "type": "string",
+      "default": ""
     }
   },
   "supports": {
