@@ -16,7 +16,9 @@ function CustomPlaceholder( props ) {
 	const { attributes, setAttributes } = props;
 	const { changelog, showPlaceholder, showTextArea,textUrl } = attributes;
     const [ isOpenTextUrl, setIsOpenTextUrl ] = useState( false );
-    const [ textUrlState, setTextUrlState ] = useState( '' );
+    const [ url, setUrl ] = useState( '' );
+    const [ loader, setLoader ] = useState( false );
+    const [ errorMessage, setErrorMessage ] = useState( '' );
 
     // Function to open the modal
     const openModal = () => setIsOpenTextUrl( true );
@@ -67,24 +69,48 @@ function CustomPlaceholder( props ) {
 
     // Handle URL change
     const handleUrlChange = ( url ) => {
-        setTextUrlState( url );
+        setUrl( url );
     };
     // Handle URL file fetch
     const handleUrlFile = () => {
-        if ( ! textUrlState ) {
+
+      if (!url) return;
+
+       const pattern = /^https?:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(?:\/[^\s?#]*)*\.txt(?:\?[^\s#]*)?(?:#[^\s]*)?$/;
+
+       if (!pattern.test(url)) {
+         setErrorMessage("Please enter a valid .txt URL");
+         return;
+       }
+
+    if (!url.toLowerCase().endsWith(".txt")) {
+        setErrorMessage("Please enter a .txt file URL only!");
+        return;
+    }
+      setLoader(true);
+      setAttributes({ textUrl: url });
+
+      fetch(
+        `/wp-json/changeloger/v1/fetch-txt?url=${encodeURIComponent(
+          url
+        )}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+            // ❗️ Empty response handle
+        if (!data || !data.content || data.content.trim() === "") {
+            setErrorMessage("This URL has no data inside the .txt file!");
+            setLoader(false);
             return;
         }
-        setAttributes({ textUrl: textUrlState }); 
-        fetch(textUrlState)
-            .then(res => res.text())
-            .then(data => { 
-                const limitedData = limitChangelogVersions(data);
-                setAttributes({ changelog: limitedData, showPlaceholder: false });
-                setIsOpenTextUrl(false); 
-            })
-            .catch(err => {
-                console.log("Fetch error:", err);
-            });
+          const limitedData = limitChangelogVersions(data.content);
+          setAttributes({ changelog: limitedData, showPlaceholder: false });
+          setIsOpenTextUrl(false);
+        })
+        .catch((err) => {
+          setErrorMessage("Failed to fetch the file. Please check the URL and try again.");
+        })
+        .finally(() => setLoader(false));
     };
 
 	return (
@@ -99,6 +125,7 @@ function CustomPlaceholder( props ) {
 						'changeloger'
 					) }
 				>
+                   
                     <Button variant="secondary" onClick={ openModal }>
                         { __( 'Upload Changelog URL', 'changeloger' ) }
                     </Button>
@@ -107,7 +134,9 @@ function CustomPlaceholder( props ) {
                         onClose={ () => setIsOpenTextUrl( false ) }
                         handleUrlFile={ handleUrlFile }
                         handleUrlChange={ handleUrlChange }
-                        textUrl={ textUrlState }
+                        textUrl={ url }
+                        loader={loader}
+                        errorMessage={errorMessage}
                     />
 
 					<FormFileUpload

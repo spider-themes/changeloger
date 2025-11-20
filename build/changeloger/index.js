@@ -2697,7 +2697,9 @@ function CustomPlaceholder(props) {
     textUrl
   } = attributes;
   const [isOpenTextUrl, setIsOpenTextUrl] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)(false);
-  const [textUrlState, setTextUrlState] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)('');
+  const [url, setUrl] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)('');
+  const [loader, setLoader] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)(false);
+  const [errorMessage, setErrorMessage] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)('');
 
   // Function to open the modal
   const openModal = () => setIsOpenTextUrl(true);
@@ -2746,26 +2748,40 @@ function CustomPlaceholder(props) {
 
   // Handle URL change
   const handleUrlChange = url => {
-    setTextUrlState(url);
+    setUrl(url);
   };
   // Handle URL file fetch
   const handleUrlFile = () => {
-    if (!textUrlState) {
+    if (!url) return;
+    const pattern = /^https?:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(?:\/[^\s?#]*)*\.txt(?:\?[^\s#]*)?(?:#[^\s]*)?$/;
+    if (!pattern.test(url)) {
+      setErrorMessage("Please enter a valid .txt URL");
       return;
     }
+    if (!url.toLowerCase().endsWith(".txt")) {
+      setErrorMessage("Please enter a .txt file URL only!");
+      return;
+    }
+    setLoader(true);
     setAttributes({
-      textUrl: textUrlState
+      textUrl: url
     });
-    fetch(textUrlState).then(res => res.text()).then(data => {
-      const limitedData = limitChangelogVersions(data);
+    fetch(`/wp-json/changeloger/v1/fetch-txt?url=${encodeURIComponent(url)}`).then(res => res.json()).then(data => {
+      // ❗️ Empty response handle
+      if (!data || !data.content || data.content.trim() === "") {
+        setErrorMessage("This URL has no data inside the .txt file!");
+        setLoader(false);
+        return;
+      }
+      const limitedData = limitChangelogVersions(data.content);
       setAttributes({
         changelog: limitedData,
         showPlaceholder: false
       });
       setIsOpenTextUrl(false);
     }).catch(err => {
-      console.log("Fetch error:", err);
-    });
+      setErrorMessage("Failed to fetch the file. Please check the URL and try again.");
+    }).finally(() => setLoader(false));
   };
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, showPlaceholder && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Placeholder, {
     icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_3__["default"],
@@ -2780,7 +2796,9 @@ function CustomPlaceholder(props) {
     onClose: () => setIsOpenTextUrl(false),
     handleUrlFile: handleUrlFile,
     handleUrlChange: handleUrlChange,
-    textUrl: textUrlState
+    textUrl: url,
+    loader: loader,
+    errorMessage: errorMessage
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.FormFileUpload, {
     variant: "secondary",
     accept: "text/plain",
@@ -3374,6 +3392,38 @@ const FilterButton = props => {
 
 /***/ }),
 
+/***/ "./src/components/loader-wave.js":
+/*!***************************************!*\
+  !*** ./src/components/loader-wave.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+const LoaderWave = () => {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "loader-wave"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wave-bar"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wave-bar"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wave-bar"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wave-bar"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wave-bar"
+  })));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (LoaderWave);
+
+/***/ }),
+
 /***/ "./src/components/log-type-colors.js":
 /*!*******************************************!*\
   !*** ./src/components/log-type-colors.js ***!
@@ -3448,6 +3498,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _changeloger_editor_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../changeloger/editor.scss */ "./src/changeloger/editor.scss");
+/* harmony import */ var _loader_wave__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./loader-wave */ "./src/components/loader-wave.js");
+
 
 
 
@@ -3457,18 +3509,20 @@ const TextUrl = ({
   handleUrlFile,
   handleUrlChange,
   textUrl,
-  isOpen
+  isOpen,
+  loader,
+  errorMessage
 }) => {
   if (!isOpen) return null;
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Modal, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("File URL", "changeloger"),
     onRequestClose: onClose,
-    className: "changeloger-version-limit-modal changeloger-text-url"
+    className: `changeloger-version-limit-modal changeloger-text-url ${loader && 'changeloger-modal-loader'}`
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "changeloger-modal-content"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: "changeloger-modal-message"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Changelog File URL.")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Changelog File URL.", "changeloger")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
     __next40pxDefaultSize: true,
     __nextHasNoMarginBottom: true,
     placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Enter URL to changelog text file", "changeloger"),
@@ -3479,13 +3533,15 @@ const TextUrl = ({
     className: "changeloger-text-url-input"
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: "changeloger-text-url-note"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Note: Only text files are supported. (.txt)", "changeloger")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Note: Only text files are supported. (.txt)", "changeloger")), errorMessage && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changeloger-text-url-error"
+  }, errorMessage), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "changeloger-modal-actions"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
     variant: "primary",
     onClick: handleUrlFile,
     className: "changeloger-upgrade-button"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Fetch URL Data", "changeloger"))))));
+  }, loader && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loader_wave__WEBPACK_IMPORTED_MODULE_4__["default"], null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Fetch URL Data", "changeloger")))))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TextUrl);
 
