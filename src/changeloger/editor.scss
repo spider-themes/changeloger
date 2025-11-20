@@ -216,7 +216,7 @@ mark {
 
     .components-button {
       color: #fff;
-
+      height: auto !important;
       &:hover {
         background: rgba(255, 255, 255, 0.1);
       }
@@ -295,6 +295,29 @@ mark {
 }
 
 // Text URL Input Styles
-.changeloger-text-url-input {
-    padding: 20px 0px;
+.changeloger-text-url {
+    .changeloger-text-url-input {
+        input {
+            padding: 20px 10px !important;
+            border-radius: 10px !important;
+            border: 1px solid #cfcfcf !important;
+            outline: none !important;
+            width: 500px;
+        }
+
+        input:focus {
+            border-color: #4a8df6 !important;
+            box-shadow: 0 0 4px rgba(74, 141, 246, 0.4) !important;
+        }
+    }
+    p.changeloger-text-url-note {
+        padding-top: 0px;
+        margin-top: 7px;
+        font-style: italic;
+    }
+    .changeloger-modal-actions{
+        justify-content: center !important;
+        margin-top: 20px;
+    }
+
 }

@@ -2743,16 +2743,20 @@ function CustomPlaceholder(props) {
     };
     fr.readAsText(event.target.files[0]);
   };
+
+  // Handle URL change
   const handleUrlChange = url => {
-    // if url is empty, do not update state
-    if (!url) return;
     setTextUrlState(url);
   };
+  // Handle URL file fetch
   const handleUrlFile = () => {
+    if (!textUrlState) {
+      return;
+    }
     setAttributes({
       textUrl: textUrlState
     });
-    fetch(textUrl).then(res => res.text()).then(data => {
+    fetch(textUrlState).then(res => res.text()).then(data => {
       const limitedData = limitChangelogVersions(data);
       setAttributes({
         changelog: limitedData,
@@ -2771,7 +2775,7 @@ function CustomPlaceholder(props) {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
     variant: "secondary",
     onClick: openModal
-  }, "Open Modal"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_text_url__WEBPACK_IMPORTED_MODULE_8__["default"], {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Upload Changelog URL', 'changeloger')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_text_url__WEBPACK_IMPORTED_MODULE_8__["default"], {
     isOpen: isOpenTextUrl,
     onClose: () => setIsOpenTextUrl(false),
     handleUrlFile: handleUrlFile,
@@ -3459,30 +3463,29 @@ const TextUrl = ({
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Modal, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("File URL", "changeloger"),
     onRequestClose: onClose,
-    className: "changeloger-version-limit-modal"
+    className: "changeloger-version-limit-modal changeloger-text-url"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "changeloger-modal-content"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: "changeloger-modal-message"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Enter the URL of the changelog text file you want to load.")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Changelog File URL.")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
     __next40pxDefaultSize: true,
     __nextHasNoMarginBottom: true,
-    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Enter URL to changelog text file', 'changeloger'),
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Enter URL to changelog text file", "changeloger"),
     onChange: handleUrlChange,
     value: textUrl,
     type: "url",
+    required: true,
     className: "changeloger-text-url-input"
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    className: "changeloger-text-url-note"
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Note: Only text files are supported. (.txt)", "changeloger")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "changeloger-modal-actions"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
     variant: "primary",
     onClick: handleUrlFile,
     className: "changeloger-upgrade-button"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Save File URL", "changeloger")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
-    variant: "secondary",
-    onClick: onClose,
-    className: "changeloger-close-button"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Close", "changeloger"))))));
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Fetch URL Data", "changeloger"))))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TextUrl);
 

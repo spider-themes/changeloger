@@ -3,9 +3,7 @@ import {
 	Placeholder,
 	Button,
 	FormFileUpload,
-	TextareaControl,
-    TextControl,
-    Modal,
+	TextareaControl
 } from '@wordpress/components';
 import { more } from '@wordpress/icons';
 import { useState } from '@wordpress/element';
@@ -67,15 +65,17 @@ function CustomPlaceholder( props ) {
 		fr.readAsText( event.target.files[ 0 ] );
 	};
 
+    // Handle URL change
     const handleUrlChange = ( url ) => {
-        // if url is empty, do not update state
-        if(!url) return;
         setTextUrlState( url );
     };
-
+    // Handle URL file fetch
     const handleUrlFile = () => {
+        if ( ! textUrlState ) {
+            return;
+        }
         setAttributes({ textUrl: textUrlState }); 
-        fetch(textUrl)
+        fetch(textUrlState)
             .then(res => res.text())
             .then(data => { 
                 const limitedData = limitChangelogVersions(data);
@@ -100,7 +100,7 @@ function CustomPlaceholder( props ) {
 					) }
 				>
                     <Button variant="secondary" onClick={ openModal }>
-                        Open Modal
+                        { __( 'Upload Changelog URL', 'changeloger' ) }
                     </Button>
                     <TextUrl
                         isOpen={ isOpenTextUrl }

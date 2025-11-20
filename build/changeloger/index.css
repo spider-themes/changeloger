@@ -601,6 +601,7 @@ mark {
 }
 .changeloger-version-limit-modal .components-modal__header .components-button {
   color: #fff;
+  height: auto !important;
 }
 .changeloger-version-limit-modal .components-modal__header .components-button:hover {
   background: rgba(255, 255, 255, 0.1);
@@ -666,8 +667,25 @@ mark {
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
-.changeloger-text-url-input {
-  padding: 20px 0px;
+.changeloger-text-url .changeloger-text-url-input input {
+  padding: 20px 10px !important;
+  border-radius: 10px !important;
+  border: 1px solid #cfcfcf !important;
+  outline: none !important;
+  width: 500px;
+}
+.changeloger-text-url .changeloger-text-url-input input:focus {
+  border-color: #4a8df6 !important;
+  box-shadow: 0 0 4px rgba(74, 141, 246, 0.4) !important;
+}
+.changeloger-text-url p.changeloger-text-url-note {
+  padding-top: 0px;
+  margin-top: 7px;
+  font-style: italic;
+}
+.changeloger-text-url .changeloger-modal-actions {
+  justify-content: center !important;
+  margin-top: 20px;
 }
 
 /*# sourceMappingURL=index.css.map*/
