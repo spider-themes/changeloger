@@ -227,7 +227,7 @@ function CustomPlaceholder( props ) {
 			{/* Version Limit Modal */}
 			<VersionLimitModal
 				isOpen={showVersionLimitModal}
-				onClose={() =>  (false)}
+                onClose={() => setShowVersionLimitModal(false)}
 			/>
 		</>
 	);

@@ -149,6 +149,7 @@ if ( ! class_exists( 'CHANGELOGER_BLOCKS_CLASS' ) ) {
             require_once __DIR__ . '/includes/enqueue-assets.php';
             require_once __DIR__ . '/includes/register-blocks.php';
             require_once __DIR__ . '/admin/class-changeloger-admin.php';
+	        require_once __DIR__ . '/includes/rest-api.php';
         }
 
     }

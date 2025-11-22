@@ -111,32 +111,61 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./parser */ "./src/changeloger/parser.js");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "lodash");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _parser__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./parser */ "./src/changeloger/parser.js");
+/* harmony import */ var _components_versions_tree__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/versions-tree */ "./src/components/versions-tree.js");
+/* harmony import */ var _components_filter__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../components/filter */ "./src/components/filter.js");
+/* harmony import */ var _utils_constants__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../utils/constants */ "./src/utils/constants.js");
+
+
+
+
+
+
+
+
+
 
 
 function save(props) {
   const {
-    improvementTagColor,
+    uniqueId,
+    customLinks,
     newTagColor,
-    updateTagColor,
+    versionName,
     fixedTagColor,
+    paginationType,
+    updateTagColor,
     tweakedTagColor,
-    paginationTextColor,
+    enablePagination,
     paginationBgColor,
-    paginationActiveTextColor,
+    improvementTagColor,
+    paginationTextColor,
+    customLogTypeColors,
+    paginationLoadMoreText,
     paginationActiveBgColor,
-    paginationHoverTextColor,
+    paginationActiveTextColor,
     paginationHoverBgColor,
+    paginationHoverTextColor,
     enableFilter,
     enableVersions,
     versionsPosition,
     perPage,
     enableSearch,
-    changelogLayout
+    searchPlaceholder
   } = props.attributes;
-  const blockProps = _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.useBlockProps.save({
+  const blockProps = _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps.save({
     className: 'changeloger-container',
     style: {
       '--changeloger-pagination-text-color': paginationTextColor,
@@ -152,17 +181,132 @@ function save(props) {
       '--changeloger-tweaked-tag-bg-color': tweakedTagColor
     }
   });
-  const parser = new _parser__WEBPACK_IMPORTED_MODULE_1__["default"](props.attributes.changelog);
+  const parser = new _parser__WEBPACK_IMPORTED_MODULE_6__["default"](props.attributes.changelog);
   const parsedChangelog = parser.parse();
-  return JSON.stringify({
-    changelog: parsedChangelog,
-    props: blockProps,
-    version: parser.getVersions(),
-    paginationStyles: {
+  const versions = parser.getVersions();
+  const isLeft = enableVersions && versionsPosition === 'left';
+  const isRight = enableVersions && versionsPosition === 'right';
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    ...blockProps,
+    id: uniqueId
+  }, enableSearch && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changelog_form_inner"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changelog_form_group"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "search",
+    "data-searchTarget": uniqueId,
+    className: "changelog-search-control changelog_form_control noEnterSubmit",
+    placeholder: "Search your changelog...",
+    checked: enableSearch,
+    onChange: value => setAttributes({
+      enableSearch: value
+    })
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    id: "changelog-search-help-block",
+    className: "help-block"
+  })), enableFilter && _utils_constants__WEBPACK_IMPORTED_MODULE_9__.isProChangeloger && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_filter__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    ...props,
+    parsedChangelog: parsedChangelog
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changelog-wrapper"
+  }, isLeft && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changeloger-version-list-container changeloger-version-list-position-left"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h6", {
+    className: "version-title"
+  }, "Versions"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_versions_tree__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    versions: versions,
+    uniqueId: uniqueId
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changeloger-info-inner-wrapper"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changeloger-items"
+  }, parsedChangelog.map((item, index) => {
+    const {
+      date,
+      version,
+      changes
+    } = item;
+    const currentLinks = (0,lodash__WEBPACK_IMPORTED_MODULE_2__.get)(customLinks, version, []);
+    const uniqueCategories = [...new Set(changes.map(item => item.category.toLowerCase()))];
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      key: item.version,
+      id: uniqueId + '-' + item.version,
+      className: "changelog-info-item",
+      "data-filter": uniqueCategories.join(' ')
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "date"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, date), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText.Content, {
+      tagName: "span",
+      className: "changeloger-version-name",
+      placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Version Name', 'changeloger'),
+      value: versionName[version]
+    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "version"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      className: "version-tag"
+    }, version), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      className: "line"
+    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "content"
+    }, changes.map(item => {
+      const currentCategory = item.category.toLowerCase();
+      const hasCustomColor = (0,lodash__WEBPACK_IMPORTED_MODULE_2__.has)(customLogTypeColors, currentCategory);
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+        style: hasCustomColor ? {
+          backgroundColor: (0,lodash__WEBPACK_IMPORTED_MODULE_2__.get)(customLogTypeColors, currentCategory)
+        } : {},
+        className: `tag ${currentCategory.toLowerCase().replace(/\s/g, '-')}`
+      }, item.category), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+        className: "change"
+      }, item.change));
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "changeloger-link-wrapper"
+    }, currentLinks.map((itemLink, index) => {
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+        href: itemLink.link,
+        className: "changeloger-custom-link",
+        target: "_blank"
+      }, itemLink.icon && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+        className: "changeloger-custom-link-icon",
+        style: {
+          WebkitMaskImage: `url(${itemLink.icon})`
+        }
+      }), itemLink.name);
+    }))));
+  }))), isRight && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changeloger-version-list-container changeloger-version-list-position-right"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h6", {
+    className: "version-title"
+  }, "Versions"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_versions_tree__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    versions: versions,
+    uniqueId: uniqueId
+  }))), enablePagination && _utils_constants__WEBPACK_IMPORTED_MODULE_9__.isProChangeloger && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changeloger-pagination-wrapper",
+    "data-per-page": perPage
+  }, 'load-more' === paginationType && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wp-block-button"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText.Content, {
+    tagName: "button",
+    style: {
       color: paginationTextColor,
-      'background-color': paginationBgColor
-    }
-  });
+      backgroundColor: paginationBgColor
+    },
+    className: "changeloger-pagination-button wp-block-button__link wp-element-button",
+    value: paginationLoadMoreText
+  })), 'numbered' === paginationType && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changeloger-pagination-inner-wrapper"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "changeloger-prev-button page-navigator"
+  }, "\xAB Previous"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "page-numbers current"
+  }, "1"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "page-numbers"
+  }, "2"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "page-numbers"
+  }, "3"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "changeloger-next-button page-navigator"
+  }, "Next \xBB"))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (save);
 
@@ -1524,7 +1668,7 @@ function CustomPlaceholder(props) {
     })
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('View Visual Changelogs', 'changeloger'))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_version_limit_modal__WEBPACK_IMPORTED_MODULE_5__["default"], {
     isOpen: showVersionLimitModal,
-    onClose: () => false
+    onClose: () => setShowVersionLimitModal(false)
   }));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CustomPlaceholder);
