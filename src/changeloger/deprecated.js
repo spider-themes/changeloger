@@ -2,7 +2,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 
 import ChangelogParser from './parser';
 
-function saveDep( props ) {
+function save( props ) {
     const {
         improvementTagColor,
         newTagColor,
@@ -14,7 +14,13 @@ function saveDep( props ) {
         paginationActiveTextColor,
         paginationActiveBgColor,
         paginationHoverTextColor,
-        paginationHoverBgColor
+        paginationHoverBgColor,
+        enableFilter,
+        enableVersions,
+        versionsPosition,
+        perPage,
+        enableSearch,
+        changelogLayout,
     } = props.attributes;
 
     const blockProps = useBlockProps.save( {
@@ -22,9 +28,10 @@ function saveDep( props ) {
         style: {
             '--changeloger-pagination-text-color': paginationTextColor,
             '--changeloger-pagination-bg-color': paginationBgColor,
-            '--changeloger-pagination-active-text-color':
-            paginationActiveTextColor,
+            '--changeloger-pagination-active-text-color':paginationActiveTextColor,
             '--changeloger-pagination-active-bg-color': paginationActiveBgColor,
+            '--changeloger-pagination-hover-text-color':paginationHoverTextColor,
+            '--changeloger-pagination-hover-bg-color': paginationHoverBgColor,
             '--changeloger-improvement-tag-bg-color': improvementTagColor,
             '--changeloger-new-tag-bg-color': newTagColor,
             '--changeloger-update-tag-bg-color': updateTagColor,
@@ -47,4 +54,4 @@ function saveDep( props ) {
     } );
 }
 
-export default saveDep;
+export default save;

@@ -40,6 +40,7 @@ function Inspector(props) {
         filterPosition,
         enableSearch,
         searchPlaceholder,
+        changelogLayout,
     } = attributes;
     const versionPositions = [
         {
@@ -79,7 +80,6 @@ function Inspector(props) {
         };
     });
 
-    const is_disable = isProChangeloger ? '' : 'disabled';
     const has_disabled_class = isProChangeloger ? '' : 'cha-pro-element';
 
     const parser = new ChangelogParser(changelog);
@@ -89,18 +89,17 @@ function Inspector(props) {
     return (
         <>
             <InspectorControls>
-                <PanelBody title={__('General', 'changeloger')} className={has_disabled_class}>
+                <PanelBody title={__('Versions', 'changeloger')} initialOpen={true}>
                     <ToggleControl
                         label={__('Sidebar Versions', 'changeloger')}
                         checked={enableVersions}
-                        disabled={!isProChangeloger}
                         onChange={() =>
                             setAttributes({
                                 enableVersions: !enableVersions,
                             })
                         }
                     />
-                    {enableVersions && isProChangeloger && (
+                    {enableVersions && (
                         <ToggleGroupControl
                             isBlock
                             value={versionsPosition}
@@ -121,11 +120,13 @@ function Inspector(props) {
                             })}
                         </ToggleGroupControl>
                     )}
+                </PanelBody>
 
+                <PanelBody title={__('Pagination', 'changeloger')} className={has_disabled_class} initialOpen={false}>
                     <ToggleControl
                         label={__('Pagination', 'changeloger')}
                         checked={enablePagination}
-                        disabled={is_disable}
+                        disabled={!isProChangeloger}
                         onChange={() =>
                             setAttributes({
                                 enablePagination: !enablePagination,
@@ -157,11 +158,13 @@ function Inspector(props) {
                             />
                         </>
                     )}
+                </PanelBody>
 
+                <PanelBody title={__('Filter', 'changeloger')} className={has_disabled_class} initialOpen={false}>
                     <ToggleControl
                         label={__('Filter', 'changeloger')}
                         checked={enableFilter}
-                        disabled={is_disable}
+                        disabled={!isProChangeloger}
                         onChange={() =>
                             setAttributes({
                                 enableFilter: !enableFilter,
@@ -190,13 +193,14 @@ function Inspector(props) {
                             })}
                         </ToggleGroupControl>
                     )}
+                </PanelBody>
 
-                    {/* Search Settings */}
+                <PanelBody title={__('Search', 'changeloger')} className={has_disabled_class} initialOpen={false}>
                     <ToggleControl
                         label={__('Enable Search', 'changeloger')}
                         checked={enableSearch}
+                        disabled={!isProChangeloger}
                         onChange={() => setAttributes({enableSearch: !enableSearch})}
-                        disabled={is_disable}
                     />
 
                     {enableSearch && isProChangeloger && (
@@ -207,6 +211,22 @@ function Inspector(props) {
                             placeholder={__('Type your placeholder text…', 'changeloger')}
                         />
                     )}
+                </PanelBody>
+
+                <PanelBody title={__('Layout', 'changeloger')} className={has_disabled_class} initialOpen={false}>
+                    <SelectControl
+                        label={__('Changelog Layout', 'changeloger')}
+                        value={changelogLayout || 'individual'}
+                        options={[
+                            {label: 'Individual (Category per item)', value: 'individual'},
+                            {label: 'Grouped (Categories grouped together)', value: 'grouped'},
+                        ]}
+                        onChange={(newValue) =>
+                            setAttributes({changelogLayout: newValue})
+                        }
+                        __nextHasNoMarginBottom
+                        disabled={!isProChangeloger}
+                    />
 
                 </PanelBody>
             </InspectorControls>

@@ -98,6 +98,10 @@
     "textUrl": {
       "type": "string",
       "default": ""
+    },
+    "changelogLayout": {
+      "type": "string",
+      "default": "individual"
     }
   },
   "supports": {

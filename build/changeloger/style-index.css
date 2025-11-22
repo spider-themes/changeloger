@@ -117,6 +117,48 @@
           mask-size: contain;
   margin-right: 5px;
 }
+.changeloger-container .changelog-wrapper .changeloger-info-inner-wrapper .changeloger-items .changelog-info-item .content .changelog-category-group {
+  margin-bottom: 25px;
+}
+.changeloger-container .changelog-wrapper .changeloger-info-inner-wrapper .changeloger-items .changelog-info-item .content .changelog-category-group .tag {
+  color: #fff;
+  padding: 6px 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  border-radius: 5px;
+  letter-spacing: 1px;
+  background-color: black;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+.changeloger-container .changelog-wrapper .changeloger-info-inner-wrapper .changeloger-items .changelog-info-item .content .changelog-category-group .tag.tweaked {
+  background-color: blue;
+}
+.changeloger-container .changelog-wrapper .changeloger-info-inner-wrapper .changeloger-items .changelog-info-item .content .changelog-category-group .tag.fixed {
+  background-color: #ea3940;
+}
+.changeloger-container .changelog-wrapper .changeloger-info-inner-wrapper .changeloger-items .changelog-info-item .content .changelog-category-group .tag.improvement {
+  background-color: #4c4cf1;
+}
+.changeloger-container .changelog-wrapper .changeloger-info-inner-wrapper .changeloger-items .changelog-info-item .content .changelog-category-group .tag.new {
+  background-color: #0ed193;
+}
+.changeloger-container .changelog-wrapper .changeloger-info-inner-wrapper .changeloger-items .changelog-info-item .content .changelog-category-group .tag.update {
+  background-color: #ffa100;
+}
+.changeloger-container .changelog-wrapper .changeloger-info-inner-wrapper .changeloger-items .changelog-info-item .content .changelog-category-group .changelog-items-list {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin: 0;
+}
+.changeloger-container .changelog-wrapper .changeloger-info-inner-wrapper .changeloger-items .changelog-info-item .content .changelog-category-group .changelog-items-list li {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+.changeloger-container .changelog-wrapper .changeloger-info-inner-wrapper .changeloger-items .changelog-info-item .content .changelog-category-group .changelog-items-list li.change {
+  margin: 0 0 8px 0;
+}
 .changeloger-container .changelog-wrapper .changeloger-version-list-container {
   flex: 0.32;
 }
@@ -487,9 +529,9 @@
   margin-top: 6px;
 }
 
-mark {
+.changelog-wrapper mark {
   background-color: yellow;
-  padding: 0 2px;
+  padding: 0;
 }
 
 /*# sourceMappingURL=style-index.css.map*/

@@ -131,6 +131,59 @@
               }
             }
           }
+
+          // Grouped layout styles
+          .changelog-category-group {
+            margin-bottom: 25px;
+
+            .tag {
+              color: #fff;
+              padding: 6px 12px;
+              font-size: 12px;
+              text-transform: uppercase;
+              border-radius: 5px;
+              letter-spacing: 1px;
+              background-color: black;
+              display: inline-block;
+              margin-bottom: 12px;
+
+              &.tweaked {
+                background-color: blue;
+              }
+
+              &.fixed {
+                background-color: #ea3940;
+              }
+
+              &.improvement {
+                background-color: #4c4cf1;
+              }
+
+              &.new {
+                background-color: #0ed193;
+              }
+
+              &.update {
+                background-color: #ffa100;
+              }
+            }
+
+            .changelog-items-list {
+              list-style-type: disc;
+              padding-left: 20px;
+              margin: 0;
+
+              li {
+                font-size: 16px;
+                line-height: 1.6;
+                margin-bottom: 8px;
+
+                &.change {
+                  margin: 0 0 8px 0;
+                }
+              }
+            }
+          }
         }
       }
     }

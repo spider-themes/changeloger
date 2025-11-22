@@ -1,12 +1,10 @@
 import { __ } from '@wordpress/i18n';
 import { has, get } from 'lodash';
 import { useBlockProps, RichText } from '@wordpress/block-editor';
-import { Button, TextControl } from '@wordpress/components';
 import React from 'react';
 import ChangelogParser from './parser';
 import VersionsTree from '../components/versions-tree';
 import FilterButton from '../components/filter';
-import { plus } from '@wordpress/icons';
 import {isProChangeloger} from "../utils/constants";
 
 function save(props) {
@@ -34,7 +32,7 @@ function save(props) {
     versionsPosition,
     perPage,
     enableSearch,
-    searchPlaceholder,
+    changelogLayout,
   } = props.attributes;
 
   const blockProps = useBlockProps.save({
@@ -60,11 +58,26 @@ function save(props) {
 
   const isLeft = enableVersions && versionsPosition === 'left';
   const isRight = enableVersions && versionsPosition === 'right';
-  
+
+  // Helper function to group changes by category
+  function groupChangesByCategory(changes) {
+    const grouped = {};
+    changes.forEach((item) => {
+      const category = item.category.toLowerCase();
+      if (!grouped[category]) {
+        grouped[category] = {
+          category: item.category,
+          changes: []
+        };
+      }
+      grouped[category].changes.push(item);
+    });
+    return Object.values(grouped);
+  }
 
   return (
     <div {...blockProps} id={uniqueId}>
-      {enableSearch && (
+      {enableSearch && isProChangeloger && (
         <div className="changelog_form_inner">
 				<div className="changelog_form_group">
 					<input
@@ -73,7 +86,6 @@ function save(props) {
 						className="changelog-search-control changelog_form_control noEnterSubmit"
 						placeholder='Search your changelog...'
                         checked={enableSearch}
-                        onChange={(value) => setAttributes({ enableSearch: value })}
 					/>
 				</div>
 				<span id="changelog-search-help-block" className="help-block" />
@@ -84,7 +96,7 @@ function save(props) {
         <FilterButton {...props} parsedChangelog={parsedChangelog} />
       )}
       <div className="changelog-wrapper">
-        {isLeft && (
+        {isLeft &&(
           <div className="changeloger-version-list-container changeloger-version-list-position-left">
             <h6 className="version-title">Versions</h6>
             <VersionsTree versions={versions} uniqueId={uniqueId}/>
@@ -92,7 +104,7 @@ function save(props) {
         )}
         <div className="changeloger-info-inner-wrapper">
           <div className="changeloger-items">
-            {parsedChangelog.map((item, index) => {
+            {parsedChangelog.map((item) => {
               const { date, version, changes } = item;
 
               const currentLinks = get(customLinks, version, []);
@@ -123,39 +135,80 @@ function save(props) {
                     <span className="line"></span>
                   </div>
                   <div className="content">
-                    {changes.map((item) => {
-                      const currentCategory = item.category.toLowerCase();
+                    {changelogLayout === 'grouped' && isProChangeloger ? (
+                      // Grouped layout: Categories displayed once with changes listed below
+                      groupChangesByCategory(changes).map((group) => {
+                        const currentCategory = group.category.toLowerCase();
+                        const hasCustomColor = has(
+                          customLogTypeColors,
+                          currentCategory
+                        );
 
-                      const hasCustomColor = has(
-                        customLogTypeColors,
-                        currentCategory
-                      );
+                        return (
+                          <div key={currentCategory} className="changelog-category-group">
+                            <span
+                              style={
+                                hasCustomColor
+                                  ? {
+                                      backgroundColor: get(
+                                        customLogTypeColors,
+                                        currentCategory
+                                      ),
+                                    }
+                                  : {}
+                              }
+                              className={`tag ${currentCategory
+                                .toLowerCase()
+                                .replace(/\s/g, '-')}`}
+                            >
+                              {group.category}
+                            </span>
+                            <ul className="changelog-items-list">
+                              {group.changes.map((item, changeIndex) => (
+                                <li key={changeIndex} className="change">
+                                  {item.change}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        );
+                      })
+                    ) : (
+                      // Individual layout: Each change with its own category tag
+                      changes.map((item) => {
+                        const currentCategory = item.category.toLowerCase();
 
-                      return (
-                        <p>
-                          <span
-                            style={
-                              hasCustomColor
-                                ? {
-                                    backgroundColor: get(
-                                      customLogTypeColors,
-                                      currentCategory
-                                    ),
-                                  }
-                                : {}
-                            }
-                            className={`tag ${currentCategory
-                              .toLowerCase()
-                              .replace(/\s/g, '-')}`}
-                          >
-                            {item.category}
-                          </span>
-                          <span className="change">{item.change}</span>
-                        </p>
-                      );
-                    })}
+                        const hasCustomColor = has(
+                          customLogTypeColors,
+                          currentCategory
+                        );
+
+                        return (
+                          <p>
+                            <span
+                              style={
+                                hasCustomColor
+                                  ? {
+                                      backgroundColor: get(
+                                        customLogTypeColors,
+                                        currentCategory
+                                      ),
+                                    }
+                                  : {}
+                              }
+                              className={`tag ${currentCategory
+                                .toLowerCase()
+                                .replace(/\s/g, '-')}`}
+                            >
+                              {item.category}
+                            </span>
+                            <span className="change">{item.change}</span>
+                          </p>
+                        );
+                      })
+                    )}
                     <div className="changeloger-link-wrapper">
-                      {currentLinks.map((itemLink, index) => {
+                      {currentLinks.map((itemLink) => {
                         return (
                           <a
                             href={itemLink.link}
@@ -182,7 +235,7 @@ function save(props) {
           </div>
         </div>
 
-        {isRight && (
+        {isRight &&(
           <div className="changeloger-version-list-container changeloger-version-list-position-right">
             <h6 className="version-title">Versions</h6>
             <VersionsTree versions={versions} uniqueId={uniqueId} />
@@ -205,7 +258,7 @@ function save(props) {
               />
             </div>
           )}
-          {'numbered' === paginationType && (
+          {'numbered' === paginationType && isProChangeloger && (
             <div className="changeloger-pagination-inner-wrapper">
               <span className="changeloger-prev-button page-navigator">
                 « Previous
@@ -222,16 +275,6 @@ function save(props) {
       )}
     </div>
   );
-
-  // return JSON.stringify({
-  //     changelog: parsedChangelog,
-  //     props: blockProps,
-  //     version: parser.getVersions(),
-  //     paginationStyles: {
-  //         color: paginationTextColor,
-  //         'background-color': paginationBgColor,
-  //     },
-  // });
 }
 
 export default save;

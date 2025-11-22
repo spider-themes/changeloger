@@ -6,7 +6,7 @@
  * Requires at least: 6.0
  * Tested up to: 6.7.2
  * Requires PHP: 7.4
- * Version: 1.1.0
+ * Version: 1.1.1
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text domain: changeloger
@@ -83,6 +83,49 @@ if ( ! class_exists( 'CHANGELOGER_BLOCKS_CLASS' ) ) {
             add_action( 'init', [ $this->register_blocks, 'changeloger_create_block_init' ] );
 
             $this->enqueue_assets = new Changeloger_Block_Assets();
+            // Add migration filter for block name change from 'block/changeloger' to 'cha/changeloger'.
+            add_filter( 'content_save_pre', [ $this, 'migrate_block_name' ] );
+            add_filter( 'the_post', [ $this, 'migrate_block_name_in_post' ] );
+
+        }
+
+        /**
+         * Migrate old block name 'block/changeloger' to new name 'cha/changeloger' in post content.
+         * This hook runs when content is about to be saved.
+         *
+         * @param string $content The post content.
+         * @return string The migrated post content.
+         */
+        public function migrate_block_name( $content ): string {
+            if ( ! is_string( $content ) || empty( $content ) ) {
+                return $content;
+            }
+
+            // Replace old block comment with new block name.
+            // Pattern: <!-- wp:block/changeloger ... --> becomes <!-- wp:cha/changeloger ... -->
+            return preg_replace(
+                    '/<!-- wp:block\/changeloger/',
+                    '<!-- wp:cha/changeloger',
+                    $content
+            );
+        }
+
+        /**
+         * Migrate old block name in post object when loaded from database.
+         * This ensures the block editor sees the new name even for posts with old blocks.
+         *
+         * @param WP_Post $post The post object.
+         * @return WP_Post The post object with migrated content.
+         */
+        public function migrate_block_name_in_post( $post ) {
+            if ( ! isset( $post->post_content ) || empty( $post->post_content ) ) {
+                return $post;
+            }
+
+            // Apply the same migration to the post_content.
+            $post->post_content = $this->migrate_block_name( $post->post_content );
+
+            return $post;
         }
 
         /**
@@ -105,114 +148,9 @@ if ( ! class_exists( 'CHANGELOGER_BLOCKS_CLASS' ) ) {
         public function core_includes(): void {
             require_once __DIR__ . '/includes/enqueue-assets.php';
             require_once __DIR__ . '/includes/register-blocks.php';
-            require_once __DIR__ . '/includes/rest-api.php';
             require_once __DIR__ . '/admin/class-changeloger-admin.php';
         }
 
-        /**
-         * Render block
-         *
-         * @param $attributes
-         * @param $content
-         * @param $instance
-         *
-         * @return false|string
-         */
-        public function changeloger_style_declaration( $array ) {
-            $styleDeclaration = '';
-
-            foreach ( $array as $key => $value ) {
-                $styleDeclaration .= sprintf( '%s: %s; ', $key, $value );
-            }
-
-            return $styleDeclaration;
-        }
-
-        /**
-         * Generate custom style for a log category based on attributes.
-         *
-         * @param array  $attributes Attributes containing custom log type colors.
-         * @param string $category   The log category to retrieve a custom style for.
-         *
-         * @return string The custom style for the specified category or an empty string if not available.
-         */
-        public function changeloger_get_custom_style( $attributes, $category ) {
-
-            $custom_colors = $attributes['customLogTypeColors'] ?? array();
-
-            $has_custom_color = isset( $custom_colors[ $category ] );
-
-            if ( false === $has_custom_color ) {
-                return '';
-            }
-
-            $required_custom_color = $custom_colors[ $category ];
-
-            return 'style="background-color:' . esc_attr( $required_custom_color ) . ';"';
-        }
-
-        /**
-         * Determines whether children can be shown based on their versions.
-         *
-         * @param array $versions  List of allowed versions.
-         * @param array $childrens Array of children, where each child contains version information.
-         *
-         * @return bool True if any child has a version in the allowed versions, false otherwise.
-         */
-        public function changeloger_can_show_children( $versions, $childrens ) {
-            $can_show = false;
-
-            foreach ( $childrens as $children ) {
-                $can_show_current = in_array( $children['version'], $versions, true );
-
-                if ( $can_show_current ) {
-                    $can_show = true;
-                    break;
-                }
-            }
-
-            return $can_show;
-        }
-
-        /**
-         * Generates a hierarchical version tree list.
-         *
-         * @param array $versions            Array of versions, potentially containing nested children versions.
-         * @param array $paginated_changelog Array containing paginated changelog details.
-         * @param bool  $is_child            Indicates whether the current call is for a child version (default: true).
-         *
-         * @return void
-         */
-        public function changeloger_version_tree( $versions, $paginated_changelog, $is_child = true ) {
-            $available_versions = array_map( function ( $log ) {
-                return $log['version'];
-            }, $paginated_changelog );
-            ?>
-
-            <ul class="<?php echo $is_child ? "changeloger-version-list-wrapper" : "" ?>">
-                <?php
-                foreach ( $versions as $version ) {
-                    if ( ( isset( $version['children'] ) && count( $version['children'] ) > 0
-                           && $this->changeloger_can_show_children( $available_versions, $version['children'] ) )
-                         || in_array( $version['version'], $available_versions, true )
-                    ) { ?>
-                        <li class="<?php echo $is_child ? "changeloger-version-list-main-item" : "" ?>">
-                            <a href="#<?php echo esc_attr( $version['version'] ) ?>">
-                                <?php esc_html_e( 'Version', 'changeloger' ); ?><?php echo esc_html( $version['version'] ) ?>
-                            </a>
-                            <?php
-                            if ( isset( $version['children'] ) && count( $version['children'] ) > 0 ) {
-                                $this->changeloger_version_tree( $version['children'], $paginated_changelog, false );
-                            }
-                            ?>
-                        </li>
-                        <?php
-                    }
-                }
-                ?>
-            </ul>
-            <?php
-        }
     }
 }
 
