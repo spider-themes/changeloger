@@ -92,8 +92,6 @@ function Edit(props) {
         return Object.values(grouped);
     }
 
-    console.log(parsedChangelog);
-
     useEffect(() => {
         if (!uniqueId) {
             // Generate a unique ID based on the current timestamp (in seconds) and a random string

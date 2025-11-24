@@ -436,7 +436,6 @@ function Edit(props) {
     });
     return Object.values(grouped);
   }
-  console.log(parsedChangelog);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     if (!uniqueId) {
       // Generate a unique ID based on the current timestamp (in seconds) and a random string
@@ -1590,8 +1589,7 @@ function CustomPlaceholder(props) {
     setAttributes({
       textUrl: url
     });
-    fetch(`/wp-json/changeloger/v1/fetch-txt?url=${encodeURIComponent(url)}`).then(res => res.json()).then(data => {
-      // ❗️ Empty response handle
+    fetch(`${window.location.origin}${window.location.pathname.split('/wp-admin')[0]}/wp-json/changeloger/v1/fetch-txt?url=${encodeURIComponent(url)}`).then(res => res.json()).then(data => {
       if (!data || !data.content || data.content.trim() === "") {
         setErrorMessage("This URL has no data inside the .txt file!");
         setLoader(false);
@@ -1615,7 +1613,7 @@ function CustomPlaceholder(props) {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
     variant: "secondary",
     onClick: openModal
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Upload Changelog URL', 'changeloger')), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_text_url__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Changelog URL', 'changeloger')), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_text_url__WEBPACK_IMPORTED_MODULE_6__["default"], {
     isOpen: isOpenTextUrl,
     onClose: () => setIsOpenTextUrl(false),
     handleUrlFile: handleUrlFile,
@@ -1637,7 +1635,7 @@ function CustomPlaceholder(props) {
     className: "placeholder-sample-button",
     variant: "tertiary",
     onClick: () => {
-      const sampleData = `${changelog}\n` + '= 2.0.0 (01 April 2025) =\n' + 'New: Added a bulk edit feature for faster modifications.\n' + 'Tweaked: Adjusted UI spacing for better readability.\n' + 'Updated: Refreshed third-party dependencies for stability.\n' + 'Fixed: Resolved a bug causing layout shifts on mobile.\n' + 'improvement: Enhanced performance for faster load times.\n' + '\n' + '= 1.0.0 (01 March 2025) =\n' + 'New: Added a bulk edit feature for faster modifications.\n' + 'Tweaked: Adjusted UI spacing for better readability.\n' + 'Updated: Refreshed third-party dependencies for stability.\n' + 'Fixed: Resolved a bug causing layout shifts on mobile.\n' + 'improvement: Enhanced performance for faster load times.\n';
+      const sampleData = `${changelog}\n` + '= 3.0.0 (01 April 2025) =\n' + 'New: Added a bulk edit feature for faster modifications.\n' + 'Tweaked: Adjusted UI spacing for better readability.\n' + 'Updated: Refreshed third-party dependencies for stability.\n' + 'Fixed: Resolved a bug causing layout shifts on mobile.\n' + 'improvement: Enhanced performance for faster load times.\n' + '\n' + '= 2.0.0 (01 March 2025) =\n' + 'New: Added a bulk edit feature for faster modifications.\n' + 'Tweaked: Adjusted UI spacing for better readability.\n' + 'Updated: Refreshed third-party dependencies for stability.\n' + 'Fixed: Resolved a bug causing layout shifts on mobile.\n' + 'improvement: Enhanced performance for faster load times.\n' + '\n' + '= 1.0.0 (01 Feb 2025) =\n' + 'New: Added a bulk edit feature for faster modifications.\n' + 'Tweaked: Adjusted UI spacing for better readability.\n' + 'Updated: Refreshed third-party dependencies for stability.\n' + 'Fixed: Resolved a bug causing layout shifts on mobile.\n' + 'improvement: Enhanced performance for faster load times.\n';
       const limitedData = limitChangelogVersions(sampleData);
       setAttributes({
         showPlaceholder: false,
