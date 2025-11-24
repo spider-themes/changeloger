@@ -1,7 +1,7 @@
 === Changeloger - Release Notes & Changelog Manager ===
 Contributors: mdjwel, spiderdevs
 Tags: changelogs, changelog, release, version, history
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 Requires at least: 6.0
 Tested up to: 6.7.2
 Requires PHP: 7.4
@@ -36,6 +36,30 @@ Changeloger streamlines the process of conveying complex updates by enabling use
 - **Real-time Preview:** Instantly visualize your changelog changes as you make edits, allowing you to fine-tune the design to perfection.
 
 Changeloger empowers WordPress users to present their software and product updates with elegance and clarity, enhancing user engagement and comprehension. Keep your audience informed, impressed, and delighted with Changeloger - the ultimate WordPress plugin for transforming plain text changelogs into visually designed masterpieces. Download Changeloger now and elevate your changelog game to new heights!
+
+== Core Features ==
+
+**Free Version Includes:**
+
+✨ **Sidebar Versions** – Displays all changelog versions in a sidebar, allowing users to quickly switch between different releases.
+
+✨ **Upload Changelog URL** – Allows users to import changelog content directly from a public URL and instantly load it into the editor.
+
+✨ **Upload Changelog (.txt file)** – Enables uploading a plain .txt file to automatically populate the changelog editor with its contents.
+
+
+### PRO Features
+
+- **Pagination:** Breaks long changelogs into multiple pages, making navigation easier and preventing long scrolling.
+
+- **Filter:** Lets users filter changelog items by categories such as New, Fixed, Updated, or Improved for quick access.
+
+- **Search:** Enables keyword-based search inside the changelog so users can instantly find specific updates or fixes.
+
+- **Changelog Layout:** Offers additional layout styles to organize changelog items in a cleaner, more professional visual structure.
+
+
+[See All Features](#)
 
 == Installation ==
 
@@ -89,11 +113,26 @@ Absolutely! While Changeloger is ideal for software updates, it can be used for 
 
 == Changelog ==
 
-= 1.0.1 (18 March 2025) =
+[//]: # fs_premium_only_begin
+= 1.2.0 (24 November 2025) =
+New: Added category layout for the new changelog format
+Tweaked: Improved overall performance and stability
+
+= 1.1.0 (18 November 2025) =
 New: Filter added for extended customization options
 New: Changeloger dashboard, usage table, and settings panel introduced
 New: Search functionality implemented for faster changelog lookup
 New: Alignment option added for tab customization
+Enhanced: Tabbed Changeloger interface development in progress for a more organized viewing experience
+Updated: Freemius SDK updated to 2.13.0
+[//]: # fs_premium_only_end
+
+[//]: # fs_free_only_begin
+= 1.2.0 (24 November 2025) =
+New: Added Changeloger input field for uploading Changelog URL
+Fixed: Minor bugs and improved overall stability
+
+= 1.1.0 (18 November 2025) =
 Enhanced: Tabbed Changeloger interface development in progress for a more organized viewing experience
 Updated: Freemius SDK updated to 2.13.0
 
@@ -112,3 +151,4 @@ New: Regex condition added to find Markdown-style links and convert them to HTML
 
 = 0.1.0 (Dec 9 2023) =
 * Initial release of Changeloger plugin.
+[//]: # fs_free_only_end
