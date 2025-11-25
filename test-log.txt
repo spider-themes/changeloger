@@ -1,0 +1,97 @@
+Parsed count: 3
+Array
+(
+    [0] => Array
+        (
+            [version] => 2.0.0
+            [date] => 2024-11-24
+            [changes] => Array
+                (
+                    [0] => Array
+                        (
+                            [category] => New
+                            [change] => Farok Added dynamic content update feature
+                        )
+
+                    [1] => Array
+                        (
+                            [category] => Improvement
+                            [change] => Better error handling in REST API
+                        )
+
+                    [2] => Array
+                        (
+                            [category] => Fix
+                            [change] => Resolved permalink issues with REST endpoints
+                        )
+
+                )
+
+        )
+
+    [1] => Array
+        (
+            [version] => 1.5.0
+            [date] => 2024-11-20
+            [changes] => Array
+                (
+                    [0] => Array
+                        (
+                            [category] => New
+                            [change] => Added pagination support
+                        )
+
+                    [1] => Array
+                        (
+                            [category] => Update
+                            [change] => Improved parser performance
+                        )
+
+                    [2] => Array
+                        (
+                            [category] => Fix
+                            [change] => Fixed version tree rendering
+                        )
+
+                    [3] => Array
+                        (
+                            [category] => Tweaked
+                            [change] => Updated UI styles
+                        )
+
+                )
+
+        )
+
+    [2] => Array
+        (
+            [version] => 1.1.0
+            [date] => 2023-10-27
+            [changes] => Array
+                (
+                    [0] => Array
+                        (
+                            [category] => New
+                            [change] => Added a new feature
+                        )
+
+                    [1] => Array
+                        (
+                            [category] => Fix
+                            [change] => Fixed a bug
+                        )
+
+                    [2] => Array
+                        (
+                            [category] => General
+                            [change] => Improved performance
+                        )
+
+                )
+
+        )
+
+)
+
+
+Output length: 7746

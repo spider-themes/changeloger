@@ -102,6 +102,7 @@ function save(props) {
             <VersionsTree versions={versions} uniqueId={uniqueId}/>
           </div>
         )}
+        <span data-changeloger-content="start"></span>
         <div className="changeloger-info-inner-wrapper">
           <div className="changeloger-items">
             {parsedChangelog.map((item) => {
@@ -234,8 +235,8 @@ function save(props) {
             })}
           </div>
         </div>
-
-        {isRight &&(
+     <span data-changeloger-content="end"></span>
+        {isRight && (
           <div className="changeloger-version-list-container changeloger-version-list-position-right">
             <h6 className="version-title">Versions</h6>
             <VersionsTree versions={versions} uniqueId={uniqueId} />

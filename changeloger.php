@@ -17,7 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
-
 if ( ! function_exists( 'cha_fs' ) ) {
     // Create a helper function for easy SDK access.
     function cha_fs() {
@@ -125,7 +124,7 @@ if ( ! class_exists( 'CHANGELOGER_BLOCKS_CLASS' ) ) {
             // Apply the same migration to the post_content.
             $post->post_content = $this->migrate_block_name( $post->post_content );
 
-            return $post;
+            return $post; 
         }
 
         /**
@@ -148,6 +147,8 @@ if ( ! class_exists( 'CHANGELOGER_BLOCKS_CLASS' ) ) {
         public function core_includes(): void {
             require_once __DIR__ . '/includes/enqueue-assets.php';
             require_once __DIR__ . '/includes/register-blocks.php';
+            require_once __DIR__ . '/includes/rest-api.php';
+            require_once __DIR__ . '/includes/class-changelog-renderer.php';
             require_once __DIR__ . '/admin/class-changeloger-admin.php';
 	        require_once __DIR__ . '/includes/rest-api.php';
         }
