@@ -29,6 +29,7 @@ export default class ChangelogParser {
             version: version,
             date: dateMatch ? dateMatch[0] : null,
             changes: this.parseChanges(contentRows),
+            id:this.generateId(version)
         };
 
         return parsedSection;
@@ -38,7 +39,7 @@ export default class ChangelogParser {
         const changes = [];
         let currentCategory = 'General';
 
-        rows.forEach((row) => {
+        rows.forEach((row,idx) => {
             if (row.trim() === '') {
                 return; // Ignore empty rows
             }
@@ -53,7 +54,12 @@ export default class ChangelogParser {
             // Check for single asterisk format (* item)
             if (row.trim().startsWith('*')) {
                 let change = row.trim().replace(/^\*\s*/, '');
-                changes.push({category: currentCategory, change: this.processLinks(change)});
+                changes.push({
+                    category: currentCategory, 
+                    change: this.processLinks(change),
+                    id:this.generateId(idx)
+
+                });
             } else {
                 // Handle traditional format (Category: change or Category - change)
                 const splitIndexColon = row.indexOf(':');
@@ -70,7 +76,11 @@ export default class ChangelogParser {
 
                     const change = row.substring(
                         splitIndex + (splitIndex === splitIndexDash ? 3 : 1)).trim();
-                    changes.push({category, change: this.processLinks(change)});
+                    changes.push({
+                        category, 
+                        change: this.processLinks(change),
+                        id:this.generateId(idx)
+                    });
                 }
             }
         });
@@ -95,7 +105,6 @@ export default class ChangelogParser {
                 changes.push(parsedSection);
             }
         });
-
         return changes;
     }
 
@@ -167,5 +176,21 @@ export default class ChangelogParser {
         return 0; // Versions are equal
     }
 
+    // convert to plain text
+    convertToPlainText(data) {
+        let output = "";
+        data.forEach((item) => {
+           output +=`= ${item.version} (${item.date}) =\n`;
+           item.changes.forEach((change)=>{
+            output +=`${change.category}: ${change.change}\n`;
+           })
+           output +="\n";
+        });
+        return output.trim();
+    }
+
+    generateId(prefix = "id") {
+        return prefix + "-" + Math.random().toString(36).slice(2, 9);
+    }
 
 }
