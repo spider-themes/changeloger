@@ -28,8 +28,7 @@ export default class ChangelogParser {
         const parsedSection = {
             version: version,
             date: dateMatch ? dateMatch[0] : null,
-            changes: this.parseChanges(contentRows),
-            id:this.generateId(version)
+            changes: this.parseChanges(contentRows)
         };
 
         return parsedSection;
@@ -39,7 +38,7 @@ export default class ChangelogParser {
         const changes = [];
         let currentCategory = 'General';
 
-        rows.forEach((row,idx) => {
+        rows.forEach((row) => {
             if (row.trim() === '') {
                 return; // Ignore empty rows
             }
@@ -57,7 +56,6 @@ export default class ChangelogParser {
                 changes.push({
                     category: currentCategory, 
                     change: this.processLinks(change),
-                    id:this.generateId(idx)
 
                 });
             } else {
@@ -78,8 +76,7 @@ export default class ChangelogParser {
                         splitIndex + (splitIndex === splitIndexDash ? 3 : 1)).trim();
                     changes.push({
                         category, 
-                        change: this.processLinks(change),
-                        id:this.generateId(idx)
+                        change: this.processLinks(change)
                     });
                 }
             }
@@ -189,8 +186,5 @@ export default class ChangelogParser {
         return output.trim();
     }
 
-    generateId(prefix = "id") {
-        return prefix + "-" + Math.random().toString(36).slice(2, 9);
-    }
 
 }

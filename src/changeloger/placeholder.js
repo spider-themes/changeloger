@@ -11,14 +11,36 @@ import ChangelogParser from './parser';
 import {isProChangeloger} from '../utils/constants';
 import VersionLimitModal from '../components/version-limit-modal';
 import TextUrl from '../components/text-url';
+import {useChangelogState} from './useChangelogState';
 
 function CustomPlaceholder(props) {
     const {attributes, setAttributes} = props;
-    const {changelog, showPlaceholder, showTextArea, textUrl} = attributes;
+    const {changelog, showPlaceholder, showTextArea} = attributes;
     const [isOpenTextUrl, setIsOpenTextUrl] = useState(false);
     const [url, setUrl] = useState('');
     const [loader, setLoader] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+
+    // Centralized state management using custom hook
+    const changelogState = useChangelogState(changelog);
+    const {
+        parsedChangelog,
+        handleChangeChange,
+        handleCategoryChange,
+        handleDateChange,
+        handleVersionChange
+    } = changelogState;
+
+    // Attach handlers to props so edit.js can access them
+    props.parsedChangelog = parsedChangelog;
+    props.handleChangeChange = (newContent, versionIndex, changeIndex) =>
+        handleChangeChange(newContent, versionIndex, changeIndex, setAttributes);
+    props.handleCategoryChange = (newCategory, versionIndex, changeIndex) =>
+        handleCategoryChange(newCategory, versionIndex, changeIndex, setAttributes);
+    props.handleDateChange = (newDate, versionIndex) =>
+        handleDateChange(newDate, versionIndex, setAttributes);
+    props.handleVersionChange = (newVersion, versionIndex) =>
+        handleVersionChange(newVersion, versionIndex, setAttributes);
 
     // Function to open the modal
     const openModal = () => setIsOpenTextUrl(true);
@@ -103,7 +125,7 @@ function CustomPlaceholder(props) {
                 setAttributes({changelog: limitedData, showPlaceholder: false});
                 setIsOpenTextUrl(false);
             })
-            .catch((err) => {
+            .catch(() => {
                 setErrorMessage("Failed to fetch the file. Please check the URL and try again.");
             })
             .finally(() => setLoader(false));
@@ -237,3 +259,4 @@ function CustomPlaceholder(props) {
 }
 
 export default CustomPlaceholder;
+

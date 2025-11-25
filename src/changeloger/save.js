@@ -53,7 +53,14 @@ function save(props) {
   });
 
   const parser = new ChangelogParser(props.attributes.changelog);
-  const parsedChangelog = parser.parse();
+  let parsedChangelog = parser.parse();
+
+  // Limit versions for free users to 20
+  const MAX_FREE_VERSIONS = 20;
+  if (!isProChangeloger && parsedChangelog.length > MAX_FREE_VERSIONS) {
+    parsedChangelog = parsedChangelog.slice(0, MAX_FREE_VERSIONS);
+  }
+
   const versions = parser.getVersions();
 
   const isLeft = enableVersions && versionsPosition === 'left';
@@ -105,7 +112,8 @@ function save(props) {
         <span data-changeloger-content="start"></span>
         <div className="changeloger-info-inner-wrapper">
           <div className="changeloger-items">
-            {parsedChangelog.map((item) => {
+            {parsedChangelog && parsedChangelog.length > 0 ? (
+              parsedChangelog.map((item) => {
               const { date, version, changes } = item;
 
               const currentLinks = get(customLinks, version, []);
@@ -232,7 +240,10 @@ function save(props) {
                   </div>
                 </div>
               );
-            })}
+              })
+            ) : (
+              <p>{__('No changelog data available', 'changeloger')}</p>
+            )}
           </div>
         </div>
      <span data-changeloger-content="end"></span>

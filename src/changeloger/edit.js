@@ -46,6 +46,58 @@ function Edit(props) {
         changelogLayout
     } = attributes;
 
+    // Get centralized state and handlers from props (set by placeholder.js)
+    let {
+        parsedChangelog,
+        handleChangeChange,
+        handleCategoryChange,
+        handleDateChange,
+        handleVersionChange
+    } = props;
+
+    // Fallback: if parsedChangelog not available from placeholder, parse locally
+    if (!parsedChangelog) {
+        const parser = new ChangelogParser(changelog);
+        parsedChangelog = parser.parse();
+    }
+
+    // Create parser for converting back to plain text
+    const parser = new ChangelogParser(changelog);
+
+    // Fallback handlers if not provided by placeholder
+    if (!handleChangeChange) {
+        handleChangeChange = (newContent, versionIndex, changeIndex) => {
+            const updatedChangelog = [...parsedChangelog];
+            updatedChangelog[versionIndex].changes[changeIndex].change = newContent;
+            const plainText = parser.convertToPlainText(updatedChangelog);
+            setAttributes({ changelog: plainText });
+        };
+    }
+    if (!handleCategoryChange) {
+        handleCategoryChange = (newCategory, versionIndex, changeIndex) => {
+            const updatedChangelog = [...parsedChangelog];
+            updatedChangelog[versionIndex].changes[changeIndex].category = newCategory;
+            const plainText = parser.convertToPlainText(updatedChangelog);
+            setAttributes({ changelog: plainText });
+        };
+    }
+    if (!handleDateChange) {
+        handleDateChange = (newDate, versionIndex) => {
+            const updatedChangelog = [...parsedChangelog];
+            updatedChangelog[versionIndex].date = newDate;
+            const plainText = parser.convertToPlainText(updatedChangelog);
+            setAttributes({ changelog: plainText });
+        };
+    }
+    if (!handleVersionChange) {
+        handleVersionChange = (newVersion, versionIndex) => {
+            const updatedChangelog = [...parsedChangelog];
+            updatedChangelog[versionIndex].version = newVersion;
+            const plainText = parser.convertToPlainText(updatedChangelog);
+            setAttributes({ changelog: plainText });
+        };
+    }
+
     const blockProps = useBlockProps({
         className: 'changeloger-container',
         style: {
@@ -63,18 +115,10 @@ function Edit(props) {
         },
     });
 
-    const parser = new ChangelogParser(changelog);
-    const parsedChangelog = parser.parse();
     const versions = parser.getVersions();
 
     const isLeft = enableVersions && versionsPosition === 'left';
     const isRight = enableVersions && versionsPosition === 'right';
-
-    function htmlEntityDecode(encodedString) {
-        var parser = new DOMParser();
-        var doc = parser.parseFromString(encodedString, 'text/html');
-        return doc.documentElement.textContent;
-    }
 
     // Helper function to group changes by category
     function groupChangesByCategory(changes) {
@@ -135,7 +179,7 @@ function Edit(props) {
                         )}
                         <div className="changeloger-info-inner-wrapper">
                             <div className="changeloger-items">
-                                {parsedChangelog.map((item) => {
+                                {parsedChangelog.map((item, versionIndex) => {
                                     const {date, version, changes} = item;
                                     const currentLinks = get(
                                         customLinks,
@@ -148,7 +192,16 @@ function Edit(props) {
                                     return (
                                         <div className="changelog-info-item" data-filter={uniqueCategories.join(" ")}>
                                             <div className="date">
-                                                <span>{date}</span>
+                                                {isProChangeloger ? (
+                                                    <RichText
+                                                        tagName="span"
+                                                        value={date || ''}
+                                                        onChange={(newContent) => handleDateChange(newContent, versionIndex)}
+                                                        placeholder={__('Date', 'changeloger')}
+                                                    />
+                                                ) : (
+                                                    <span>{date}</span>
+                                                )}
 
                                                 <RichText
                                                     tagName="span"
@@ -170,9 +223,17 @@ function Edit(props) {
                                                 />
                                             </div>
                                             <div className="version">
-												<span className="version-tag">
-													{version}
-												</span>
+												{isProChangeloger ? (
+													<RichText
+														tagName="span"
+														className="version-tag"
+														value={version}
+														onChange={(newContent) => handleVersionChange(newContent, versionIndex)}
+														placeholder={__('Version', 'changeloger')}
+													/>
+												) : (
+													<span className="version-tag">{version}</span>
+												)}
                                                 <span className="line"></span>
                                             </div>
                                             <div className="content">
@@ -187,37 +248,81 @@ function Edit(props) {
 
                                                         return (
                                                             <div key={currentCategory} className="changelog-category-group">
-                                                                <span
-                                                                    style={
-                                                                        hasCustomColor
-                                                                            ? {
-                                                                                backgroundColor: get(
-                                                                                    customLogTypeColors,
-                                                                                    currentCategory
-                                                                                ),
-                                                                            }
-                                                                            : {}
-                                                                    }
-                                                                    className={`tag ${currentCategory.replace(
-                                                                        ' ',
-                                                                        '-'
-                                                                    )}`}
-                                                                >
-                                                                    {group.category}
-                                                                </span>
+                                                                {isProChangeloger ? (
+                                                                    <RichText
+                                                                        tagName="span"
+                                                                        style={
+                                                                            hasCustomColor
+                                                                                ? {
+                                                                                    backgroundColor: get(
+                                                                                        customLogTypeColors,
+                                                                                        currentCategory
+                                                                                    ),
+                                                                                }
+                                                                                : {}
+                                                                        }
+                                                                        className={`tag ${currentCategory.replace(
+                                                                            ' ',
+                                                                            '-'
+                                                                        )}`}
+                                                                        value={group.category}
+                                                                        onChange={(newContent) => {
+                                                                            // Update all changes with this category
+                                                                            group.changes.forEach((changeItem) => {
+                                                                                const originalChangeIndex = changes.findIndex(c =>
+                                                                                    c.category === changeItem.category && c.change === changeItem.change
+                                                                                );
+                                                                                handleCategoryChange(newContent, versionIndex, originalChangeIndex);
+                                                                            });
+                                                                        }}
+                                                                    />
+                                                                ) : (
+                                                                    <span
+                                                                        style={
+                                                                            hasCustomColor
+                                                                                ? {
+                                                                                    backgroundColor: get(
+                                                                                        customLogTypeColors,
+                                                                                        currentCategory
+                                                                                    ),
+                                                                                }
+                                                                                : {}
+                                                                        }
+                                                                        className={`tag ${currentCategory.replace(
+                                                                            ' ',
+                                                                            '-'
+                                                                        )}`}
+                                                                    >
+                                                                        {group.category}
+                                                                    </span>
+                                                                )}
                                                                 <ul className="changelog-items-list">
-                                                                    {group.changes.map((item, changeIndex) => (
-                                                                        <li key={changeIndex} className="change">
-                                                                            {htmlEntityDecode(item.change)}
-                                                                        </li>
-                                                                    ))}
+                                                                    {group.changes.map((item, changeIndex) => {
+                                                                        // Find the original index of this change in the main changes array
+                                                                        const originalChangeIndex = changes.findIndex(c =>
+                                                                            c.category === item.category && c.change === item.change
+                                                                        );
+                                                                        return (
+                                                                            <li key={changeIndex} className="change">
+                                                                                {isProChangeloger ? (
+                                                                                    <RichText
+                                                                                        tagName="span"
+                                                                                        value={item.change}
+                                                                                        onChange={(newContent) => handleChangeChange(newContent, versionIndex, originalChangeIndex)}
+                                                                                    />
+                                                                                ) : (
+                                                                                    <span>{item.change}</span>
+                                                                                )}
+                                                                            </li>
+                                                                        );
+                                                                    })}
                                                                 </ul>
                                                             </div>
                                                         );
                                                     })
                                                 ) : (
                                                     // Individual layout: Each change with its own category tag
-                                                    changes.map((item) => {
+                                                    changes.map((item, changeIndex) => {
                                                         const currentCategory =
                                                             item.category.toLowerCase();
 
@@ -226,30 +331,61 @@ function Edit(props) {
                                                             currentCategory
                                                         );
 
-
                                                         return (
-                                                            <p>
-																<span
-                                                                    style={
-                                                                        hasCustomColor
-                                                                            ? {
-                                                                                backgroundColor:
-                                                                                    get(
-                                                                                        customLogTypeColors,
-                                                                                        currentCategory
-                                                                                    ),
-                                                                            }
-                                                                            : {}
-                                                                    }
-                                                                    className={`tag ${currentCategory.replace(
-                                                                        ' ',
-                                                                        '-'
-                                                                    )}`}
-                                                                >
-																	{item.category}
-																</span>
-                                                                <span
-                                                                    className="change">{htmlEntityDecode(item.change)}</span>
+                                                            <p key={changeIndex}>
+																{isProChangeloger ? (
+																	<RichText
+																		tagName="span"
+																		style={
+																			hasCustomColor
+																				? {
+																					backgroundColor:
+																						get(
+																							customLogTypeColors,
+																							currentCategory
+																						),
+																				}
+																				: {}
+																		}
+																		className={`tag ${currentCategory.replace(
+																			' ',
+																			'-'
+																		)}`}
+																		value={item.category}
+																		onChange={(newContent) => handleCategoryChange(newContent, versionIndex, changeIndex)}
+																	/>
+																) : (
+																	<span
+																		style={
+																			hasCustomColor
+																				? {
+																					backgroundColor:
+																						get(
+																							customLogTypeColors,
+																							currentCategory
+																						),
+																				}
+																				: {}
+																		}
+																		className={`tag ${currentCategory.replace(
+																			' ',
+																			'-'
+																		)}`}
+																	>
+																		{item.category}
+																	</span>
+																)}
+                                                                <span className="change">
+                                                                    {isProChangeloger ? (
+                                                                        <RichText
+                                                                            tagName="span"
+                                                                            value={item.change}
+                                                                            onChange={(newContent) => handleChangeChange(newContent, versionIndex, changeIndex)}
+                                                                        />
+                                                                    ) : (
+                                                                        <span>{item.change}</span>
+                                                                    )}
+                                                                </span>
                                                             </p>
                                                         );
                                                     })
