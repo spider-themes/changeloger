@@ -811,5 +811,93 @@ mark {
     filter: brightness(1.2); /* Makes it glow slightly */
   }
 }
+.changeloger-container .changelog-wrapper {
+  /* The vertical line extension */
+}
+.changeloger-container .changelog-wrapper .changeloger-add-item {
+  padding: 3px 7px;
+  background-color: transparent;
+  border: 2px dashed #cbd5e1;
+  border-radius: 3px;
+  color: #33373d;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+.changeloger-container .changelog-wrapper .changeloger-add-item span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #4c4945;
+  font-weight: 400;
+}
+.changeloger-container .changelog-wrapper .changeloger-add-item:hover {
+  border-color: #5c6480;
+  background-color: #eff6ff;
+  color: #1d2746;
+  transform: translateY(-1px);
+}
+.changeloger-container .changelog-wrapper .timeline-add-version-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 30%;
+}
+.changeloger-container .changelog-wrapper .timeline-circle-btn {
+  position: relative;
+  z-index: 10;
+  height: 40px;
+  width: 40px;
+  background: white;
+  border: 2px solid #1d2746;
+  color: #1d2746;
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-left: 0;
+  transform: translateX(-50%);
+}
+.changeloger-container .changelog-wrapper .timeline-circle-btn:hover {
+  width: 180px;
+  background: #1d2746;
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(3, 4, 7, 0.3);
+}
+.changeloger-container .changelog-wrapper .btn-text {
+  opacity: 0;
+  white-space: nowrap;
+  margin-left: 0px;
+  width: 0;
+  transition: all 0.2s;
+  font-weight: 600;
+  font-size: 14px;
+}
+.changeloger-container .changelog-wrapper .timeline-circle-btn:hover .btn-text {
+  opacity: 1;
+  margin-left: 8px;
+  width: auto;
+}
+.changeloger-container .changelog-wrapper .changeloger-info-inner-wrapper .rich-text {
+  white-space: normal !important;
+  min-width: 115px !important;
+}
+
+.rich-text-delete:hover .rich-text-delete-btn {
+  display: block;
+}
+.rich-text-delete .rich-text-delete-btn {
+  display: none;
+}
 
 /*# sourceMappingURL=index.css.map*/

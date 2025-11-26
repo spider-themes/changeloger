@@ -52,7 +52,11 @@ function Edit(props) {
         handleChangeChange,
         handleCategoryChange,
         handleDateChange,
-        handleVersionChange
+        handleVersionChange,
+        handleAddChangeItem,
+        handleAddVersion,
+        handleRemoveChangeItem,
+        handleRemoveVersion,
     } = props;
 
     // Fallback: if parsedChangelog not available from placeholder, parse locally
@@ -97,6 +101,60 @@ function Edit(props) {
             setAttributes({ changelog: plainText });
         };
     }
+
+    if (!handleAddChangeItem) {
+        handleAddChangeItem = (versionIndex) => {
+            const updatedChangelog = [...parsedChangelog];
+            if (!updatedChangelog[versionIndex].changes) {
+                updatedChangelog[versionIndex].changes = [];
+            }
+            updatedChangelog[versionIndex].changes.push({
+                category: 'NEW',
+                change: 'Added a new feature'
+            });
+            const plainText = parser.convertToPlainText(updatedChangelog);
+            setAttributes({ changelog: plainText });
+        };
+    }
+
+    if (!handleAddVersion) {
+        handleAddVersion = () => {
+            const updatedChangelog = [...parsedChangelog];
+            const newItem = {
+                version: '1.0.0',
+                date: new Date().toISOString().split('T')[0],
+                changes: [
+                    {
+                        category: 'NEW',
+                        change: 'Added a new feature'
+                    }
+                ]
+            };
+            updatedChangelog.push(newItem);
+            const plainText = parser.convertToPlainText(updatedChangelog);
+            setAttributes({ changelog: plainText });
+        };
+    }
+
+    if (!handleRemoveChangeItem) {
+        handleRemoveChangeItem = (versionIndex, changeIndex) => {
+            const updatedChangelog = [...parsedChangelog];
+            updatedChangelog[versionIndex].changes.splice(changeIndex, 1);
+            const plainText = parser.convertToPlainText(updatedChangelog);
+            setAttributes({ changelog: plainText });
+        };
+    }
+
+    if (!handleRemoveVersion) {
+        handleRemoveVersion = (versionIndex) => {
+            const updatedChangelog = [...parsedChangelog];
+            updatedChangelog.splice(versionIndex, 1);
+            const plainText = parser.convertToPlainText(updatedChangelog);
+            setAttributes({ changelog: plainText });
+        };
+    }
+
+   
 
     const blockProps = useBlockProps({
         className: 'changeloger-container',
@@ -275,6 +333,7 @@ function Edit(props) {
                                                                                 handleCategoryChange(newContent, versionIndex, originalChangeIndex);
                                                                             });
                                                                         }}
+                                                                        placeholder={__ ('Category', 'changeloger')}
                                                                     />
                                                                 ) : (
                                                                     <span
@@ -306,8 +365,13 @@ function Edit(props) {
                                                                             <li key={changeIndex} className="change">
                                                                                 {isProChangeloger ? (
                                                                                     <RichText
+                                                                                        style={{
+                                                                                            whiteSpace: 'normal',
+                                                                                            minWidth: '0'
+                                                                                        }}
                                                                                         tagName="span"
-                                                                                        value={item.change}
+                                                                                        value={item.change || "Enter Text here"}
+                                                                                        placeholder={__('Change', 'changeloger')}
                                                                                         onChange={(newContent) => handleChangeChange(newContent, versionIndex, originalChangeIndex)}
                                                                                     />
                                                                                 ) : (
@@ -332,9 +396,10 @@ function Edit(props) {
                                                         );
 
                                                         return (
-                                                            <p key={changeIndex}>
+                                                            <p key={changeIndex} className='rich-text-delete'>
 																{isProChangeloger ? (
-																	<RichText
+																	<>
+                                                                    <RichText
 																		tagName="span"
 																		style={
 																			hasCustomColor
@@ -354,6 +419,8 @@ function Edit(props) {
 																		value={item.category}
 																		onChange={(newContent) => handleCategoryChange(newContent, versionIndex, changeIndex)}
 																	/>
+                                                                    <button className='rich-text-delete-btn' onClick={() => handleRemoveChangeItem(versionIndex, changeIndex)}>Remove</button>
+                                                                    </>
 																) : (
 																	<span
 																		style={
@@ -375,22 +442,36 @@ function Edit(props) {
 																		{item.category}
 																	</span>
 																)}
-                                                                <span className="change">
+                                                                {/* <span className="change"> */}
                                                                     {isProChangeloger ? (
                                                                         <RichText
+                                                                            className='change'
                                                                             tagName="span"
                                                                             value={item.change}
                                                                             onChange={(newContent) => handleChangeChange(newContent, versionIndex, changeIndex)}
                                                                         />
                                                                     ) : (
-                                                                        <span>{item.change}</span>
+                                                                        <span className="change">{item.change}</span>
                                                                     )}
-                                                                </span>
+                                                                {/* </span> */}
                                                             </p>
                                                         );
                                                     })
                                                 )}
-
+                                                <button className='changeloger-add-item' onClick={() => handleAddChangeItem(versionIndex)} >
+                                                    <span>
+                                                        <svg
+                                                        height="24"
+                                                        width="24"
+                                                        viewBox="0 0 24 24"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        >
+                                                        <path d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z" fill="currentColor"></path>
+                                                        </svg>
+                                                        Add New Item
+                                                    </span>
+                                                </button>
                                                 <div className="changeloger-link-wrapper">
                                                     {currentLinks.map(
                                                         (action, index) => {
@@ -443,6 +524,21 @@ function Edit(props) {
                                         </div>
                                     );
                                 })}
+                                <div className="timeline-add-version-wrapper">
+                                <div className="timeline-line-extension"></div>
+                                <button className="timeline-circle-btn" onClick={() => handleAddVersion()}>
+                                    <svg
+                                        height="24"
+                                        width="24"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                        <path d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z" fill="currentColor"></path>
+                                    </svg>
+                                    <span className="btn-text">Add New Version</span>
+                                </button>
+                            </div>
                             </div>
                         </div>
 
