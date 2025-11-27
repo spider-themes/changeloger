@@ -62,6 +62,38 @@ const plus = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)
 
 /***/ }),
 
+/***/ "./node_modules/@wordpress/icons/build-module/library/trash.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@wordpress/icons/build-module/library/trash.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/primitives */ "@wordpress/primitives");
+/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/**
+ * WordPress dependencies
+ */
+
+
+const trash = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_0__.SVG, {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 24 24",
+  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_0__.Path, {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M12 5.5A2.25 2.25 0 0 0 9.878 7h4.244A2.251 2.251 0 0 0 12 5.5ZM12 4a3.751 3.751 0 0 0-3.675 3H5v1.5h1.27l.818 8.997a2.75 2.75 0 0 0 2.739 2.501h4.347a2.75 2.75 0 0 0 2.738-2.5L17.73 8.5H19V7h-3.325A3.751 3.751 0 0 0 12 4Zm4.224 4.5H7.776l.806 8.861a1.25 1.25 0 0 0 1.245 1.137h4.347a1.25 1.25 0 0 0 1.245-1.137l.805-8.861Z"
+  })
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (trash);
+//# sourceMappingURL=trash.js.map
+
+/***/ }),
+
 /***/ "./node_modules/react/cjs/react-jsx-runtime.development.js":
 /*!*****************************************************************!*\
   !*** ./node_modules/react/cjs/react-jsx-runtime.development.js ***!
@@ -1698,17 +1730,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/plus.js");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./editor.scss */ "./src/changeloger/editor.scss");
-/* harmony import */ var _inspector__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./inspector */ "./src/changeloger/inspector.js");
-/* harmony import */ var _placeholder__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./placeholder */ "./src/changeloger/placeholder.js");
-/* harmony import */ var _parser__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./parser */ "./src/changeloger/parser.js");
-/* harmony import */ var _block_control__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./block-control */ "./src/changeloger/block-control.js");
-/* harmony import */ var _components_custom_links__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../components/custom-links */ "./src/components/custom-links.js");
-/* harmony import */ var _components_versions_tree__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../components/versions-tree */ "./src/components/versions-tree.js");
-/* harmony import */ var _components_filter__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../components/filter */ "./src/components/filter.js");
-/* harmony import */ var _utils_constants__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../utils/constants */ "./src/utils/constants.js");
+/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/trash.js");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./editor.scss */ "./src/changeloger/editor.scss");
+/* harmony import */ var _inspector__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./inspector */ "./src/changeloger/inspector.js");
+/* harmony import */ var _placeholder__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./placeholder */ "./src/changeloger/placeholder.js");
+/* harmony import */ var _parser__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./parser */ "./src/changeloger/parser.js");
+/* harmony import */ var _block_control__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./block-control */ "./src/changeloger/block-control.js");
+/* harmony import */ var _components_custom_links__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../components/custom-links */ "./src/components/custom-links.js");
+/* harmony import */ var _components_versions_tree__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../components/versions-tree */ "./src/components/versions-tree.js");
+/* harmony import */ var _components_filter__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../components/filter */ "./src/components/filter.js");
+/* harmony import */ var _utils_constants__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../utils/constants */ "./src/utils/constants.js");
 
 
 
@@ -1775,12 +1808,12 @@ function Edit(props) {
 
   // Fallback: if parsedChangelog not available from placeholder, parse locally
   if (!parsedChangelog) {
-    const parser = new _parser__WEBPACK_IMPORTED_MODULE_10__["default"](changelog);
+    const parser = new _parser__WEBPACK_IMPORTED_MODULE_11__["default"](changelog);
     parsedChangelog = parser.parse();
   }
 
   // Create parser for converting back to plain text
-  const parser = new _parser__WEBPACK_IMPORTED_MODULE_10__["default"](changelog);
+  const parser = new _parser__WEBPACK_IMPORTED_MODULE_11__["default"](changelog);
 
   // Fallback handlers if not provided by placeholder
   if (!handleChangeChange) {
@@ -1842,9 +1875,15 @@ function Edit(props) {
   if (!handleAddVersion) {
     handleAddVersion = () => {
       const updatedChangelog = [...parsedChangelog];
+      const today = new Date();
+      const formattedToday = today.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      });
       const newItem = {
         version: '1.0.0',
-        date: new Date().toISOString().split('T')[0],
+        date: formattedToday,
         changes: [{
           category: 'NEW',
           change: 'Added a new feature'
@@ -1912,7 +1951,7 @@ function Edit(props) {
     });
     return Object.values(grouped);
   }
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_6__.useEffect)(() => {
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_7__.useEffect)(() => {
     if (!uniqueId) {
       // Generate a unique ID based on the current timestamp (in seconds) and a random string
       const timestamp = Math.floor(Date.now() / 1000); // Current time in seconds
@@ -1926,7 +1965,7 @@ function Edit(props) {
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ...blockProps,
     id: uniqueId
-  }, enableSearch && _utils_constants__WEBPACK_IMPORTED_MODULE_15__.isProChangeloger && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, enableSearch && _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "changelog_form_inner"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "changelog_form_group"
@@ -1938,7 +1977,7 @@ function Edit(props) {
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     id: "changelog-search-help-block",
     className: "help-block"
-  })), !showPlaceholder && !showTextArea && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, enableFilter && _utils_constants__WEBPACK_IMPORTED_MODULE_15__.isProChangeloger && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_filter__WEBPACK_IMPORTED_MODULE_14__["default"], {
+  })), !showPlaceholder && !showTextArea && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, enableFilter && _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_filter__WEBPACK_IMPORTED_MODULE_15__["default"], {
     ...props,
     parsedChangelog: parsedChangelog
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -1947,7 +1986,7 @@ function Edit(props) {
     className: "changeloger-version-list-container changeloger-version-list-position-left"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h6", {
     className: "version-title"
-  }, "Versions"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_versions_tree__WEBPACK_IMPORTED_MODULE_13__["default"], {
+  }, "Versions"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_versions_tree__WEBPACK_IMPORTED_MODULE_14__["default"], {
     versions: versions,
     uniqueId: uniqueId
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -1967,7 +2006,7 @@ function Edit(props) {
       "data-filter": uniqueCategories.join(" ")
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "date"
-    }, _utils_constants__WEBPACK_IMPORTED_MODULE_15__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
+    }, _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
       tagName: "span",
       value: date || '',
       onChange: newContent => handleDateChange(newContent, versionIndex),
@@ -1985,7 +2024,7 @@ function Edit(props) {
       })
     })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "version"
-    }, _utils_constants__WEBPACK_IMPORTED_MODULE_15__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
+    }, _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
       tagName: "span",
       className: "version-tag",
       value: version,
@@ -1995,9 +2034,17 @@ function Edit(props) {
       className: "version-tag"
     }, version), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
       className: "line"
-    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+      onClick: () => handleRemoveVersion(versionIndex),
+      className: "delete-version"
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Icon, {
+      icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_6__["default"],
+      size: 20,
+      color: "#ff0000",
+      fill: "#ff0000"
+    }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "content"
-    }, changelogLayout === 'grouped' && _utils_constants__WEBPACK_IMPORTED_MODULE_15__.isProChangeloger ?
+    }, changelogLayout === 'grouped' && _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger ?
     // Grouped layout: Categories displayed once with changes listed below
     groupChangesByCategory(changes).map(group => {
       const currentCategory = group.category.toLowerCase();
@@ -2005,7 +2052,7 @@ function Edit(props) {
       return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         key: currentCategory,
         className: "changelog-category-group"
-      }, _utils_constants__WEBPACK_IMPORTED_MODULE_15__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
+      }, _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
         tagName: "span",
         style: hasCustomColor ? {
           backgroundColor: (0,lodash__WEBPACK_IMPORTED_MODULE_2__.get)(customLogTypeColors, currentCategory)
@@ -2033,7 +2080,7 @@ function Edit(props) {
         return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
           key: changeIndex,
           className: "change"
-        }, _utils_constants__WEBPACK_IMPORTED_MODULE_15__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
+        }, _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
           style: {
             whiteSpace: 'normal',
             minWidth: '0'
@@ -2052,7 +2099,7 @@ function Edit(props) {
       return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
         key: changeIndex,
         className: "rich-text-delete"
-      }, _utils_constants__WEBPACK_IMPORTED_MODULE_15__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
+      }, _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
         tagName: "span",
         style: hasCustomColor ? {
           backgroundColor: (0,lodash__WEBPACK_IMPORTED_MODULE_2__.get)(customLogTypeColors, currentCategory)
@@ -2060,22 +2107,34 @@ function Edit(props) {
         className: `tag ${currentCategory.replace(' ', '-')}`,
         value: item.category,
         onChange: newContent => handleCategoryChange(newContent, versionIndex, changeIndex)
-      }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-        className: "rich-text-delete-btn",
-        onClick: () => handleRemoveChangeItem(versionIndex, changeIndex)
-      }, "Remove")) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      })) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
         style: hasCustomColor ? {
           backgroundColor: (0,lodash__WEBPACK_IMPORTED_MODULE_2__.get)(customLogTypeColors, currentCategory)
         } : {},
         className: `tag ${currentCategory.replace(' ', '-')}`
-      }, item.category), _utils_constants__WEBPACK_IMPORTED_MODULE_15__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
-        className: "change",
+      }, item.category), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+        className: "change"
+      }, _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
         tagName: "span",
         value: item.change,
         onChange: newContent => handleChangeChange(newContent, versionIndex, changeIndex)
-      }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+        className: "rich-text-delete-btn",
+        onClick: () => handleRemoveChangeItem(versionIndex, changeIndex)
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        fill: "currentColor",
+        class: "bi bi-trash",
+        viewBox: "0 0 16 16"
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+        d: "M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"
+      }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+        d: "M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"
+      })))) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
         className: "change"
-      }, item.change));
+      }, item.change)));
     }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
       className: "changeloger-add-item",
       onClick: () => handleAddChangeItem(versionIndex)
@@ -2093,7 +2152,7 @@ function Edit(props) {
     })), "Add New Item")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "changeloger-link-wrapper"
     }, currentLinks.map((action, index) => {
-      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_custom_links__WEBPACK_IMPORTED_MODULE_12__["default"], {
+      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_custom_links__WEBPACK_IMPORTED_MODULE_13__["default"], {
         action: action,
         index: index,
         customLinks: customLinks,
@@ -2141,10 +2200,10 @@ function Edit(props) {
     className: "changeloger-version-list-container changeloger-version-list-position-right"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h6", {
     className: "version-title"
-  }, "Versions"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_versions_tree__WEBPACK_IMPORTED_MODULE_13__["default"], {
+  }, "Versions"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_versions_tree__WEBPACK_IMPORTED_MODULE_14__["default"], {
     versions: versions,
     uniqueId: uniqueId
-  }))), enablePagination && _utils_constants__WEBPACK_IMPORTED_MODULE_15__.isProChangeloger && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }))), enablePagination && _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "changeloger-pagination-wrapper"
   }, 'load-more' === paginationType && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "wp-block-button"
@@ -2159,7 +2218,7 @@ function Edit(props) {
     onChange: newContent => setAttributes({
       paginationLoadMoreText: newContent
     })
-  })), 'numbered' === paginationType && _utils_constants__WEBPACK_IMPORTED_MODULE_15__.isProChangeloger && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  })), 'numbered' === paginationType && _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "changeloger-pagination-inner-wrapper"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "changeloger-prev-button page-navigator"
@@ -2171,11 +2230,11 @@ function Edit(props) {
     className: "page-numbers"
   }, "3"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "changeloger-next-button page-navigator"
-  }, "Next \xBB")))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_inspector__WEBPACK_IMPORTED_MODULE_8__["default"], {
+  }, "Next \xBB")))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_inspector__WEBPACK_IMPORTED_MODULE_9__["default"], {
     ...props
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_placeholder__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_placeholder__WEBPACK_IMPORTED_MODULE_10__["default"], {
     ...props
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_control__WEBPACK_IMPORTED_MODULE_11__["default"], {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_control__WEBPACK_IMPORTED_MODULE_12__["default"], {
     ...props
   }));
 }
@@ -3566,7 +3625,6 @@ __webpack_require__.r(__webpack_exports__);
 const useChangelogState = changelog => {
   const parser = new _parser__WEBPACK_IMPORTED_MODULE_1__["default"](changelog);
   const [parsedChangelog, setParsedChangelog] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(() => parser.parse());
-  console.log(parsedChangelog);
   // Function to update changelog attribute from parsedChangelog
   const updateChangelogAttribute = (updatedChangelog, setAttributes) => {
     const plainText = parser.convertToPlainText(updatedChangelog);
@@ -3625,8 +3683,12 @@ const useChangelogState = changelog => {
   // Handle New version add and also add singel changes item
   const handleAddVersion = setAttributes => {
     const updatedChangelog = [...parsedChangelog];
-    // date format: YYYY-MM-DD
-    const date = new Date().toISOString().split('T')[0];
+    // const today = new Date();
+    // const date = today.toLocaleDateString('en-GB', {
+    //     day: '2-digit',
+    //     month: 'short',
+    //     year: 'numeric',
+    // });
     const newVersion = {
       version: 'New Version',
       date,

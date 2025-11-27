@@ -892,12 +892,35 @@ mark {
   white-space: normal !important;
   min-width: 115px !important;
 }
-
-.rich-text-delete:hover .rich-text-delete-btn {
-  display: block;
+.changeloger-container .changelog-wrapper .rich-text-delete .change {
+  display: flex;
+  align-items: center;
+  justify-items: self-start;
 }
-.rich-text-delete .rich-text-delete-btn {
+.changeloger-container .changelog-wrapper .rich-text-delete:hover .rich-text-delete-btn {
+  display: flex;
+}
+.changeloger-container .changelog-wrapper .rich-text-delete .rich-text-delete-btn {
+  border: none;
+  color: #df0000;
+  background: transparent;
+  padding: 0px;
   display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: 1px;
+}
+.changeloger-container .changelog-wrapper .version:hover .delete-version {
+  display: flex;
+}
+.changeloger-container .changelog-wrapper .version .delete-version {
+  display: none;
+  border: 1px solid #ff0000;
+  border-radius: 100%;
+  padding: 3px 3px;
+  cursor: pointer;
+  margin: -28px 55px;
 }
 
 /*# sourceMappingURL=index.css.map*/

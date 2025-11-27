@@ -1,8 +1,8 @@
 import {__} from '@wordpress/i18n';
 import {has, get} from 'lodash';
-import {Button} from '@wordpress/components';
+import {Button, Icon} from '@wordpress/components';
 import {useBlockProps, RichText} from '@wordpress/block-editor';
-import {plus} from '@wordpress/icons';
+import {plus, trash} from '@wordpress/icons';
 import React from "react";
 import {useEffect} from "@wordpress/element";
 import './editor.scss';
@@ -120,9 +120,15 @@ function Edit(props) {
     if (!handleAddVersion) {
         handleAddVersion = () => {
             const updatedChangelog = [...parsedChangelog];
+            const today = new Date();
+            const formattedToday = today.toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            });
             const newItem = {
                 version: '1.0.0',
-                date: new Date().toISOString().split('T')[0],
+                date: formattedToday,
                 changes: [
                     {
                         category: 'NEW',
@@ -293,7 +299,11 @@ function Edit(props) {
 													<span className="version-tag">{version}</span>
 												)}
                                                 <span className="line"></span>
+                                                <button onClick={() => handleRemoveVersion(versionIndex)} className="delete-version">
+                                                   <Icon icon={trash} size={20} color='#ff0000' fill='#ff0000'/>
+                                                </button>
                                             </div>
+                                           
                                             <div className="content">
                                                 {changelogLayout === 'grouped' && isProChangeloger ? (
                                                     // Grouped layout: Categories displayed once with changes listed below
@@ -419,7 +429,6 @@ function Edit(props) {
 																		value={item.category}
 																		onChange={(newContent) => handleCategoryChange(newContent, versionIndex, changeIndex)}
 																	/>
-                                                                    <button className='rich-text-delete-btn' onClick={() => handleRemoveChangeItem(versionIndex, changeIndex)}>Remove</button>
                                                                     </>
 																) : (
 																	<span
@@ -442,36 +451,43 @@ function Edit(props) {
 																		{item.category}
 																	</span>
 																)}
-                                                                {/* <span className="change"> */}
+                                                                <span className="change">
                                                                     {isProChangeloger ? (
+                                                                        <>
                                                                         <RichText
-                                                                            className='change'
                                                                             tagName="span"
                                                                             value={item.change}
                                                                             onChange={(newContent) => handleChangeChange(newContent, versionIndex, changeIndex)}
                                                                         />
+                                                                         <button className='rich-text-delete-btn' onClick={() => handleRemoveChangeItem(versionIndex, changeIndex)}>
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                                                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                                                            </svg>
+                                                                         </button>
+                                                                        </>
                                                                     ) : (
                                                                         <span className="change">{item.change}</span>
                                                                     )}
-                                                                {/* </span> */}
+                                                                </span>
                                                             </p>
                                                         );
                                                     })
                                                 )}
-                                                <button className='changeloger-add-item' onClick={() => handleAddChangeItem(versionIndex)} >
-                                                    <span>
-                                                        <svg
-                                                        height="24"
-                                                        width="24"
-                                                        viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                        <path d="M0 0h24v24H0z" fill="none"></path>
-                                                        <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z" fill="currentColor"></path>
-                                                        </svg>
-                                                        Add New Item
-                                                    </span>
-                                                </button>
+                                                    <button className='changeloger-add-item' onClick={() => handleAddChangeItem(versionIndex)} >
+                                                        <span>
+                                                            <svg
+                                                                height="24"
+                                                                width="24"
+                                                                viewBox="0 0 24 24"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                            >
+                                                                <path d="M0 0h24v24H0z" fill="none"></path>
+                                                                <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z" fill="currentColor"></path>
+                                                            </svg>
+                                                            Add New Item
+                                                        </span>
+                                                    </button>
                                                 <div className="changeloger-link-wrapper">
                                                     {currentLinks.map(
                                                         (action, index) => {

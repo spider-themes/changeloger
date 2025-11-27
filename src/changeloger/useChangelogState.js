@@ -8,7 +8,6 @@ import ChangelogParser from './parser';
 export const useChangelogState = (changelog) => {
     const parser = new ChangelogParser(changelog);
     const [parsedChangelog, setParsedChangelog] = useState(() => parser.parse());
-    console.log(parsedChangelog);
     // Function to update changelog attribute from parsedChangelog
     const updateChangelogAttribute = (updatedChangelog, setAttributes) => {
         const plainText = parser.convertToPlainText(updatedChangelog);
@@ -68,8 +67,12 @@ export const useChangelogState = (changelog) => {
     // Handle New version add and also add singel changes item
     const handleAddVersion = (setAttributes) => {
         const updatedChangelog = [...parsedChangelog];
-        // date format: YYYY-MM-DD
-        const date = new Date().toISOString().split('T')[0];
+        // const today = new Date();
+        // const date = today.toLocaleDateString('en-GB', {
+        //     day: '2-digit',
+        //     month: 'short',
+        //     year: 'numeric',
+        // });
         const newVersion = {
             version: 'New Version',
             date,
