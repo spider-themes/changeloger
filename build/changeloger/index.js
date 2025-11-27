@@ -1723,25 +1723,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "lodash");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/plus.js");
-/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/trash.js");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./editor.scss */ "./src/changeloger/editor.scss");
-/* harmony import */ var _inspector__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./inspector */ "./src/changeloger/inspector.js");
-/* harmony import */ var _placeholder__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./placeholder */ "./src/changeloger/placeholder.js");
-/* harmony import */ var _parser__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./parser */ "./src/changeloger/parser.js");
-/* harmony import */ var _block_control__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./block-control */ "./src/changeloger/block-control.js");
-/* harmony import */ var _components_custom_links__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../components/custom-links */ "./src/components/custom-links.js");
-/* harmony import */ var _components_versions_tree__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../components/versions-tree */ "./src/components/versions-tree.js");
-/* harmony import */ var _components_filter__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../components/filter */ "./src/components/filter.js");
-/* harmony import */ var _utils_constants__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../utils/constants */ "./src/utils/constants.js");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./editor.scss */ "./src/changeloger/editor.scss");
+/* harmony import */ var _inspector__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./inspector */ "./src/changeloger/inspector.js");
+/* harmony import */ var _placeholder__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./placeholder */ "./src/changeloger/placeholder.js");
+/* harmony import */ var _parser__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./parser */ "./src/changeloger/parser.js");
+/* harmony import */ var _block_control__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./block-control */ "./src/changeloger/block-control.js");
+/* harmony import */ var _components_versions_tree__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../components/versions-tree */ "./src/components/versions-tree.js");
+/* harmony import */ var _components_filter__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../components/filter */ "./src/components/filter.js");
+/* harmony import */ var _components_search_bar__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../components/search-bar */ "./src/components/search-bar.js");
+/* harmony import */ var _components_changelog_item__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../components/changelog-item */ "./src/components/changelog-item.js");
+/* harmony import */ var _components_add_version_button__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../components/add-version-button */ "./src/components/add-version-button.js");
+/* harmony import */ var _components_pagination_controls__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../components/pagination-controls */ "./src/components/pagination-controls.js");
+/* harmony import */ var _utils_constants__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../utils/constants */ "./src/utils/constants.js");
 
 
 
@@ -1808,12 +1805,12 @@ function Edit(props) {
 
   // Fallback: if parsedChangelog not available from placeholder, parse locally
   if (!parsedChangelog) {
-    const parser = new _parser__WEBPACK_IMPORTED_MODULE_11__["default"](changelog);
+    const parser = new _parser__WEBPACK_IMPORTED_MODULE_7__["default"](changelog);
     parsedChangelog = parser.parse();
   }
 
   // Create parser for converting back to plain text
-  const parser = new _parser__WEBPACK_IMPORTED_MODULE_11__["default"](changelog);
+  const parser = new _parser__WEBPACK_IMPORTED_MODULE_7__["default"](changelog);
 
   // Fallback handlers if not provided by placeholder
   if (!handleChangeChange) {
@@ -1916,7 +1913,7 @@ function Edit(props) {
       });
     };
   }
-  const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.useBlockProps)({
+  const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps)({
     className: 'changeloger-container',
     style: {
       '--changeloger-pagination-text-color': paginationTextColor,
@@ -1935,23 +1932,7 @@ function Edit(props) {
   const versions = parser.getVersions();
   const isLeft = enableVersions && versionsPosition === 'left';
   const isRight = enableVersions && versionsPosition === 'right';
-
-  // Helper function to group changes by category
-  function groupChangesByCategory(changes) {
-    const grouped = {};
-    changes.forEach(item => {
-      const category = item.category.toLowerCase();
-      if (!grouped[category]) {
-        grouped[category] = {
-          category: item.category,
-          changes: []
-        };
-      }
-      grouped[category].changes.push(item);
-    });
-    return Object.values(grouped);
-  }
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_7__.useEffect)(() => {
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
     if (!uniqueId) {
       // Generate a unique ID based on the current timestamp (in seconds) and a random string
       const timestamp = Math.floor(Date.now() / 1000); // Current time in seconds
@@ -1965,19 +1946,11 @@ function Edit(props) {
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ...blockProps,
     id: uniqueId
-  }, enableSearch && _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "changelog_form_inner"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "changelog_form_group"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-    type: "search",
-    "data-searchTarget": uniqueId,
-    className: "changelog-search-control changelog_form_control noEnterSubmit",
-    placeholder: "Search your changelog..."
-  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    id: "changelog-search-help-block",
-    className: "help-block"
-  })), !showPlaceholder && !showTextArea && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, enableFilter && _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_filter__WEBPACK_IMPORTED_MODULE_15__["default"], {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_search_bar__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    uniqueId: uniqueId,
+    enableSearch: enableSearch,
+    isProChangeloger: _utils_constants__WEBPACK_IMPORTED_MODULE_15__.isProChangeloger
+  }), !showPlaceholder && !showTextArea && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, enableFilter && _utils_constants__WEBPACK_IMPORTED_MODULE_15__.isProChangeloger && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_filter__WEBPACK_IMPORTED_MODULE_10__["default"], {
     ...props,
     parsedChangelog: parsedChangelog
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -1986,255 +1959,53 @@ function Edit(props) {
     className: "changeloger-version-list-container changeloger-version-list-position-left"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h6", {
     className: "version-title"
-  }, "Versions"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_versions_tree__WEBPACK_IMPORTED_MODULE_14__["default"], {
+  }, "Versions"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_versions_tree__WEBPACK_IMPORTED_MODULE_9__["default"], {
     versions: versions,
     uniqueId: uniqueId
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "changeloger-info-inner-wrapper"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "changeloger-items"
-  }, parsedChangelog.map((item, versionIndex) => {
-    const {
-      date,
-      version,
-      changes
-    } = item;
-    const currentLinks = (0,lodash__WEBPACK_IMPORTED_MODULE_2__.get)(customLinks, version, []);
-    const uniqueCategories = [...new Set(changes.map(item => item.category.toLowerCase()))];
-    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "changelog-info-item",
-      "data-filter": uniqueCategories.join(" ")
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "date"
-    }, _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
-      tagName: "span",
-      value: date || '',
-      onChange: newContent => handleDateChange(newContent, versionIndex),
-      placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Date', 'changeloger')
-    }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, date), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
-      tagName: "span",
-      className: "changeloger-version-name",
-      placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Version Name', 'changeloger'),
-      value: versionName[version],
-      onChange: newContent => setAttributes({
-        versionName: {
-          ...versionName,
-          [version]: newContent
-        }
-      })
-    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "version"
-    }, _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
-      tagName: "span",
-      className: "version-tag",
-      value: version,
-      onChange: newContent => handleVersionChange(newContent, versionIndex),
-      placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Version', 'changeloger')
-    }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-      className: "version-tag"
-    }, version), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-      className: "line"
-    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-      onClick: () => handleRemoveVersion(versionIndex),
-      className: "delete-version"
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Icon, {
-      icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_6__["default"],
-      size: 20,
-      color: "#ff0000",
-      fill: "#ff0000"
-    }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "content"
-    }, changelogLayout === 'grouped' && _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger ?
-    // Grouped layout: Categories displayed once with changes listed below
-    groupChangesByCategory(changes).map(group => {
-      const currentCategory = group.category.toLowerCase();
-      const hasCustomColor = (0,lodash__WEBPACK_IMPORTED_MODULE_2__.has)(customLogTypeColors, currentCategory);
-      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-        key: currentCategory,
-        className: "changelog-category-group"
-      }, _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
-        tagName: "span",
-        style: hasCustomColor ? {
-          backgroundColor: (0,lodash__WEBPACK_IMPORTED_MODULE_2__.get)(customLogTypeColors, currentCategory)
-        } : {},
-        className: `tag ${currentCategory.replace(' ', '-')}`,
-        value: group.category,
-        onChange: newContent => {
-          // Update all changes with this category
-          group.changes.forEach(changeItem => {
-            const originalChangeIndex = changes.findIndex(c => c.category === changeItem.category && c.change === changeItem.change);
-            handleCategoryChange(newContent, versionIndex, originalChangeIndex);
-          });
-        },
-        placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Category', 'changeloger')
-      }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-        style: hasCustomColor ? {
-          backgroundColor: (0,lodash__WEBPACK_IMPORTED_MODULE_2__.get)(customLogTypeColors, currentCategory)
-        } : {},
-        className: `tag ${currentCategory.replace(' ', '-')}`
-      }, group.category), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", {
-        className: "changelog-items-list"
-      }, group.changes.map((item, changeIndex) => {
-        // Find the original index of this change in the main changes array
-        const originalChangeIndex = changes.findIndex(c => c.category === item.category && c.change === item.change);
-        return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
-          key: changeIndex,
-          className: "change"
-        }, _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
-          style: {
-            whiteSpace: 'normal',
-            minWidth: '0'
-          },
-          tagName: "span",
-          value: item.change || "Enter Text here",
-          placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Change', 'changeloger'),
-          onChange: newContent => handleChangeChange(newContent, versionIndex, originalChangeIndex)
-        }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, item.change));
-      })));
-    }) :
-    // Individual layout: Each change with its own category tag
-    changes.map((item, changeIndex) => {
-      const currentCategory = item.category.toLowerCase();
-      const hasCustomColor = (0,lodash__WEBPACK_IMPORTED_MODULE_2__.has)(customLogTypeColors, currentCategory);
-      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
-        key: changeIndex,
-        className: "rich-text-delete"
-      }, _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
-        tagName: "span",
-        style: hasCustomColor ? {
-          backgroundColor: (0,lodash__WEBPACK_IMPORTED_MODULE_2__.get)(customLogTypeColors, currentCategory)
-        } : {},
-        className: `tag ${currentCategory.replace(' ', '-')}`,
-        value: item.category,
-        onChange: newContent => handleCategoryChange(newContent, versionIndex, changeIndex)
-      })) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-        style: hasCustomColor ? {
-          backgroundColor: (0,lodash__WEBPACK_IMPORTED_MODULE_2__.get)(customLogTypeColors, currentCategory)
-        } : {},
-        className: `tag ${currentCategory.replace(' ', '-')}`
-      }, item.category), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-        className: "change"
-      }, _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
-        tagName: "span",
-        value: item.change,
-        onChange: newContent => handleChangeChange(newContent, versionIndex, changeIndex)
-      }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-        className: "rich-text-delete-btn",
-        onClick: () => handleRemoveChangeItem(versionIndex, changeIndex)
-      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
-        xmlns: "http://www.w3.org/2000/svg",
-        width: "16",
-        height: "16",
-        fill: "currentColor",
-        class: "bi bi-trash",
-        viewBox: "0 0 16 16"
-      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
-        d: "M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"
-      }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
-        d: "M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"
-      })))) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-        className: "change"
-      }, item.change)));
-    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-      className: "changeloger-add-item",
-      onClick: () => handleAddChangeItem(versionIndex)
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
-      height: "24",
-      width: "24",
-      viewBox: "0 0 24 24",
-      xmlns: "http://www.w3.org/2000/svg"
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
-      d: "M0 0h24v24H0z",
-      fill: "none"
-    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
-      d: "M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z",
-      fill: "currentColor"
-    })), "Add New Item")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "changeloger-link-wrapper"
-    }, currentLinks.map((action, index) => {
-      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_custom_links__WEBPACK_IMPORTED_MODULE_13__["default"], {
-        action: action,
-        index: index,
-        customLinks: customLinks,
-        currentLinks: currentLinks,
-        setAttributes: setAttributes,
-        version: version
-      });
-    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
-      isSmall: true,
-      isPressed: true,
-      icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__["default"],
-      label: "Add Link",
-      onClick: () => setAttributes({
-        customLinks: {
-          ...customLinks,
-          [version]: [...currentLinks, {
-            name: 'Link',
-            link: `${uniqueId}#`,
-            icon: ''
-          }]
-        }
-      })
-    }))));
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "timeline-add-version-wrapper"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "timeline-line-extension"
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    className: "timeline-circle-btn",
-    onClick: () => handleAddVersion()
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
-    height: "24",
-    width: "24",
-    viewBox: "0 0 24 24",
-    xmlns: "http://www.w3.org/2000/svg"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
-    d: "M0 0h24v24H0z",
-    fill: "none"
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
-    d: "M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z",
-    fill: "currentColor"
-  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "btn-text"
-  }, "Add New Version"))))), isRight && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, parsedChangelog.map((item, versionIndex) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_changelog_item__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    key: versionIndex,
+    item: item,
+    versionIndex: versionIndex,
+    customLinks: customLinks,
+    versionName: versionName,
+    changelogLayout: changelogLayout,
+    customLogTypeColors: customLogTypeColors,
+    uniqueId: uniqueId,
+    handleDateChange: handleDateChange,
+    handleVersionChange: handleVersionChange,
+    handleCategoryChange: handleCategoryChange,
+    handleChangeChange: handleChangeChange,
+    handleAddChangeItem: handleAddChangeItem,
+    handleRemoveChangeItem: handleRemoveChangeItem,
+    handleRemoveVersion: handleRemoveVersion,
+    setAttributes: setAttributes,
+    isProChangeloger: _utils_constants__WEBPACK_IMPORTED_MODULE_15__.isProChangeloger
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_add_version_button__WEBPACK_IMPORTED_MODULE_13__["default"], {
+    onClick: handleAddVersion
+  }))), isRight && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "changeloger-version-list-container changeloger-version-list-position-right"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h6", {
     className: "version-title"
-  }, "Versions"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_versions_tree__WEBPACK_IMPORTED_MODULE_14__["default"], {
+  }, "Versions"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_versions_tree__WEBPACK_IMPORTED_MODULE_9__["default"], {
     versions: versions,
     uniqueId: uniqueId
-  }))), enablePagination && _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "changeloger-pagination-wrapper"
-  }, 'load-more' === paginationType && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "wp-block-button"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
-    tagName: "button",
-    style: {
-      color: paginationTextColor,
-      backgroundColor: paginationBgColor
-    },
-    className: "changeloger-pagination-button wp-block-button__link wp-element-button",
-    value: paginationLoadMoreText,
-    onChange: newContent => setAttributes({
-      paginationLoadMoreText: newContent
-    })
-  })), 'numbered' === paginationType && _utils_constants__WEBPACK_IMPORTED_MODULE_16__.isProChangeloger && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "changeloger-pagination-inner-wrapper"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "changeloger-prev-button page-navigator"
-  }, "\xAB Previous"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "page-numbers current"
-  }, "1"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "page-numbers"
-  }, "2"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "page-numbers"
-  }, "3"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "changeloger-next-button page-navigator"
-  }, "Next \xBB")))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_inspector__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_pagination_controls__WEBPACK_IMPORTED_MODULE_14__["default"], {
+    enablePagination: enablePagination,
+    paginationType: paginationType,
+    paginationLoadMoreText: paginationLoadMoreText,
+    paginationTextColor: paginationTextColor,
+    paginationBgColor: paginationBgColor,
+    setAttributes: setAttributes,
+    isProChangeloger: _utils_constants__WEBPACK_IMPORTED_MODULE_15__.isProChangeloger
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_inspector__WEBPACK_IMPORTED_MODULE_5__["default"], {
     ...props
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_placeholder__WEBPACK_IMPORTED_MODULE_10__["default"], {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_placeholder__WEBPACK_IMPORTED_MODULE_6__["default"], {
     ...props
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_control__WEBPACK_IMPORTED_MODULE_12__["default"], {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_block_control__WEBPACK_IMPORTED_MODULE_8__["default"], {
     ...props
   }));
 }
@@ -3733,6 +3504,359 @@ const useChangelogState = changelog => {
 
 /***/ }),
 
+/***/ "./src/components/add-item-button.js":
+/*!*******************************************!*\
+  !*** ./src/components/add-item-button.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+
+/**
+ * AddItemButton Component
+ * Button to add new changelog items
+ */
+const AddItemButton = ({
+  onClick,
+  label = "Add New Item"
+}) => {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    className: "changeloger-add-item",
+    onClick: onClick
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
+    height: "24",
+    width: "24",
+    viewBox: "0 0 24 24",
+    xmlns: "http://www.w3.org/2000/svg"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+    d: "M0 0h24v24H0z",
+    fill: "none"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+    d: "M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z",
+    fill: "currentColor"
+  })), label));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AddItemButton);
+
+/***/ }),
+
+/***/ "./src/components/add-version-button.js":
+/*!**********************************************!*\
+  !*** ./src/components/add-version-button.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+
+/**
+ * AddVersionButton Component
+ * Button to add new versions with timeline styling
+ */
+const AddVersionButton = ({
+  onClick
+}) => {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "timeline-add-version-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "timeline-line-extension"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    className: "timeline-circle-btn",
+    onClick: onClick
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
+    height: "24",
+    width: "24",
+    viewBox: "0 0 24 24",
+    xmlns: "http://www.w3.org/2000/svg"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+    d: "M0 0h24v24H0z",
+    fill: "none"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+    d: "M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z",
+    fill: "currentColor"
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "btn-text"
+  }, "Add New Version")));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AddVersionButton);
+
+/***/ }),
+
+/***/ "./src/components/category-tag.js":
+/*!****************************************!*\
+  !*** ./src/components/category-tag.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "lodash");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+
+
+/**
+ * CategoryTag Component
+ * Renders a category tag with custom colors and optional editing
+ */
+const CategoryTag = ({
+  category,
+  customLogTypeColors,
+  onChange,
+  isProChangeloger,
+  isEditable = true
+}) => {
+  const currentCategory = category.toLowerCase();
+  const hasCustomColor = (0,lodash__WEBPACK_IMPORTED_MODULE_2__.has)(customLogTypeColors, currentCategory);
+  const style = hasCustomColor ? {
+    backgroundColor: (0,lodash__WEBPACK_IMPORTED_MODULE_2__.get)(customLogTypeColors, currentCategory)
+  } : {};
+  const className = `tag ${currentCategory.replace(' ', '-')}`;
+  if (isProChangeloger && isEditable && onChange) {
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
+      tagName: "span",
+      style: style,
+      className: className,
+      value: category,
+      onChange: onChange,
+      placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Category', 'changeloger')
+    });
+  }
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    style: style,
+    className: className
+  }, category);
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CategoryTag);
+
+/***/ }),
+
+/***/ "./src/components/change-item.js":
+/*!***************************************!*\
+  !*** ./src/components/change-item.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _category_tag__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./category-tag */ "./src/components/category-tag.js");
+
+
+
+
+
+
+/**
+ * ChangeItem Component
+ * Renders a single change item with category tag and delete button
+ */
+const ChangeItem = ({
+  item,
+  versionIndex,
+  changeIndex,
+  customLogTypeColors,
+  handleCategoryChange,
+  handleChangeChange,
+  handleRemoveChangeItem,
+  isProChangeloger
+}) => {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    className: "rich-text-delete"
+  }, isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_category_tag__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    category: item.category,
+    customLogTypeColors: customLogTypeColors,
+    onChange: newContent => handleCategoryChange(newContent, versionIndex, changeIndex),
+    isProChangeloger: isProChangeloger
+  })) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_category_tag__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    category: item.category,
+    customLogTypeColors: customLogTypeColors,
+    isProChangeloger: isProChangeloger,
+    isEditable: false
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "change"
+  }, isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText, {
+    tagName: "span",
+    value: item.change,
+    onChange: newContent => handleChangeChange(newContent, versionIndex, changeIndex)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    className: "rich-text-delete-btn",
+    onClick: () => handleRemoveChangeItem(versionIndex, changeIndex)
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    width: "16",
+    height: "16",
+    fill: "currentColor",
+    class: "bi bi-trash",
+    viewBox: "0 0 16 16"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+    d: "M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+    d: "M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"
+  })))) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "change"
+  }, item.change)));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ChangeItem);
+
+/***/ }),
+
+/***/ "./src/components/changelog-item.js":
+/*!******************************************!*\
+  !*** ./src/components/changelog-item.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "lodash");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/plus.js");
+/* harmony import */ var _version_header__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./version-header */ "./src/components/version-header.js");
+/* harmony import */ var _grouped_changes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./grouped-changes */ "./src/components/grouped-changes.js");
+/* harmony import */ var _individual_changes__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./individual-changes */ "./src/components/individual-changes.js");
+/* harmony import */ var _add_item_button__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./add-item-button */ "./src/components/add-item-button.js");
+/* harmony import */ var _custom_links__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./custom-links */ "./src/components/custom-links.js");
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * ChangelogItem Component
+ * Main component that wraps a complete changelog version entry
+ */
+const ChangelogItem = ({
+  item,
+  versionIndex,
+  customLinks,
+  versionName,
+  changelogLayout,
+  customLogTypeColors,
+  uniqueId,
+  handleDateChange,
+  handleVersionChange,
+  handleCategoryChange,
+  handleChangeChange,
+  handleAddChangeItem,
+  handleRemoveChangeItem,
+  handleRemoveVersion,
+  setAttributes,
+  isProChangeloger
+}) => {
+  const {
+    date,
+    version,
+    changes
+  } = item;
+  const currentLinks = (0,lodash__WEBPACK_IMPORTED_MODULE_1__.get)(customLinks, version, []);
+  const uniqueCategories = [...new Set(changes.map(item => item.category.toLowerCase()))];
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changelog-info-item",
+    "data-filter": uniqueCategories.join(" ")
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_version_header__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    date: date,
+    version: version,
+    versionName: versionName,
+    versionIndex: versionIndex,
+    handleDateChange: handleDateChange,
+    handleVersionChange: handleVersionChange,
+    handleRemoveVersion: handleRemoveVersion,
+    setAttributes: setAttributes,
+    isProChangeloger: isProChangeloger
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "content"
+  }, changelogLayout === 'grouped' && isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_grouped_changes__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    changes: changes,
+    versionIndex: versionIndex,
+    customLogTypeColors: customLogTypeColors,
+    handleCategoryChange: handleCategoryChange,
+    handleChangeChange: handleChangeChange,
+    isProChangeloger: isProChangeloger
+  }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_individual_changes__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    changes: changes,
+    versionIndex: versionIndex,
+    customLogTypeColors: customLogTypeColors,
+    handleCategoryChange: handleCategoryChange,
+    handleChangeChange: handleChangeChange,
+    handleRemoveChangeItem: handleRemoveChangeItem,
+    isProChangeloger: isProChangeloger
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_add_item_button__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    onClick: () => handleAddChangeItem(versionIndex)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changeloger-link-wrapper"
+  }, currentLinks.map((action, index) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_custom_links__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    key: index,
+    action: action,
+    index: index,
+    customLinks: customLinks,
+    currentLinks: currentLinks,
+    setAttributes: setAttributes,
+    version: version
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+    isSmall: true,
+    isPressed: true,
+    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_3__["default"],
+    label: "Add Link",
+    onClick: () => setAttributes({
+      customLinks: {
+        ...customLinks,
+        [version]: [...currentLinks, {
+          name: 'Link',
+          link: `${uniqueId}#`,
+          icon: ''
+        }]
+      }
+    })
+  }))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ChangelogItem);
+
+/***/ }),
+
 /***/ "./src/components/custom-color-control.js":
 /*!************************************************!*\
   !*** ./src/components/custom-color-control.js ***!
@@ -4043,6 +4167,143 @@ const FilterButton = props => {
 
 /***/ }),
 
+/***/ "./src/components/grouped-changes.js":
+/*!*******************************************!*\
+  !*** ./src/components/grouped-changes.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _category_tag__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./category-tag */ "./src/components/category-tag.js");
+
+
+
+
+
+
+/**
+ * GroupedChanges Component
+ * Renders changes grouped by category
+ */
+const GroupedChanges = ({
+  changes,
+  versionIndex,
+  customLogTypeColors,
+  handleCategoryChange,
+  handleChangeChange,
+  isProChangeloger
+}) => {
+  // Helper function to group changes by category
+  const groupChangesByCategory = changes => {
+    const grouped = {};
+    changes.forEach(item => {
+      const category = item.category.toLowerCase();
+      if (!grouped[category]) {
+        grouped[category] = {
+          category: item.category,
+          changes: []
+        };
+      }
+      grouped[category].changes.push(item);
+    });
+    return Object.values(grouped);
+  };
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, groupChangesByCategory(changes).map(group => {
+    const currentCategory = group.category.toLowerCase();
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      key: currentCategory,
+      className: "changelog-category-group"
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_category_tag__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      category: group.category,
+      customLogTypeColors: customLogTypeColors,
+      onChange: newContent => {
+        // Update all changes with this category
+        group.changes.forEach(changeItem => {
+          const originalChangeIndex = changes.findIndex(c => c.category === changeItem.category && c.change === changeItem.change);
+          handleCategoryChange(newContent, versionIndex, originalChangeIndex);
+        });
+      },
+      isProChangeloger: isProChangeloger
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", {
+      className: "changelog-items-list"
+    }, group.changes.map((item, changeIndex) => {
+      // Find the original index of this change in the main changes array
+      const originalChangeIndex = changes.findIndex(c => c.category === item.category && c.change === item.change);
+      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
+        key: changeIndex,
+        className: "change"
+      }, isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText, {
+        style: {
+          whiteSpace: 'normal',
+          minWidth: '0'
+        },
+        tagName: "span",
+        value: item.change || "Enter Text here",
+        placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Change', 'changeloger'),
+        onChange: newContent => handleChangeChange(newContent, versionIndex, originalChangeIndex)
+      }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, item.change));
+    })));
+  }));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GroupedChanges);
+
+/***/ }),
+
+/***/ "./src/components/individual-changes.js":
+/*!**********************************************!*\
+  !*** ./src/components/individual-changes.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _change_item__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./change-item */ "./src/components/change-item.js");
+
+
+
+
+/**
+ * IndividualChanges Component
+ * Renders changes individually with their own category tags
+ */
+const IndividualChanges = ({
+  changes,
+  versionIndex,
+  customLogTypeColors,
+  handleCategoryChange,
+  handleChangeChange,
+  handleRemoveChangeItem,
+  isProChangeloger
+}) => {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, changes.map((item, changeIndex) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_change_item__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    key: changeIndex,
+    item: item,
+    versionIndex: versionIndex,
+    changeIndex: changeIndex,
+    customLogTypeColors: customLogTypeColors,
+    handleCategoryChange: handleCategoryChange,
+    handleChangeChange: handleChangeChange,
+    handleRemoveChangeItem: handleRemoveChangeItem,
+    isProChangeloger: isProChangeloger
+  })));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (IndividualChanges);
+
+/***/ }),
+
 /***/ "./src/components/loader-wave.js":
 /*!***************************************!*\
   !*** ./src/components/loader-wave.js ***!
@@ -4132,6 +4393,118 @@ function LogTypeColors(props) {
 
 /***/ }),
 
+/***/ "./src/components/pagination-controls.js":
+/*!***********************************************!*\
+  !*** ./src/components/pagination-controls.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+
+/**
+ * PaginationControls Component
+ * Renders pagination controls (load more or numbered)
+ */
+const PaginationControls = ({
+  enablePagination,
+  paginationType,
+  paginationLoadMoreText,
+  paginationTextColor,
+  paginationBgColor,
+  setAttributes,
+  isProChangeloger
+}) => {
+  if (!enablePagination || !isProChangeloger) {
+    return null;
+  }
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changeloger-pagination-wrapper"
+  }, paginationType === 'load-more' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wp-block-button"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.RichText, {
+    tagName: "button",
+    style: {
+      color: paginationTextColor,
+      backgroundColor: paginationBgColor
+    },
+    className: "changeloger-pagination-button wp-block-button__link wp-element-button",
+    value: paginationLoadMoreText,
+    onChange: newContent => setAttributes({
+      paginationLoadMoreText: newContent
+    })
+  })), paginationType === 'numbered' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changeloger-pagination-inner-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "changeloger-prev-button page-navigator"
+  }, "\xAB Previous"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "page-numbers current"
+  }, "1"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "page-numbers"
+  }, "2"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "page-numbers"
+  }, "3"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "changeloger-next-button page-navigator"
+  }, "Next \xBB")));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PaginationControls);
+
+/***/ }),
+
+/***/ "./src/components/search-bar.js":
+/*!**************************************!*\
+  !*** ./src/components/search-bar.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+
+/**
+ * SearchBar Component
+ * Renders the search input for filtering changelog entries
+ */
+const SearchBar = ({
+  uniqueId,
+  enableSearch,
+  isProChangeloger
+}) => {
+  if (!enableSearch || !isProChangeloger) {
+    return null;
+  }
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changelog_form_inner"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changelog_form_group"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "search",
+    "data-searchTarget": uniqueId,
+    className: "changelog-search-control changelog_form_control noEnterSubmit",
+    placeholder: "Search your changelog..."
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    id: "changelog-search-help-block",
+    className: "help-block"
+  }));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SearchBar);
+
+/***/ }),
+
 /***/ "./src/components/text-url.js":
 /*!************************************!*\
   !*** ./src/components/text-url.js ***!
@@ -4195,6 +4568,91 @@ const TextUrl = ({
   }, loader && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loader_wave__WEBPACK_IMPORTED_MODULE_4__["default"], null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Fetch URL Data", "changeloger")))))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TextUrl);
+
+/***/ }),
+
+/***/ "./src/components/version-header.js":
+/*!******************************************!*\
+  !*** ./src/components/version-header.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/trash.js");
+
+
+
+
+
+
+
+/**
+ * VersionHeader Component
+ * Displays version number, date, and version name with edit capabilities
+ */
+const VersionHeader = ({
+  date,
+  version,
+  versionName,
+  versionIndex,
+  handleDateChange,
+  handleVersionChange,
+  handleRemoveVersion,
+  setAttributes,
+  isProChangeloger
+}) => {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "date"
+  }, isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
+    tagName: "span",
+    value: date || '',
+    onChange: newContent => handleDateChange(newContent, versionIndex),
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Date', 'changeloger')
+  }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, date), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
+    tagName: "span",
+    className: "changeloger-version-name",
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Version Name', 'changeloger'),
+    value: versionName[version],
+    onChange: newContent => setAttributes({
+      versionName: {
+        ...versionName,
+        [version]: newContent
+      }
+    })
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "version"
+  }, isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
+    tagName: "span",
+    className: "version-tag",
+    value: version,
+    onChange: newContent => handleVersionChange(newContent, versionIndex),
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Version', 'changeloger')
+  }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "version-tag"
+  }, version), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "line"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    onClick: () => handleRemoveVersion(versionIndex),
+    className: "delete-version"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Icon, {
+    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_4__["default"],
+    size: 20,
+    color: "#ff0000",
+    fill: "#ff0000"
+  }))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (VersionHeader);
 
 /***/ }),
 

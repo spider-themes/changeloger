@@ -510,7 +510,9 @@ mark {
                 border-radius: 100%;
                 padding: 3px 3px;
                 cursor: pointer;
-                margin: -28px 55px;
+                position: absolute;
+                top:0;
+                left: 19%;
             }
         }
         
