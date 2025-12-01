@@ -14,8 +14,11 @@ import ChangelogItem from '../components/changelog-item';
 import AddVersionButton from '../components/add-version-button';
 import PaginationControls from '../components/pagination-controls';
 import {isProChangeloger} from "../utils/constants";
+import ProFeaturesModal from '../components/pro-features-modal';
+import { useState } from '@wordpress/element';
 
 function Edit(props) {
+    const [isProFeaturesModalOpen, setIsProFeaturesModalOpen] = useState(false);
     const {attributes, setAttributes} = props;
     const {
         uniqueId,
@@ -236,7 +239,29 @@ function Edit(props) {
                                         isProChangeloger={isProChangeloger}
                                     />
                                 ))}
-                                <AddVersionButton onClick={handleAddVersion} />
+                                {
+                                    isProChangeloger ? (
+                                        <AddVersionButton onClick={handleAddVersion} />
+                                    ) : (
+                                       <>
+                                       <div className='timeline-add-version-wrapper'>
+                                       <button className='timeline-circle-btn' onClick={() => setIsProFeaturesModalOpen(true)}>
+                                        <svg
+                                            height="24"
+                                            width="24"
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z" fill="currentColor"></path>
+                                        </svg>
+                                        <span className="btn-text">Add New Version</span>
+                                       </button>
+                                        <ProFeaturesModal isOpen={isProFeaturesModalOpen} onClose={() => setIsProFeaturesModalOpen(false)} />
+                                       </div>
+                                       </>
+                                    )
+                                }
                             </div>
                         </div>
 

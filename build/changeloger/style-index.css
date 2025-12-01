@@ -34,6 +34,9 @@
   border-radius: 5px;
   position: relative;
   z-index: 1;
+  min-width: -moz-max-content !important;
+  min-width: max-content !important;
+  display: inline-block;
 }
 .changeloger-container .changelog-wrapper .changeloger-info-inner-wrapper .changeloger-items .changelog-info-item .version .line {
   height: 100%;

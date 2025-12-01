@@ -1,9 +1,10 @@
-import React from "react";
+import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Icon } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 import { trash } from '@wordpress/icons';
-
+import ProFeaturesModal from './pro-features-modal';
+    
 /**
  * VersionHeader Component
  * Displays version number, date, and version name with edit capabilities
@@ -19,6 +20,7 @@ const VersionHeader = ({
     setAttributes,
     isProChangeloger
 }) => {
+    const [isProFeaturesModalOpen, setIsProFeaturesModalOpen] = useState(false);
     return (
         <>
             <div className="date">
@@ -61,9 +63,20 @@ const VersionHeader = ({
                     <span className="version-tag">{version}</span>
                 )}
                 <span className="line"></span>
-                <button onClick={() => handleRemoveVersion(versionIndex)} className="delete-version">
-                    <Icon icon={trash} size={20} color='#ff0000' fill='#ff0000'/>
-                </button>
+                {
+                    isProChangeloger ? (
+                        <button onClick={() => handleRemoveVersion(versionIndex)} className="delete-version">
+                            <Icon icon={trash} size={20} color='#ff0000' fill='#ff0000'/>
+                        </button>
+                    ) : (
+                        <>
+                        <button onClick={() => setIsProFeaturesModalOpen(true)} className="delete-version">
+                            <Icon icon={trash} size={20} color='#ff0000' fill='#ff0000'/>
+                        </button>
+                         <ProFeaturesModal isOpen={isProFeaturesModalOpen} onClose={() => setIsProFeaturesModalOpen(false)} />
+                        </>
+                    )
+                }
             </div>
         </>
     );

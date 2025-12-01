@@ -1,4 +1,4 @@
-@import './common.scss';
+// @import './common.scss';
 
 .changeloger-container {
   & .placeholder-cancel-button {
@@ -196,7 +196,7 @@ mark {
 }
 
 // Version Limit Modal Styles
-.changeloger-version-limit-modal {
+.changeloger-version-limit-modal, .changeloger-pro-features-modal {
   .components-modal__content {
     padding: 0;
   }
@@ -483,6 +483,7 @@ mark {
             &:hover{
                 .rich-text-delete-btn{
                     display: flex;
+                    opacity: 1;
                 }
             }
             .rich-text-delete-btn{
@@ -490,18 +491,19 @@ mark {
                 color: #df0000;
                 background: transparent;
                 padding: 0px;
-                display: none;
                 align-items: center;
                 justify-content: center;
                 cursor: pointer;
                 margin-left: 1px;
-
+                opacity: 0;
+                transition: all 0.8s;
             }
         }
         .version{
             &:hover{
                 .delete-version {
                     display: flex;
+                    
                 }
             }
             .delete-version {

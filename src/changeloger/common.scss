@@ -34,6 +34,8 @@
             border-radius: 5px;
             position: relative;
             z-index: 1;
+            min-width: max-content !important;
+            display: inline-block;
           }
 
           & .line {

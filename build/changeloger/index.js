@@ -1739,6 +1739,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_add_version_button__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../components/add-version-button */ "./src/components/add-version-button.js");
 /* harmony import */ var _components_pagination_controls__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../components/pagination-controls */ "./src/components/pagination-controls.js");
 /* harmony import */ var _utils_constants__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../utils/constants */ "./src/utils/constants.js");
+/* harmony import */ var _components_pro_features_modal__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../components/pro-features-modal */ "./src/components/pro-features-modal.js");
+
+
 
 
 
@@ -1757,6 +1760,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function Edit(props) {
+  const [isProFeaturesModalOpen, setIsProFeaturesModalOpen] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(false);
   const {
     attributes,
     setAttributes
@@ -1984,9 +1988,30 @@ function Edit(props) {
     handleRemoveVersion: handleRemoveVersion,
     setAttributes: setAttributes,
     isProChangeloger: _utils_constants__WEBPACK_IMPORTED_MODULE_15__.isProChangeloger
-  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_add_version_button__WEBPACK_IMPORTED_MODULE_13__["default"], {
+  })), _utils_constants__WEBPACK_IMPORTED_MODULE_15__.isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_add_version_button__WEBPACK_IMPORTED_MODULE_13__["default"], {
     onClick: handleAddVersion
-  }))), isRight && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "timeline-add-version-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    className: "timeline-circle-btn",
+    onClick: () => setIsProFeaturesModalOpen(true)
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
+    height: "24",
+    width: "24",
+    viewBox: "0 0 24 24",
+    xmlns: "http://www.w3.org/2000/svg"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+    d: "M0 0h24v24H0z",
+    fill: "none"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+    d: "M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z",
+    fill: "currentColor"
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "btn-text"
+  }, "Add New Version")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_pro_features_modal__WEBPACK_IMPORTED_MODULE_16__["default"], {
+    isOpen: isProFeaturesModalOpen,
+    onClose: () => setIsProFeaturesModalOpen(false)
+  }))))), isRight && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "changeloger-version-list-container changeloger-version-list-position-right"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h6", {
     className: "version-title"
@@ -3754,6 +3779,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _individual_changes__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./individual-changes */ "./src/components/individual-changes.js");
 /* harmony import */ var _add_item_button__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./add-item-button */ "./src/components/add-item-button.js");
 /* harmony import */ var _custom_links__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./custom-links */ "./src/components/custom-links.js");
+/* harmony import */ var _pro_features_modal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./pro-features-modal */ "./src/components/pro-features-modal.js");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_10__);
+
 
 
 
@@ -3794,6 +3823,7 @@ const ChangelogItem = ({
   } = item;
   const currentLinks = (0,lodash__WEBPACK_IMPORTED_MODULE_1__.get)(customLinks, version, []);
   const uniqueCategories = [...new Set(changes.map(item => item.category.toLowerCase()))];
+  const [isProFeaturesModalOpen, setIsProFeaturesModalOpen] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_10__.useState)(false);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "changelog-info-item",
     "data-filter": uniqueCategories.join(" ")
@@ -3824,9 +3854,14 @@ const ChangelogItem = ({
     handleChangeChange: handleChangeChange,
     handleRemoveChangeItem: handleRemoveChangeItem,
     isProChangeloger: isProChangeloger
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_add_item_button__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }), isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_add_item_button__WEBPACK_IMPORTED_MODULE_7__["default"], {
     onClick: () => handleAddChangeItem(versionIndex)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_add_item_button__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    onClick: () => setIsProFeaturesModalOpen(true)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_pro_features_modal__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    isOpen: isProFeaturesModalOpen,
+    onClose: () => setIsProFeaturesModalOpen(false)
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "changeloger-link-wrapper"
   }, currentLinks.map((action, index) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_custom_links__WEBPACK_IMPORTED_MODULE_8__["default"], {
     key: index,
@@ -4460,6 +4495,60 @@ const PaginationControls = ({
 
 /***/ }),
 
+/***/ "./src/components/pro-features-modal.js":
+/*!**********************************************!*\
+  !*** ./src/components/pro-features-modal.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _changeloger_editor_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../changeloger/editor.scss */ "./src/changeloger/editor.scss");
+
+
+
+
+function ProFeaturesModal({
+  isOpen,
+  onClose
+}) {
+  if (!isOpen) return null;
+  const proLink = window.location.href.substring(0, window.location.href.lastIndexOf('/wp-admin')) + '/wp-admin/admin.php?page=changeloger-pricing';
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Modal, {
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Pro Features', 'changeloger'),
+    onRequestClose: onClose,
+    className: "changeloger-pro-features-modal"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changeloger-modal-content"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    className: "changeloger-modal-message"
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unlock more powerful features with Changeloger Pro!', 'changeloger')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    className: "changeloger-modal-submessage"
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Upgrade to Changeloger Pro to unlock more powerful features!', 'changeloger')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "changeloger-modal-actions"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+    variant: "primary",
+    href: proLink,
+    target: "_blank",
+    className: "changeloger-upgrade-button"
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Upgrade to Pro', 'changeloger')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+    variant: "secondary",
+    onClick: onClose,
+    className: "changeloger-close-button"
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Close', 'changeloger')))));
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProFeaturesModal);
+
+/***/ }),
+
 /***/ "./src/components/search-bar.js":
 /*!**************************************!*\
   !*** ./src/components/search-bar.js ***!
@@ -4583,13 +4672,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/trash.js");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/trash.js");
+/* harmony import */ var _pro_features_modal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pro-features-modal */ "./src/components/pro-features-modal.js");
+
 
 
 
@@ -4612,17 +4705,18 @@ const VersionHeader = ({
   setAttributes,
   isProChangeloger
 }) => {
+  const [isProFeaturesModalOpen, setIsProFeaturesModalOpen] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "date"
-  }, isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
+  }, isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
     tagName: "span",
     value: date || '',
     onChange: newContent => handleDateChange(newContent, versionIndex),
-    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Date', 'changeloger')
-  }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, date), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Date', 'changeloger')
+  }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, date), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
     tagName: "span",
     className: "changeloger-version-name",
-    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Version Name', 'changeloger'),
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Version Name', 'changeloger'),
     value: versionName[version],
     onChange: newContent => setAttributes({
       versionName: {
@@ -4632,24 +4726,35 @@ const VersionHeader = ({
     })
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "version"
-  }, isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
+  }, isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
     tagName: "span",
     className: "version-tag",
     value: version,
     onChange: newContent => handleVersionChange(newContent, versionIndex),
-    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Version', 'changeloger')
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Version', 'changeloger')
   }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "version-tag"
   }, version), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "line"
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+  }), isProChangeloger ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: () => handleRemoveVersion(versionIndex),
     className: "delete-version"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Icon, {
-    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_4__["default"],
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Icon, {
+    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__["default"],
     size: 20,
     color: "#ff0000",
     fill: "#ff0000"
+  })) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    onClick: () => setIsProFeaturesModalOpen(true),
+    className: "delete-version"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Icon, {
+    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__["default"],
+    size: 20,
+    color: "#ff0000",
+    fill: "#ff0000"
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_pro_features_modal__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    isOpen: isProFeaturesModalOpen,
+    onClose: () => setIsProFeaturesModalOpen(false)
   }))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (VersionHeader);

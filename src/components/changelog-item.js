@@ -7,7 +7,8 @@ import GroupedChanges from './grouped-changes';
 import IndividualChanges from './individual-changes';
 import AddItemButton from './add-item-button';
 import CustomLink from './custom-links';
-
+import ProFeaturesModal from './pro-features-modal';
+import { useState } from '@wordpress/element';
 /**
  * ChangelogItem Component
  * Main component that wraps a complete changelog version entry
@@ -33,7 +34,7 @@ const ChangelogItem = ({
     const { date, version, changes } = item;
     const currentLinks = get(customLinks, version, []);
     const uniqueCategories = [...new Set(changes.map(item => item.category.toLowerCase()))];
-
+    const [isProFeaturesModalOpen, setIsProFeaturesModalOpen] = useState(false);
     return (
         <div className="changelog-info-item" data-filter={uniqueCategories.join(" ")}>
             <VersionHeader
@@ -69,8 +70,16 @@ const ChangelogItem = ({
                         isProChangeloger={isProChangeloger}
                     />
                 )}
-
-                <AddItemButton onClick={() => handleAddChangeItem(versionIndex)} />
+                {
+                    isProChangeloger ? (
+                        <AddItemButton onClick={() => handleAddChangeItem(versionIndex)} />
+                    ) : (
+                        <>
+                        <AddItemButton onClick={() => setIsProFeaturesModalOpen(true)} />
+                        <ProFeaturesModal isOpen={isProFeaturesModalOpen} onClose={() => setIsProFeaturesModalOpen(false)} />
+                        </>
+                    )
+                }
 
                 <div className="changeloger-link-wrapper">
                     {currentLinks.map((action, index) => (
