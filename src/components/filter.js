@@ -21,7 +21,6 @@ const FilterButton = (props) => {
 
     const categories = getUniqueCategory();
     return (
-        <div className={`changeloger-filter-alignment align-${props.attributes.filterPosition}`}>
             <div className='changeloger-filter-wrapper'>
                 <button className='changeloger-filter-popover-button'>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -66,7 +65,6 @@ const FilterButton = (props) => {
                 </div>
 
             </div>
-        </div>
     );
 }
 

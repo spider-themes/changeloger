@@ -6,7 +6,7 @@ import {
     TextareaControl
 } from '@wordpress/components';
 import {more} from '@wordpress/icons';
-import {useState} from '@wordpress/element';
+import {useState, useEffect} from '@wordpress/element';
 import ChangelogParser from './parser';
 import {isProChangeloger} from '../utils/constants';
 import VersionLimitModal from '../components/version-limit-modal';
@@ -15,7 +15,7 @@ import {useChangelogState} from './useChangelogState';
 
 function CustomPlaceholder(props) {
     const {attributes, setAttributes} = props;
-    const {changelog, showPlaceholder, showTextArea} = attributes;
+    const {changelog, showPlaceholder, showTextArea, uniqueId} = attributes;
     const [isOpenTextUrl, setIsOpenTextUrl] = useState(false);
     const [url, setUrl] = useState('');
     const [loader, setLoader] = useState(false);
@@ -41,6 +41,64 @@ function CustomPlaceholder(props) {
         handleDateChange(newDate, versionIndex, setAttributes);
     props.handleVersionChange = (newVersion, versionIndex) =>
         handleVersionChange(newVersion, versionIndex, setAttributes);
+
+    // Track version changes and notify subscribers
+    useEffect(() => {
+        if (!changelog || !uniqueId) {
+            return; // Don't track if no changelog or uniqueId
+        }
+
+        // Get current post ID from the global wp.data store
+        const { select } = wp.data;
+        const postId = select('core/editor').getCurrentPostId();
+
+        if (!postId) {
+            return; // No post ID available yet
+        }
+
+        // Parse current changelog
+        const parser = new ChangelogParser(changelog);
+        const parsed = parser.parse();
+
+        if (parsed.length === 0) {
+            return; // No versions to track
+        }
+
+        // Debounce the tracking call to avoid sending too many requests
+        const timeoutId = setTimeout(() => {
+            // Call the version tracking REST endpoint
+            fetch(
+                `${window.location.origin}${window.location.pathname.split('/wp-admin')[0]}/wp-json/changeloger/v1/track-version`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-WP-Nonce': window.changeloger_local_object?.nonce || ''
+                    },
+                    body: JSON.stringify({
+                        post_id: postId,
+                        unique_id: uniqueId,
+                        parsed_changelog: parsed,
+                        is_pro: isProChangeloger,
+                        url: attributes.textUrl || ''
+                    })
+                }
+            )
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.new_version_detected) {
+                    // Version tracking successful
+                    console.log('Version tracked:', data);
+                }
+            })
+            .catch(error => {
+                // Silently fail - don't disrupt user experience
+                console.error('Version tracking error:', error);
+            });
+        }, 2000); // Wait 2 seconds after last change before tracking
+
+        return () => clearTimeout(timeoutId);
+    }, [changelog, uniqueId, attributes.textUrl]);
 
     // Function to open the modal
     const openModal = () => setIsOpenTextUrl(true);

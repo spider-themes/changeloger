@@ -196,7 +196,7 @@ mark {
 }
 
 // Version Limit Modal Styles
-.changeloger-version-limit-modal, .changeloger-pro-features-modal {
+.changeloger-version-limit-modal {
   .components-modal__content {
     padding: 0;
   }
@@ -407,6 +407,7 @@ mark {
                 align-items: center;
                 color: #4c4945;
                 font-weight: 400;
+                font-size:14px;
             }
             &:hover {
                 border-color: #5c6480;
@@ -421,9 +422,19 @@ mark {
             display: flex;
             justify-content: flex-start;
             margin-left: 30%;
+            padding-bottom: 50px;
+            margin-top: 30px;
         }
 
-        /* The vertical line extension */
+        .timeline-line-extension {
+            height: 100%;
+            width: 2px;
+            background: #e2e5ee;
+            position: absolute;
+            left: 0;
+            top: 0;
+            transform: translateX(-50%);
+        }
         
 
         .timeline-circle-btn {
@@ -490,11 +501,11 @@ mark {
                 border: none;
                 color: #df0000;
                 background: transparent;
-                padding: 0px;
+                padding: 0;
                 align-items: center;
                 justify-content: center;
                 cursor: pointer;
-                margin-left: 1px;
+                margin-left: 14px;
                 opacity: 0;
                 transition: all 0.8s;
             }
@@ -503,18 +514,18 @@ mark {
             &:hover{
                 .delete-version {
                     display: flex;
-                    
                 }
             }
             .delete-version {
                 display: none;
                 border: 1px solid #ff0000;
+                background: #fff;
                 border-radius: 100%;
                 padding: 3px 3px;
                 cursor: pointer;
                 position: absolute;
                 top:0;
-                left: 19%;
+                left: 9%;
             }
         }
         

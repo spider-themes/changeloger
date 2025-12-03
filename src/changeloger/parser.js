@@ -186,5 +186,46 @@ export default class ChangelogParser {
         return output.trim();
     }
 
+    // Check if a new version has been added with a higher version number
+    hasNewVersionAdded(prevChangelog, newChangelog) {
+        // Validate inputs
+        if (!Array.isArray(prevChangelog) || !Array.isArray(newChangelog)) {
+            return false;
+        }
+
+        // If previous changelog is empty, it's a new version
+        if (prevChangelog.length === 0 && newChangelog.length > 0) {
+            return true;
+        }
+
+        // If new changelog is empty, no new version
+        if (newChangelog.length === 0) {
+            return false;
+        }
+
+        // Get the highest version from previous changelog
+        const prevVersions = prevChangelog.map(item => item.version);
+        const highestPrevVersion = prevVersions.length > 0
+            ? prevVersions.reduce((max, current) =>
+                this.compareVersions(current, max) > 0 ? current : max
+              )
+            : null;
+
+        // Get the highest version from new changelog
+        const newVersions = newChangelog.map(item => item.version);
+        const highestNewVersion = newVersions.length > 0
+            ? newVersions.reduce((max, current) =>
+                this.compareVersions(current, max) > 0 ? current : max
+              )
+            : null;
+
+        // Check if highest new version is greater than highest previous version
+        if (highestNewVersion && highestPrevVersion) {
+            return this.compareVersions(highestNewVersion, highestPrevVersion) > 0;
+        }
+
+        return false;
+    }
+
 
 }

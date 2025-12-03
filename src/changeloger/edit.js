@@ -46,7 +46,8 @@ function Edit(props) {
         paginationHoverTextColor,
         enableFilter,
         enableSearch,
-        changelogLayout
+        changelogLayout,
+        filterPosition
     } = attributes;
 
     // Get centralized state and handlers from props (set by placeholder.js)
@@ -139,7 +140,7 @@ function Edit(props) {
                     }
                 ]
             };
-            updatedChangelog.push(newItem);
+            updatedChangelog.unshift(newItem);
             const plainText = parser.convertToPlainText(updatedChangelog);
             setAttributes({ changelog: plainText });
         };
@@ -207,7 +208,9 @@ function Edit(props) {
             {!showPlaceholder && !showTextArea && (
                 <>
                     {enableFilter && isProChangeloger &&
-                        <FilterButton {...props} parsedChangelog={parsedChangelog}/>
+                        <div className={`changeloger-action-alignment align-${filterPosition}`}>
+                            <FilterButton {...props} parsedChangelog={parsedChangelog}/>
+                        </div>
                     }
                     <div className="changelog-wrapper">
                         {isLeft && (
@@ -218,27 +221,6 @@ function Edit(props) {
                         )}
                         <div className="changeloger-info-inner-wrapper">
                             <div className="changeloger-items">
-                                {parsedChangelog.map((item, versionIndex) => (
-                                    <ChangelogItem
-                                        key={versionIndex}
-                                        item={item}
-                                        versionIndex={versionIndex}
-                                        customLinks={customLinks}
-                                        versionName={versionName}
-                                        changelogLayout={changelogLayout}
-                                        customLogTypeColors={customLogTypeColors}
-                                        uniqueId={uniqueId}
-                                        handleDateChange={handleDateChange}
-                                        handleVersionChange={handleVersionChange}
-                                        handleCategoryChange={handleCategoryChange}
-                                        handleChangeChange={handleChangeChange}
-                                        handleAddChangeItem={handleAddChangeItem}
-                                        handleRemoveChangeItem={handleRemoveChangeItem}
-                                        handleRemoveVersion={handleRemoveVersion}
-                                        setAttributes={setAttributes}
-                                        isProChangeloger={isProChangeloger}
-                                    />
-                                ))}
                                 {
                                     isProChangeloger ? (
                                         <AddVersionButton onClick={handleAddVersion} />
@@ -262,6 +244,27 @@ function Edit(props) {
                                        </>
                                     )
                                 }
+                                {parsedChangelog.map((item, versionIndex) => (
+                                    <ChangelogItem
+                                        key={versionIndex}
+                                        item={item}
+                                        versionIndex={versionIndex}
+                                        customLinks={customLinks}
+                                        versionName={versionName}
+                                        changelogLayout={changelogLayout}
+                                        customLogTypeColors={customLogTypeColors}
+                                        uniqueId={uniqueId}
+                                        handleDateChange={handleDateChange}
+                                        handleVersionChange={handleVersionChange}
+                                        handleCategoryChange={handleCategoryChange}
+                                        handleChangeChange={handleChangeChange}
+                                        handleAddChangeItem={handleAddChangeItem}
+                                        handleRemoveChangeItem={handleRemoveChangeItem}
+                                        handleRemoveVersion={handleRemoveVersion}
+                                        setAttributes={setAttributes}
+                                        isProChangeloger={isProChangeloger}
+                                    />
+                                ))}
                             </div>
                         </div>
 

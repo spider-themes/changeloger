@@ -150,11 +150,31 @@ if ( ! class_exists( 'CHANGELOGER_BLOCKS_CLASS' ) ) {
             require_once __DIR__ . '/includes/rest-api.php';
             require_once __DIR__ . '/includes/class-changelog-renderer.php';
             require_once __DIR__ . '/admin/class-changeloger-admin.php';
-	        require_once __DIR__ . '/includes/rest-api.php';
+            require_once __DIR__ . '/includes/subscription.php';
+            require_once __DIR__ . '/includes/version-tracker.php';
+            require_once __DIR__ . '/includes/version-notification-cron.php';
         }
 
     }
 }
+
+/**
+ * Plugin activation hook
+ */
+register_activation_hook( __FILE__, function() {
+    if ( function_exists( 'cha_schedule_version_check_cron' ) ) {
+        cha_schedule_version_check_cron();
+    }
+} );
+
+/**
+ * Plugin deactivation hook
+ */
+register_deactivation_hook( __FILE__, function() {
+    if ( function_exists( 'cha_unschedule_version_check_cron' ) ) {
+        cha_unschedule_version_check_cron();
+    }
+} );
 
 /**
  * Kickoff

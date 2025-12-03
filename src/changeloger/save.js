@@ -33,6 +33,7 @@ function save(props) {
     perPage,
     enableSearch,
     changelogLayout,
+    filterPosition,
   } = props.attributes;
 
   const blockProps = useBlockProps.save({
@@ -99,8 +100,13 @@ function save(props) {
 			</div>
       )}
 
-      {enableFilter && isProChangeloger && (
-        <FilterButton {...props} parsedChangelog={parsedChangelog} />
+      {isProChangeloger && (
+          <div className={`changeloger-action-alignment align-${filterPosition}`}>
+              <div className="cha-subscription-button-container"></div>
+              {enableFilter && (
+                <FilterButton {...props} parsedChangelog={parsedChangelog} />
+              )}
+          </div>
       )}
       <div className="changelog-wrapper">
         {isLeft &&(
