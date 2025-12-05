@@ -6,11 +6,14 @@
  * Requires at least: 6.0
  * Tested up to: 6.7.2
  * Requires PHP: 7.4
- * Version: 1.2.0
+ * Version: 1.2.1
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text domain: changeloger
  * Domain Path: /languages
+ *
+ * @fs_premium_only /includes/subscription.php, /includes/version-comparison-helper.php ,/includes/version-tracker.php ,/js/subscription.js
+ *
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -62,6 +65,9 @@ if ( ! function_exists( 'cha_fs' ) ) {
     do_action( 'cha_fs_loaded' );
 }
 
+
+// Load cron functions early so they're available for activation hook
+require_once __DIR__ . '/includes/version-notification-cron.php';
 
 if ( ! class_exists( 'CHANGELOGER_BLOCKS_CLASS' ) ) {
     final class CHANGELOGER_BLOCKS_CLASS {
@@ -124,7 +130,7 @@ if ( ! class_exists( 'CHANGELOGER_BLOCKS_CLASS' ) ) {
             // Apply the same migration to the post_content.
             $post->post_content = $this->migrate_block_name( $post->post_content );
 
-            return $post; 
+            return $post;
         }
 
         /**
@@ -150,9 +156,10 @@ if ( ! class_exists( 'CHANGELOGER_BLOCKS_CLASS' ) ) {
             require_once __DIR__ . '/includes/rest-api.php';
             require_once __DIR__ . '/includes/class-changelog-renderer.php';
             require_once __DIR__ . '/admin/class-changeloger-admin.php';
-            require_once __DIR__ . '/includes/subscription.php';
-            require_once __DIR__ . '/includes/version-tracker.php';
-            require_once __DIR__ . '/includes/version-notification-cron.php';
+	        if ( cha_fs()->is__premium_only() ) {
+		        require_once __DIR__ . '/includes/subscription.php';
+		        require_once __DIR__ . '/includes/version-tracker.php';
+	        }
         }
 
     }
@@ -180,3 +187,5 @@ register_deactivation_hook( __FILE__, function() {
  * Kickoff
  */
 CHANGELOGER_BLOCKS_CLASS::init();
+
+

@@ -22,6 +22,10 @@ class Changeloger_Block_Register
         if ($attributes['enablePagination'] == '1' || $attributes['enableFilter'] == '1') {
             wp_enqueue_script('changeloger-filter');
         }
+	    if ($attributes['enableSubscription'] == '1') {
+		    wp_enqueue_script('cha-subscription');
+		    wp_enqueue_style('cha-subscription');
+	    }
         return $content;
     }
 

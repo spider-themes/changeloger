@@ -15,10 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function cha_schedule_version_check_cron() {
     if ( ! wp_next_scheduled( 'cha_daily_version_check' ) ) {
-        wp_schedule_event( time(), 'daily', 'cha_daily_version_check' );
+        wp_schedule_event( time(), 'hourly', 'cha_daily_version_check' );
     }
 }
-add_action( 'wp_loaded', 'cha_schedule_version_check_cron' );
 
 
 /**
@@ -40,16 +39,26 @@ function cha_run_daily_version_check() {
     require_once dirname( __FILE__ ) . '/version-tracker.php';
     require_once dirname( __FILE__ ) . '/class-changelog-renderer.php';
 
-    // Get all posts with changeloger blocks
+    // Get all posts and pages with changeloger blocks
     $args = array(
-        'post_type'   => 'post',
+        'post_type'   => array( 'post', 'page' ),
         'post_status' => 'publish',
         'numberposts' => -1,
     );
 
     $posts = get_posts( $args );
 
+    // Track overall summary
+    $summary = array(
+        'posts_checked' => 0,
+        'blocks_checked' => 0,
+        'versions_found' => 0,
+        'emails_sent' => 0,
+    );
+
     foreach ( $posts as $post ) {
+        $summary['posts_checked']++;
+
         // Get all changeloger blocks in this post
         $blocks = Changeloger_Version_Tracker::get_post_blocks( $post->ID );
 
@@ -57,12 +66,14 @@ function cha_run_daily_version_check() {
             continue;
         }
 
+        // Process each block independently
         foreach ( $blocks as $block ) {
-            $unique_id = $block['unique_id'];
+            $summary['blocks_checked']++;
+            $unique_id = isset( $block['unique_id'] ) ? $block['unique_id'] : '';
             $changelog = isset( $block['attrs']['changelog'] ) ? $block['attrs']['changelog'] : '';
             $text_url = isset( $block['attrs']['textUrl'] ) ? $block['attrs']['textUrl'] : '';
 
-            if ( empty( $changelog ) ) {
+            if ( empty( $unique_id ) || empty( $changelog ) ) {
                 continue;
             }
 
@@ -86,10 +97,22 @@ function cha_run_daily_version_check() {
                 // Parse current changelog
                 $current_parsed = $renderer->parse( $current_raw_changelog );
 
-                // Get stored changelog
+                if ( empty( $current_parsed ) ) {
+                    Changeloger_Version_Tracker::log_version_event(
+                        $post->ID,
+                        $unique_id,
+                        'cron_check_skipped',
+                        array(
+                            'reason' => 'Empty parsed changelog',
+                        )
+                    );
+                    continue;
+                }
+
+                // Get stored changelog for this specific block
                 $stored_changelog = Changeloger_Version_Tracker::get_tracked_changelog( $post->ID, $unique_id );
 
-                // Check for new version
+                // Check for new version in THIS block
                 $version_check = Changeloger_Version_Tracker::check_for_new_version(
                     $post->ID,
                     $unique_id,
@@ -97,15 +120,17 @@ function cha_run_daily_version_check() {
                     $is_pro_user
                 );
 
-                if ( $version_check['has_new_version'] ) {
-                    // Update last seen version
+                if ( $version_check['has_new_version'] && ! empty( $version_check['new_version'] ) ) {
+                    $summary['versions_found']++;
+
+                    // Update last seen version for this block
                     Changeloger_Version_Tracker::update_last_seen_version(
                         $post->ID,
                         $unique_id,
                         $version_check['new_version']
                     );
 
-                    // Add to version history
+                    // Add to version history for this block
                     Changeloger_Version_Tracker::add_to_version_history(
                         $post->ID,
                         $unique_id,
@@ -116,8 +141,38 @@ function cha_run_daily_version_check() {
                         )
                     );
 
-                    // Send notifications to subscribers
-                    $cha_subscription_confirmed = get_post_meta( $post->ID, 'cha_subscription_confirmed', true );
+                    // Save the parsed changelog for this block
+                    Changeloger_Version_Tracker::save_initial_changelog(
+                        $post->ID,
+                        $unique_id,
+                        $current_parsed,
+                        $is_pro_user
+                    );
+
+                    // CHECK IF VERSION WAS ALREADY NOTIFIED
+                    $was_notified = Changeloger_Version_Tracker::is_version_notified(
+                        $post->ID,
+                        $unique_id,
+                        $version_check['new_version']
+                    );
+
+                    if ( $was_notified ) {
+                        // Version was already notified, skip email sending
+                        Changeloger_Version_Tracker::log_version_event(
+                            $post->ID,
+                            $unique_id,
+                            'version_notification_skipped',
+                            array(
+                                'version' => $version_check['new_version'],
+                                'reason' => 'Already notified',
+                            )
+                        );
+                        continue; // Skip to next block
+                    }
+
+                    // Send notifications to THIS block's subscribers only
+                    $confirmed_meta_key = 'cha_subscription_confirmed_' . $unique_id;
+                    $cha_subscription_confirmed = get_post_meta( $post->ID, $confirmed_meta_key, true );
 
                     if ( ! empty( $cha_subscription_confirmed ) ) {
                         $confirmed_data = maybe_unserialize( $cha_subscription_confirmed );
@@ -143,22 +198,89 @@ function cha_run_daily_version_check() {
                                 }
                             }
 
+                            // Send emails to each subscriber of THIS block
                             foreach ( $confirmed_data as $subscriber ) {
-                                cha_send_version_update_email( $post->ID, $subscriber, $version_check['new_version'], $changelog_content );
-                            }
-                        }
+                                // Get block-specific subscription settings
+                                $product_name = isset( $block['attrs']['subscriptionProductName'] ) ? $block['attrs']['subscriptionProductName'] : '';
+                                $ending_message = isset( $block['attrs']['emailEndingMessage'] ) ? $block['attrs']['emailEndingMessage'] : '';
 
-                        // Mark version as notified
+                                $email_sent = cha_send_version_update_email(
+                                    $post->ID,
+                                    $subscriber,
+                                    $version_check['new_version'],
+                                    $changelog_content,
+                                    $product_name,
+                                    $ending_message
+                                );
+
+                                if ( $email_sent ) {
+                                    $summary['emails_sent']++;
+                                }
+                            }
+
+                            // Mark version as notified for THIS block (AFTER sending emails)
+                            Changeloger_Version_Tracker::mark_version_notified(
+                                $post->ID,
+                                $unique_id,
+                                $version_check['new_version'],
+                                count( $confirmed_data )
+                            );
+
+                            // Log notification trigger event
+                            Changeloger_Version_Tracker::log_notification_trigger(
+                                $post->ID,
+                                $unique_id,
+                                $version_check['new_version']
+                            );
+
+                            Changeloger_Version_Tracker::log_version_event(
+                                $post->ID,
+                                $unique_id,
+                                'emails_sent',
+                                array(
+                                    'version' => $version_check['new_version'],
+                                    'subscriber_count' => count( $confirmed_data ),
+                                )
+                            );
+                        } else {
+                            // No subscribers, but mark as notified to avoid repeated checks
+                            Changeloger_Version_Tracker::mark_version_notified(
+                                $post->ID,
+                                $unique_id,
+                                $version_check['new_version'],
+                                0
+                            );
+
+                            Changeloger_Version_Tracker::log_version_event(
+                                $post->ID,
+                                $unique_id,
+                                'version_found_no_subscribers',
+                                array(
+                                    'version' => $version_check['new_version'],
+                                )
+                            );
+                        }
+                    } else {
+                        // No subscribers, but mark as notified to avoid repeated checks
                         Changeloger_Version_Tracker::mark_version_notified(
                             $post->ID,
                             $unique_id,
                             $version_check['new_version'],
-                            count( $confirmed_data )
+                            0
+                        );
+
+                        Changeloger_Version_Tracker::log_version_event(
+                            $post->ID,
+                            $unique_id,
+                            'version_found_no_subscribers',
+                            array(
+                                'version' => $version_check['new_version'],
+                            )
                         );
                     }
                 }
 
-                // Log the check
+                // Log the check for this block
                 Changeloger_Version_Tracker::log_version_event(
                     $post->ID,
                     $unique_id,
@@ -184,7 +306,10 @@ function cha_run_daily_version_check() {
         }
     }
 
-    return array();
+    // Store summary for reference
+    update_option( 'cha_cron_last_summary', $summary );
+
+    return $summary;
 }
 
 /**
@@ -237,7 +362,6 @@ function cha_get_last_cron_summary() {
 function cha_trigger_manual_version_check( $post_id ) {
     // Load version tracker
     require_once dirname( __FILE__ ) . '/version-tracker.php';
-    require_once dirname( __FILE__ ) . '/version-comparison-helper.php';
 
     $post = get_post( $post_id );
 
@@ -283,3 +407,93 @@ function cha_trigger_manual_version_check( $post_id ) {
     );
 }
 
+/**
+ * Manual trigger for version check (for testing)
+ * Use: wp cron event run cha_daily_version_check
+ * Or access via: /wp-admin/?cha_test_cron=1 (if logged in)
+ */
+function cha_test_manual_version_check() {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        return;
+    }
+
+    if ( isset( $_GET['cha_test_cron'] ) && $_GET['cha_test_cron'] == '1' ) {
+        $result = cha_run_daily_version_check();
+        echo '<pre>';
+        echo 'Cron Test Result: ' . date( 'Y-m-d H:i:s' ) . PHP_EOL;
+        echo wp_json_encode( $result, JSON_PRETTY_PRINT );
+        echo '</pre>';
+        exit;
+    }
+}
+add_action( 'admin_init', 'cha_test_manual_version_check' );
+
+/**
+ * Get version tracking status for debugging
+ */
+function cha_get_block_version_status( $post_id, $unique_id ) {
+    require_once dirname( __FILE__ ) . '/version-tracker.php';
+
+    $tracked = Changeloger_Version_Tracker::get_tracked_changelog( $post_id, $unique_id );
+    $last_seen = Changeloger_Version_Tracker::get_last_seen_version( $post_id, $unique_id );
+    $history = Changeloger_Version_Tracker::get_version_history( $post_id, $unique_id );
+
+    $confirmed_meta_key = 'cha_subscription_confirmed_' . $unique_id;
+    $subscribers = get_post_meta( $post_id, $confirmed_meta_key, true );
+    $subscribers = ! empty( $subscribers ) ? maybe_unserialize( $subscribers ) : array();
+
+    return array(
+        'post_id' => $post_id,
+        'block_unique_id' => $unique_id,
+        'tracked_changelog_exists' => ! empty( $tracked ),
+        'tracked_versions' => ! empty( $tracked ) ? count( $tracked ) : 0,
+        'last_seen_version' => $last_seen ? $last_seen : 'None',
+        'version_history_count' => count( $history ),
+        'subscriber_count' => count( $subscribers ),
+        'subscribers' => ! empty( $subscribers ) ? array_map( function( $sub ) {
+            return array(
+                'email' => $sub['email'] ?? 'N/A',
+                'name' => $sub['name'] ?? 'N/A',
+                'confirmed' => ! empty( $sub['token'] ),
+            );
+        }, $subscribers ) : array(),
+    );
+}
+
+/**
+ * Fallback heartbeat to trigger cron if WordPress loopback isn't working
+ * This runs on admin pages to ensure cron executes even without loopback requests
+ */
+function cha_fallback_cron_heartbeat() {
+    // Only run this fallback if we have a scheduled cron
+    $cron_timestamp = wp_next_scheduled( 'cha_daily_version_check' );
+
+    if ( ! $cron_timestamp ) {
+        // Cron not scheduled, nothing to do
+        return;
+    }
+
+    // Check if it's time to run the cron
+    if ( $cron_timestamp <= time() ) {
+        // Get the last successful run time
+        $last_run = get_transient( 'cha_cron_last_run_time' );
+        $current_time = time();
+
+        // Only run if it hasn't run in the last hour (to prevent duplicate runs)
+        if ( ! $last_run || ( $current_time - $last_run ) > 3600 ) {
+            // Mark that we're running this now
+            set_transient( 'cha_cron_last_run_time', $current_time, 3600 );
+
+            // Execute the cron job
+            if ( function_exists( 'cha_run_daily_version_check' ) ) {
+                cha_run_daily_version_check();
+
+                // Re-schedule the cron hook
+                wp_schedule_event( time() + 3600, 'hourly', 'cha_daily_version_check' );
+            }
+        }
+    }
+}
+
+// Run the fallback heartbeat on admin pages to ensure cron executes
+add_action( 'admin_init', 'cha_fallback_cron_heartbeat' );

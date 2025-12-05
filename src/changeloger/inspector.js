@@ -41,6 +41,9 @@ function Inspector(props) {
         enableSearch,
         searchPlaceholder,
         changelogLayout,
+        enableSubscription,
+        subscriptionProductName,
+        emailEndingMessage,
     } = attributes;
     const versionPositions = [
         {
@@ -227,7 +230,42 @@ function Inspector(props) {
                         __nextHasNoMarginBottom
                         disabled={!isProChangeloger}
                     />
+                </PanelBody>
 
+                <PanelBody title={__('Subscription', 'changeloger')} className={has_disabled_class} initialOpen={false}>
+                    <ToggleControl
+                        label={__('Enable Subscription', 'changeloger')}
+                        checked={enableSubscription}
+                        disabled={!isProChangeloger}
+                        onChange={() =>
+                            setAttributes({
+                                enableSubscription: !enableSubscription,
+                            })
+                        }
+                    />
+
+                    {enableSubscription && isProChangeloger && (
+                        <>
+                            <TextControl
+                                label={__('Product Name', 'changeloger')}
+                                value={subscriptionProductName}
+                                onChange={(value) =>
+                                    setAttributes({subscriptionProductName: value})
+                                }
+                                placeholder={__('e.g., My Product', 'changeloger')}
+                                help={__('This name will be used in notification emails to identify the product.', 'changeloger')}
+                            />
+                            <TextControl
+                                label={__('Email Ending Message', 'changeloger')}
+                                value={emailEndingMessage}
+                                onChange={(value) =>
+                                    setAttributes({emailEndingMessage: value})
+                                }
+                                placeholder={__('e.g., Update today and enjoy new features!', 'changeloger')}
+                                help={__('This message will appear before the "View Changes" button in notification emails.', 'changeloger')}
+                            />
+                        </>
+                    )}
                 </PanelBody>
             </InspectorControls>
 

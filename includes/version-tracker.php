@@ -20,6 +20,21 @@ class Changeloger_Version_Tracker {
     const META_HISTORY_PREFIX = 'cha_version_history_';
 
     /**
+     * Build meta key with prefix and unique_id
+     *
+     * @param string $prefix Meta key prefix
+     * @param string $unique_id Block unique ID
+     * @param string $suffix Optional suffix
+     *
+     * @return string Complete meta key
+     */
+    private static function get_meta_key( $prefix, $unique_id, $suffix = '' ) {
+        return $prefix . $unique_id . ( ! empty( $suffix ) ? $suffix : '' );
+    }
+
+    // ...existing code...
+
+    /**
      * Get version tracking data for a specific block
      *
      * @param int    $post_id Post ID
@@ -28,14 +43,8 @@ class Changeloger_Version_Tracker {
      * @return array|false Parsed changelog array or false if not found
      */
     public static function get_tracked_changelog( $post_id, $unique_id ) {
-        $meta_key = self::META_PREFIX . $unique_id;
-        $data     = get_post_meta( $post_id, $meta_key, true );
-
-        if ( empty( $data ) ) {
-            return false;
-        }
-
-        return maybe_unserialize( $data );
+        $data = get_post_meta( $post_id, self::get_meta_key( self::META_PREFIX, $unique_id ), true );
+        return ! empty( $data ) ? maybe_unserialize( $data ) : false;
     }
 
     /**
@@ -50,33 +59,24 @@ class Changeloger_Version_Tracker {
      * @return bool|WP_Error True on success, WP_Error on failure
      */
     public static function save_initial_changelog( $post_id, $unique_id, $parsed_changelog, $is_pro_user = false, $url = '' ) {
-        // Validate inputs
         if ( ! $post_id || ! $unique_id || ! is_array( $parsed_changelog ) ) {
             return new WP_Error( 'invalid_data', __( 'Invalid data provided', 'changeloger' ) );
         }
 
-        // Enforce version limits for free users
         $max_versions = $is_pro_user ? PHP_INT_MAX : 20;
         if ( count( $parsed_changelog ) > $max_versions ) {
             $parsed_changelog = array_slice( $parsed_changelog, 0, $max_versions );
         }
 
-        // Get current tracked data
-        $current_data = self::get_tracked_changelog( $post_id, $unique_id );
-        $meta_key     = self::META_PREFIX . $unique_id;
-        $url_key      = self::META_PREFIX . $unique_id . '_url';
+        $meta_key = self::get_meta_key( self::META_PREFIX, $unique_id );
+        $url_key = self::get_meta_key( self::META_PREFIX, $unique_id, '_url' );
 
-        // Save new data
         if ( update_post_meta( $post_id, $meta_key, maybe_serialize( $parsed_changelog ) ) ) {
-            // Save URL if provided
             if ( ! empty( $url ) ) {
                 update_post_meta( $post_id, $url_key, $url );
             }
 
-            // Log the update
-            // Get highest version from parsed changelog
             $highest_version = self::get_highest_version_from_changelog( $parsed_changelog );
-
             self::log_version_event( $post_id, $unique_id, 'changelog_saved', array(
                 'version'       => $highest_version,
                 'version_count' => count( $parsed_changelog ),
@@ -168,8 +168,8 @@ class Changeloger_Version_Tracker {
             require_once dirname( __FILE__ ) . '/version-comparison-helper.php';
         }
 
-        // Compare highest versions
-        if ( cha_compare_versions( $new_highest, $prev_highest ) > 0 ) {
+        // Compare highest versions using native WordPress version_compare
+        if ( version_compare( $new_highest, $prev_highest, '>' ) ) {
             $result['has_new_version'] = true;
             $result['old_version']     = $prev_highest;
             $result['new_version']     = $new_highest;
@@ -188,17 +188,11 @@ class Changeloger_Version_Tracker {
      * @return bool Success status
      */
     public static function update_last_seen_version( $post_id, $unique_id, $version ) {
-        $meta_key = self::META_SEEN_PREFIX . $unique_id;
-
+        $meta_key = self::get_meta_key( self::META_SEEN_PREFIX, $unique_id );
         if ( update_post_meta( $post_id, $meta_key, $version ) ) {
-            self::log_version_event( $post_id, $unique_id, 'version_seen', array(
-                'version'   => $version,
-                'timestamp' => current_time( 'mysql' ),
-            ) );
-
+            self::log_version_event( $post_id, $unique_id, 'version_seen', [ 'version' => $version ] );
             return true;
         }
-
         return false;
     }
 
@@ -211,8 +205,7 @@ class Changeloger_Version_Tracker {
      * @return string|false Version string or false if not set
      */
     public static function get_last_seen_version( $post_id, $unique_id ) {
-        $meta_key = self::META_SEEN_PREFIX . $unique_id;
-        return get_post_meta( $post_id, $meta_key, true );
+        return get_post_meta( $post_id, self::get_meta_key( self::META_SEEN_PREFIX, $unique_id ), true );
     }
 
     /**
@@ -224,8 +217,7 @@ class Changeloger_Version_Tracker {
      * @return string|false URL string or false if not set
      */
     public static function get_changelog_url( $post_id, $unique_id ) {
-        $meta_key = self::META_PREFIX . $unique_id . '_url';
-        return get_post_meta( $post_id, $meta_key, true );
+        return get_post_meta( $post_id, self::get_meta_key( self::META_PREFIX, $unique_id, '_url' ), true );
     }
 
     /**
@@ -239,20 +231,15 @@ class Changeloger_Version_Tracker {
      * @return bool Success status
      */
     public static function add_to_version_history( $post_id, $unique_id, $version, $metadata = array() ) {
-        $meta_key = self::META_HISTORY_PREFIX . $unique_id;
-        $history  = get_post_meta( $post_id, $meta_key, true );
-        $history  = is_array( $history ) ? $history : array();
+        $meta_key = self::get_meta_key( self::META_HISTORY_PREFIX, $unique_id );
+        $history = get_post_meta( $post_id, $meta_key, true );
+        $history = is_array( $history ) ? $history : array();
 
         $entry = array(
             'version'   => $version,
             'timestamp' => current_time( 'mysql' ),
             'notified'  => false,
-        );
-
-        // Merge with additional metadata
-        if ( ! empty( $metadata ) && is_array( $metadata ) ) {
-            $entry = array_merge( $entry, $metadata );
-        }
+        ) + $metadata;
 
         $history[] = $entry;
 
@@ -273,9 +260,7 @@ class Changeloger_Version_Tracker {
      * @return array Version history array
      */
     public static function get_version_history( $post_id, $unique_id ) {
-        $meta_key = self::META_HISTORY_PREFIX . $unique_id;
-        $history  = get_post_meta( $post_id, $meta_key, true );
-
+        $history = get_post_meta( $post_id, self::get_meta_key( self::META_HISTORY_PREFIX, $unique_id ), true );
         return is_array( $history ) ? $history : array();
     }
 
@@ -290,25 +275,47 @@ class Changeloger_Version_Tracker {
      * @return bool Success status
      */
     public static function mark_version_notified( $post_id, $unique_id, $version, $notification_count = 0 ) {
-        $meta_key = self::META_HISTORY_PREFIX . $unique_id;
-        $history  = get_post_meta( $post_id, $meta_key, true );
-        $history  = is_array( $history ) ? $history : array();
+        $meta_key = self::get_meta_key( self::META_HISTORY_PREFIX, $unique_id );
+        $history = get_post_meta( $post_id, $meta_key, true );
+        $history = is_array( $history ) ? $history : array();
 
-        // Find and update the matching version entry
         foreach ( $history as $key => $entry ) {
             if ( isset( $entry['version'] ) && $entry['version'] === $version ) {
-                $history[ $key ]['notified']             = true;
-                $history[ $key ]['notification_count']   = $notification_count;
-                $history[ $key ]['notified_timestamp']   = current_time( 'mysql' );
-                update_post_meta( $post_id, $meta_key, maybe_serialize( $history ) );
+                $history[ $key ]['notified'] = true;
+                $history[ $key ]['notification_count'] = $notification_count;
+                $history[ $key ]['notified_timestamp'] = current_time( 'mysql' );
 
-                self::log_version_event( $post_id, $unique_id, 'version_notified', array(
-                    'version'        => $version,
-                    'notification_count' => $notification_count,
-                    'timestamp'      => current_time( 'mysql' ),
-                ) );
+                if ( update_post_meta( $post_id, $meta_key, maybe_serialize( $history ) ) ) {
+                    self::log_version_event( $post_id, $unique_id, 'version_notified', [
+                        'version' => $version,
+                        'notification_count' => $notification_count,
+                        'timestamp' => current_time( 'mysql' ),
+                    ] );
+                    return true;
+                }
+                break;
+            }
+        }
 
-                return true;
+        return false;
+    }
+
+    /**
+     * Check if a version has already been notified
+     *
+     * @param int    $post_id Post ID
+     * @param string $unique_id Block unique ID
+     * @param string $version Version string
+     *
+     * @return bool True if version was already notified, false otherwise
+     */
+    public static function is_version_notified( $post_id, $unique_id, $version ) {
+        $history = get_post_meta( $post_id, self::get_meta_key( self::META_HISTORY_PREFIX, $unique_id ), true );
+        $history = is_array( $history ) ? $history : array();
+
+        foreach ( $history as $entry ) {
+            if ( isset( $entry['version'] ) && $entry['version'] === $version ) {
+                return isset( $entry['notified'] ) && $entry['notified'] === true;
             }
         }
 
@@ -363,6 +370,59 @@ class Changeloger_Version_Tracker {
     }
 
     /**
+     * Log notification trigger event
+     * Saves logs to wp_options with a maximum of 10 entries
+     * Columns: Timestamp, Post ID, Block ID, Version
+     *
+     * @param int    $post_id Post ID
+     * @param string $unique_id Block unique ID
+     * @param string $version Version that triggered notification
+     *
+     * @return void
+     */
+    public static function log_notification_trigger( $post_id, $unique_id, $version ) {
+        $log_key = 'cha_notification_triggers';
+        $logs = get_option( $log_key, array() );
+        if ( ! is_array( $logs ) ) {
+            $logs = array();
+        }
+
+        // Create new log entry with required columns only
+        $logs[] = [
+            'timestamp' => current_time( 'mysql' ),
+            'post_id'   => absint( $post_id ),
+            'block_id'  => sanitize_text_field( $unique_id ),
+            'version'   => sanitize_text_field( $version ),
+        ];
+
+        // Keep only last 10 entries (memory limit)
+        if ( count( $logs ) > 10 ) {
+            $logs = array_slice( $logs, -10 );
+        }
+
+        update_option( $log_key, $logs );
+    }
+
+    /**
+     * Get all notification trigger logs
+     *
+     * @return array Array of notification trigger logs
+     */
+    public static function get_notification_logs() {
+        $logs = get_option( 'cha_notification_triggers', array() );
+        return is_array( $logs ) ? $logs : array();
+    }
+
+    /**
+     * Clear all notification trigger logs
+     *
+     * @return bool Success status
+     */
+    public static function clear_notification_logs() {
+        return delete_option( 'cha_notification_triggers' );
+    }
+
+    /**
      * Log version events for debugging and auditing
      *
      * @param int    $post_id Post ID
@@ -373,41 +433,15 @@ class Changeloger_Version_Tracker {
      * @return void
      */
     public static function log_version_event( $post_id, $unique_id, $event, $data = array() ) {
-        // Get option for logging all events
-        $log_events = get_option( 'cha_version_tracker_logs', array() );
-
-        if ( ! is_array( $log_events ) ) {
-            $log_events = array();
-        }
-        $log_entry = array(
-            'post_id'   => $post_id,
-            'unique_id' => $unique_id,
-            'event'     => $event,
-            'data'      => $data,
-            'timestamp' => current_time( 'mysql' ),
-        );
-
-        $log_events[] = $log_entry;
-
-        // Keep only last 1000 entries to avoid bloating the database
-        if ( count( $log_events ) > 1000 ) {
-            $log_events = array_slice( $log_events, -1000 );
-        }
-
-        update_option( 'cha_version_tracker_logs', maybe_serialize( $log_events ) );
-
-        // Also log to WordPress error log if debug enabled
+        // ...existing code...
+        // Keep only general event logging, notification triggers go to separate log
         if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
             error_log( sprintf(
-                '[Changeloger] Event: %s | Post: %d | Block: %s | Data: %s',
+                '[Changeloger] Event: %s | Post: %d | Block: %s',
                 $event,
                 $post_id,
-                $unique_id,
-                wp_json_encode( $data )
+                $unique_id
             ) );
         }
     }
 }
-
-
-
