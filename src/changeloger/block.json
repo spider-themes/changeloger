@@ -102,6 +102,22 @@
 		"changelogLayout": {
 			"type": "string",
 			"default": "individual"
+		},
+		"enableSubscription": {
+			"type": "boolean",
+			"default": false
+		},
+		"subscriptionProductName": {
+			"type": "string",
+			"default": ""
+		},
+		"emailEndingMessage": {
+			"type": "string",
+			"default": ""
+		},
+		"searchPlaceholder": {
+			"type": "string",
+			"default": "Search your changelog..."
 		}
 	},
 	"supports": {

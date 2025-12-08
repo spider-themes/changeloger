@@ -1,0 +1,85 @@
+name: Package
+
+on:
+  push:
+    branches: "*"
+    tags: "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: NPM Install and Build
+        run: |
+          if [ -f package.json ]; then
+            npm ci
+            npm run build
+          else
+            echo "No package.json found, skipping build"
+          fi
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1"
+
+      - name: Composer Install
+        run: |
+          if [ -f composer.json ]; then
+            composer install --no-dev --optimize-autoloader --no-interaction
+          else
+            echo "No composer.json found, skipping composer install"
+          fi
+
+      - name: Define Variables
+        run: |
+          DIR_NAME="${{ vars.SLUG }}"
+          REF="${{ github.sha }}"
+          REF="${REF:0:7}"
+
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            REF="${{ github.ref_name }}"
+          fi
+
+          SLUG="$DIR_NAME-$REF"
+          ZIP_FILE="$SLUG.zip"
+
+          echo "DIR_NAME=$DIR_NAME" >> $GITHUB_ENV
+          echo "SLUG=$SLUG" >> $GITHUB_ENV
+          echo "ZIP_FILE=$ZIP_FILE" >> $GITHUB_ENV
+          echo "PROD_FILES=${{ vars.PROD_FILES }}" >> $GITHUB_ENV
+
+      - name: Production Directory
+        run: |
+          mkdir -p $DIR_NAME
+          cp -r $PROD_FILES "$DIR_NAME/"
+
+      - name: Create ZIP
+        run: |
+          zip -r $ZIP_FILE "$DIR_NAME/"
+
+      - name: Upload Artifact
+        if: startsWith(github.ref, 'refs/heads/')
+        uses: actions/upload-artifact@v4
+        with:
+          name: "download-${{ env.SLUG }}"
+          path: ${{ env.ZIP_FILE }}
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.ZIP_FILE }}

@@ -14034,10 +14034,6 @@
                 $result['next_page'] = $next_page;
             }
 
-            if ( $result['success'] ) {
-                $this->do_action( 'after_license_activation' );
-            }
-
             return $result;
         }
 
@@ -21671,8 +21667,6 @@
                 return;
             }
 
-            $this->do_action( 'after_license_activation' );
-
             $premium_license = new FS_Plugin_License( $license );
 
             // Updated site plan.
@@ -21752,8 +21746,6 @@
                     'error'
                 );
 
-                $this->do_action( 'after_license_deactivation', $license );
-
                 return;
             }
 
@@ -21773,8 +21765,6 @@
             $this->_update_site_license( null );
 
             $this->_store_account();
-
-            $this->do_action( 'after_license_deactivation', $license );
 
             if ( $show_notice ) {
                 $this->_admin_notices->add(

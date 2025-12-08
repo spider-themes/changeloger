@@ -28,22 +28,42 @@
      * Inject subscription button and form into the changeloger container
      */
     function injectSubscriptionUI() {
-        const $template = $('#cha-subscription-button-template');
-        const $formTemplate = $('#cha-subscription-form-template');
-        const $container = $('.changeloger-container .cha-subscription-button-container').first();
+        // Handle multiple changeloger blocks - each has its own unique ID templates
+        $('[id^="cha-subscription-button-template-"]').each(function() {
+            const $template = $(this);
+            const buttonHtml = $template.html();
 
-        if ($template.length === 0 || $formTemplate.length === 0 || $container.length === 0) {
-            return;
-        }
+            // Extract the unique ID from the template ID (e.g., "cha-subscription-button-template-abc123" -> "abc123")
+            const uniqueId = $template.attr('id').replace('cha-subscription-button-template-', '');
 
-        const buttonHtml = $template.html();
-        const formHtml = $formTemplate.html();
+            // Find the corresponding form template
+            const $formTemplate = $('#cha-subscription-form-template-' + uniqueId);
+            if ($formTemplate.length === 0) {
+                return;
+            }
 
-        // Insert button at the top of the container
-        $container.prepend(buttonHtml);
+            const formHtml = $formTemplate.html();
 
-        // Insert form after container
-        $container.after(formHtml);
+            // Find the container for this block
+            const $containers = $('.changeloger-container');
+            if ($containers.length === 0) {
+                return;
+            }
+
+            // For each container, inject button and form
+            $containers.each(function() {
+                const $container = $(this);
+                const $buttonContainer = $container.find('.cha-subscription-button-container').first();
+
+                if ($buttonContainer.length > 0) {
+                    // Insert button
+                    $buttonContainer.prepend(buttonHtml);
+
+                    // Insert form after container
+                    $container.after(formHtml);
+                }
+            });
+        });
     }
 
     /**
@@ -54,8 +74,15 @@
         $(document).on('click', '.cha-subscription-btn.subscribe', function(e) {
             e.preventDefault();
 
-            const postId = $(this).attr('data-id');
-            const formWrap = $('#cha-subscription-' + postId);
+            const $btn = $(this);
+            const postId = $btn.attr('data-post-id');
+            const blockUnique = $btn.attr('data-block-unique');
+
+            if (!postId || !blockUnique) {
+                return;
+            }
+
+            const formWrap = $('#cha-subscription-' + postId + '-' + blockUnique);
 
             if (formWrap.length > 0) {
                 formWrap.addClass('active');
@@ -84,12 +111,22 @@
             const $submitBtn = $form.find('.cha-subscription-submit');
             const originalBtnText = $submitBtn.text();
 
+            // Get block unique ID from form
+            const blockUnique = $form.find('input[name="cha_block_unique"]').val();
+
+            // Get product name and ending message from the button template
+            const $buttonTemplate = $('#cha-subscription-button-template-' + blockUnique);
+            const productName = $buttonTemplate.attr('data-product-name') || '';
+            const endingMessage = $buttonTemplate.attr('data-ending-message') || '';
+
             const formData = {
                 action: 'cha_subscription_form',
                 cha_subscription_id: $form.find('input[name="cha_subscription_id"]').val(),
+                cha_block_unique: blockUnique,
                 cha_subscription_name: $form.find('input[name="cha_subscription_name"]').val(),
                 cha_subscription_email: $form.find('input[name="cha_subscription_email"]').val(),
-                cha_doc_id: $form.find('input[name="cha_doc_id"]').val(),
+                cha_product_name: productName,
+                cha_ending_message: endingMessage,
             };
 
             // Validate name for special characters
@@ -103,7 +140,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: cha_subscription_data.ajax_url,
+                url: changeloger_local_object.ajax_url,
                 data: formData,
                 dataType: 'json',
                 success: function(response) {
@@ -133,9 +170,10 @@
 
             const $btn = $(this);
             const token = $btn.attr('data-token');
-            const postId = $btn.attr('data-id');
+            const postId = $btn.attr('data-post-id');
+            const blockUnique = $btn.attr('data-block-unique');
 
-            if (!token) {
+            if (!token || !postId || !blockUnique) {
                 return;
             }
 
@@ -146,7 +184,7 @@
                 confirmText: 'Yes, Unsubscribe',
                 cancelText: 'Cancel',
                 onConfirm: function() {
-                    unsubscribeUser(token, postId, $btn);
+                    unsubscribeUser(token, postId, blockUnique, $btn);
                 }
             });
         });
@@ -156,23 +194,32 @@
             e.preventDefault();
 
             const $btn = $(this);
-            const postId = $btn.attr('data-id');
+            const postId = $btn.attr('data-post-id');
+            const blockUnique = $btn.attr('data-block-unique');
+
+            if (!postId || !blockUnique) {
+                return;
+            }
 
             if ($btn.hasClass('subscribed')) {
                 // Unsubscribe
                 const token = $btn.attr('data-token');
+                if (!token) {
+                    return;
+                }
+
                 showConfirmationModal({
                     title: 'Unsubscribe',
                     message: 'Are you sure you want to unsubscribe from changelog updates?',
                     confirmText: 'Yes, Unsubscribe',
                     cancelText: 'Cancel',
                     onConfirm: function() {
-                        unsubscribeUser(token, postId, $btn);
+                        unsubscribeUser(token, postId, blockUnique, $btn);
                     }
                 });
             } else {
                 // Show subscription form
-                const formWrap = $('#cha-subscription-' + postId);
+                const formWrap = $('#cha-subscription-' + postId + '-' + blockUnique);
                 if (formWrap.length > 0) {
                     formWrap.addClass('active');
                 }
@@ -187,8 +234,9 @@
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('cha_token');
         const tokenId = urlParams.get('cha_token_id');
+        const blockUnique = urlParams.get('cha_block');
 
-        if (!token || !tokenId) {
+        if (!token || !tokenId || !blockUnique) {
             return;
         }
 
@@ -197,21 +245,25 @@
 
         $.ajax({
             type: 'POST',
-            url: cha_subscription_data.ajax_url,
+            url: changeloger_local_object.ajax_url,
             data: {
                 action: 'cha_confirm_subscription',
                 token: token,
-                token_id: tokenId
+                token_id: tokenId,
+                block_unique: blockUnique
             },
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
-                    // Update button state
-                    $('.cha-subscription-btn[data-id="' + tokenId + '"]')
+                    // Update button state - target button with matching post ID and block unique ID
+                    $('.cha-subscription-btn[data-post-id="' + tokenId + '"][data-block-unique="' + blockUnique + '"]')
                         .removeClass('subscribe logged-user')
                         .addClass('subscribed')
-                        .attr('data-token', token)
-                        .text('Unsubscribe');
+                        .attr('data-token', token);
+
+                    // Update button text
+                    const $btn = $('.cha-subscription-btn[data-post-id="' + tokenId + '"][data-block-unique="' + blockUnique + '"]');
+                    $btn.html($btn.html().replace('Subscribe', 'Unsubscribe'));
 
                     showNotification('success', 'Your subscription has been confirmed!');
 
@@ -236,8 +288,9 @@
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('cha_unsubscribe_token');
         const tokenId = urlParams.get('cha_token_id');
+        const blockUnique = urlParams.get('cha_block');
 
-        if (!token || !tokenId) {
+        if (!token || !tokenId || !blockUnique) {
             return;
         }
 
@@ -248,7 +301,7 @@
             confirmText: 'Unsubscribe',
             cancelText: 'Keep Subscribed',
             onConfirm: function() {
-                unsubscribeUser(token, tokenId, $('.cha-subscription-btn[data-id="' + tokenId + '"]'));
+                unsubscribeUser(token, tokenId, blockUnique, $('.cha-subscription-btn[data-post-id="' + tokenId + '"][data-block-unique="' + blockUnique + '"]'));
                 setTimeout(() => {
                     window.history.pushState({}, document.title, window.location.pathname);
                 }, 1500);
@@ -259,16 +312,17 @@
     /**
      * Unsubscribe user
      */
-    function unsubscribeUser(token, postId, $btn) {
+    function unsubscribeUser(token, postId, blockUnique, $btn) {
         $btn.prop('disabled', true).text('Unsubscribing...');
 
         $.ajax({
             type: 'POST',
-            url: cha_subscription_data.ajax_url,
+            url: changeloger_local_object.ajax_url,
             data: {
                 action: 'cha_unsubscription_create',
                 token: token,
-                token_id: postId
+                token_id: postId,
+                cha_block_unique: blockUnique
             },
             dataType: 'json',
             success: function(response) {
@@ -277,8 +331,10 @@
                     $btn.removeClass('subscribed')
                         .addClass('logged-user')
                         .removeAttr('data-token')
-                        .text('Subscribe')
                         .prop('disabled', false);
+
+                    // Update button text
+                    $btn.html($btn.html().replace('Unsubscribe', 'Subscribe'));
 
                     showNotification('success', 'You have been unsubscribed successfully.');
                 } else {

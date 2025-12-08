@@ -1,5 +1,5 @@
 === Changeloger - Release Notes & Changelog Manager ===
-Contributors: mdjwel, spiderdevs
+Contributors: mdjwel, spiderdevs , muaz404
 Tags: changelogs, changelog, release, version, history
 Stable tag: 1.2.0
 Requires at least: 6.0

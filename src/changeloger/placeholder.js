@@ -12,11 +12,14 @@ import {isProChangeloger} from '../utils/constants';
 import VersionLimitModal from '../components/version-limit-modal';
 import TextUrl from '../components/text-url';
 import {useChangelogState} from './useChangelogState';
+import ProFeaturesModal from "../components/pro-features-modal";
+import React from "react";
 
 function CustomPlaceholder(props) {
     const {attributes, setAttributes} = props;
     const {changelog, showPlaceholder, showTextArea, uniqueId} = attributes;
     const [isOpenTextUrl, setIsOpenTextUrl] = useState(false);
+    const [isProFeaturesModalOpen, setIsProFeaturesModalOpen] = useState(false);
     const [url, setUrl] = useState('');
     const [loader, setLoader] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -101,7 +104,13 @@ function CustomPlaceholder(props) {
     }, [changelog, uniqueId, attributes.textUrl]);
 
     // Function to open the modal
-    const openModal = () => setIsOpenTextUrl(true);
+    const openModal = () => {
+        if(isProChangeloger){
+            setIsOpenTextUrl(true);
+        }else{
+            setIsProFeaturesModalOpen(true);
+        }
+    };
 
     // State for version limit modal
     const [showVersionLimitModal, setShowVersionLimitModal] = useState(false);
@@ -191,6 +200,8 @@ function CustomPlaceholder(props) {
 
     return (
         <>
+
+            <ProFeaturesModal isOpen={isProFeaturesModalOpen} onClose={() => setIsProFeaturesModalOpen(false)} />
             {showPlaceholder && (
                 <Placeholder
                     icon={more}

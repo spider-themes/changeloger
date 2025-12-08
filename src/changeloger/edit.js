@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import {useEffect} from "@wordpress/element";
+import {useEffect,useState} from "@wordpress/element";
 import {useBlockProps} from '@wordpress/block-editor';
 import React from "react";
 import './editor.scss';
@@ -15,7 +15,6 @@ import AddVersionButton from '../components/add-version-button';
 import PaginationControls from '../components/pagination-controls';
 import {isProChangeloger} from "../utils/constants";
 import ProFeaturesModal from '../components/pro-features-modal';
-import { useState } from '@wordpress/element';
 
 function Edit(props) {
     const [isProFeaturesModalOpen, setIsProFeaturesModalOpen] = useState(false);

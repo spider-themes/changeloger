@@ -9,196 +9,51 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Changeloger_Settings {
 
-	public function __construct() {
-		// Constructor can be used for hooks specific to settings
-	}
-
 	/**
 	 * Render the settings page
 	 */
 	public function render_page() {
-		// Get active tab
-		$active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'subscription';
-
 		// Handle form submission
 		if (isset($_POST['submit'])) {
 			check_admin_referer('changeloger_settings');
-
-			if ($active_tab === 'subscription') {
-				// Save subscription settings
-				$subscription_settings = [
-					'enable_subscription' => isset($_POST['enable_subscription']) ? 1 : 0,
-					'product_name' => sanitize_text_field($_POST['product_name'] ?? ''),
-					'email_ending_message' => sanitize_textarea_field($_POST['email_ending_message'] ?? ''),
-				];
-
-				update_option('changeloger_subscription_settings', $subscription_settings);
-				echo '<div class="notice notice-success"><p>' . __('Subscription settings saved successfully!', 'changeloger') . '</p></div>';
-			}
 		}
 
-		echo '<div class="wrap">';
-		echo '<h1>' . __( 'Changeloger Settings', 'changeloger' ) . '</h1>';
 
-		// Render tabs
-		$this->render_tabs($active_tab);
-
-		// Render tab content
-		switch ($active_tab) {
-			case 'subscription':
-				$this->render_subscription_settings_tab();
-				break;
-			case 'version_check':
-				$this->render_version_check_tab();
-				break;
+	// Handle clear logs action
+	if ( isset( $_POST['cha_clear_logs'] ) && check_admin_referer( 'cha_clear_logs' ) ) {
+		if ( class_exists( 'Changeloger_Version_Tracker' ) ) {
+			Changeloger_Version_Tracker::clear_notification_logs();
+			echo '<div class="notice notice-success"><p>' . esc_html__( 'Notification logs cleared successfully.', 'changeloger' ) . '</p></div>';
 		}
-
-		echo '</div>';
 	}
-
-	/**
-	 * Render tabs navigation
-	 */
-	private function render_tabs($active_tab) {
-		$tabs = [
-			'subscription' => __('Subscription', 'changeloger'),
-			'version_check' => __('Auto Version Check', 'changeloger'),
-		];
-
-		echo '<h2 class="nav-tab-wrapper">';
-		foreach ($tabs as $tab_key => $tab_name) {
-			$active_class = ($active_tab === $tab_key) ? 'nav-tab-active' : '';
-			$url = add_query_arg(['page' => 'changeloger-settings', 'tab' => $tab_key], admin_url('admin.php'));
-			echo '<a href="' . esc_url($url) . '" class="nav-tab ' . $active_class . '">' . esc_html($tab_name) . '</a>';
-		}
-		echo '</h2>';
-	}
-
-	/**
-	 * Render subscription settings tab content
-	 */
-	private function render_subscription_settings_tab() {
-		// Get current subscription settings
-		$subscription_settings = get_option('changeloger_subscription_settings', [
-			'enable_subscription' => 0,
-			'product_name' => '',
-			'email_ending_message' => '',
-		]);
-
-		?>
-		<form method="post" action="">
-			<?php wp_nonce_field('changeloger_settings'); ?>
-
-			<table class="form-table">
-				<!-- Enable/Disable Subscription Feature -->
-				<tr>
-					<th scope="row"><?php _e('Subscription Feature', 'changeloger'); ?></th>
-					<td>
-						<label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-							<input type="checkbox"
-									id="enable_subscription"
-									name="enable_subscription"
-									value="1"
-									<?php checked($subscription_settings['enable_subscription'], 1); ?>
-									onchange="toggleSubscriptionFields()">
-							<span><?php _e('Enable Subscription Feature', 'changeloger'); ?></span>
-						</label>
-						<p class="description"><?php _e('Enable this to allow users to subscribe to changelog updates via email. When disabled, the subscription button will not appear.', 'changeloger'); ?></p>
-					</td>
-				</tr>
-
-				<!-- Product Name -->
-				<tr id="product_name_row" style="display: <?php echo $subscription_settings['enable_subscription'] ? 'table-row' : 'none'; ?>;">
-					<th scope="row">
-						<label for="product_name"><?php _e('Product Name', 'changeloger'); ?></label>
-					</th>
-					<td>
-						<input type="text"
-								id="product_name"
-								name="product_name"
-								value="<?php echo esc_attr($subscription_settings['product_name']); ?>"
-								placeholder="<?php _e('e.g., Changeloger', 'changeloger'); ?>"
-								class="regular-text">
-						<p class="description"><?php _e('This name will be used in the notification emails to identify the product/service. Use {name} as a placeholder in the email message to display this value.', 'changeloger'); ?></p>
-					</td>
-				</tr>
-
-				<!-- Email Ending Message -->
-				<tr id="email_message_row" style="display: <?php echo $subscription_settings['enable_subscription'] ? 'table-row' : 'none'; ?>;">
-					<th scope="row">
-						<label for="email_ending_message"><?php _e('Email Ending Message', 'changeloger'); ?></label>
-					</th>
-					<td>
-						<?php
-						wp_editor(
-							$subscription_settings['email_ending_message'],
-							'email_ending_message',
-							array(
-								'textarea_name' => 'email_ending_message',
-								'textarea_rows' => 8,
-								'media_buttons' => false,
-								'teeny' => true,
-								'quicktags' => array('buttons' => 'strong,em,link,close'),
-							)
-						);
-						?>
-						<p class="description" style="margin-top: 10px;">
-							<?php _e('This message will be shown before the "View Changes" button in notification emails. You can use <code>{name}</code> to display the product name.', 'changeloger'); ?>
-						</p>
-					</td>
-				</tr>
-			</table>
-
-			<?php submit_button(__('Save Subscription Settings', 'changeloger')); ?>
-		</form>
-
-		<style>
-			.form-table tr th {
-				vertical-align: top;
-				padding-top: 15px;
-			}
-		</style>
-
-		<script>
-			function toggleSubscriptionFields() {
-				const checkbox = document.getElementById('enable_subscription');
-				const productNameRow = document.getElementById('product_name_row');
-				const emailMessageRow = document.getElementById('email_message_row');
-				const previewSection = document.getElementById('preview_section');
-
-				if (checkbox.checked) {
-					productNameRow.style.display = 'table-row';
-					emailMessageRow.style.display = 'table-row';
-					previewSection.style.display = 'block';
-				} else {
-					productNameRow.style.display = 'none';
-					emailMessageRow.style.display = 'none';
-					previewSection.style.display = 'none';
-				}
-			}
-		</script>
-		<?php
-	}
-
-	/**
-	 * Render logs tab content
-	 */
-	private function render_version_check_tab() {
-		// Handle clear logs action
-		if ( isset( $_POST['cha_clear_logs'] ) && check_admin_referer( 'cha_clear_logs' ) ) {
-			delete_option( 'cha_version_tracker_logs' );
-			echo '<div class="notice notice-success"><p>' . esc_html__( 'Logs cleared successfully.', 'changeloger' ) . '</p></div>';
-		}
 
 		// Handle manual cron trigger
 		if ( isset( $_POST['cha_trigger_cron'] ) && check_admin_referer( 'cha_trigger_cron' ) ) {
 			if ( function_exists( 'cha_run_daily_version_check' ) ) {
 				cha_run_daily_version_check();
-				echo '<div class="notice notice-success"><p>' . esc_html__( 'Email sent manually.', 'changeloger' ) . '</p></div>';
+				echo '<div class="notice notice-success"><p>' . esc_html__( 'Auto check executed successfully.', 'changeloger' ) . '</p></div>';
 			} else {
-				echo '<div class="notice notice-error"><p>' . esc_html__( 'Cron function not found. Make sure version-notification-cron.php is loaded.', 'changeloger' ) . '</p></div>';
+				echo '<div class="notice notice-error"><p>' . esc_html__( 'Auto check function not found. Make sure version-notification-cron.php is loaded.', 'changeloger' ) . '</p></div>';
 			}
 		}
+
+	echo '<div class="wrap">';
+	echo '<h1>' . __( 'Changeloger Settings', 'changeloger' ) . '</h1>';
+
+ 	// Check if premium features are available
+	$is_premium = class_exists( 'Changeloger_Version_Tracker' );
+
+	// If not premium, disable any running cron jobs
+	if ( ! $is_premium ) {
+		$cron_timestamp = wp_next_scheduled( 'cha_daily_version_check' );
+		if ( $cron_timestamp ) {
+			wp_unschedule_event( $cron_timestamp, 'cha_daily_version_check' );
+		}
+
+		echo '<div class="notice notice-info"><p>';
+		echo esc_html__( 'Version tracking and email notification features are available in the Pro version only.', 'changeloger' );
+		echo '</p></div>';
+	}
 
 		// Get all logs
 		$all_logs = get_option( 'cha_version_tracker_logs', array() );
@@ -212,12 +67,36 @@ class Changeloger_Settings {
 		$cron_timestamp = wp_next_scheduled( 'cha_daily_version_check' );
 		$cron_status = $cron_timestamp ? human_time_diff( $cron_timestamp, time() ) : __( 'Not scheduled', 'changeloger' );
 
-		?>
-		<div class="card" style="max-width: 100%;">
-			<h2><?php esc_html_e( 'Version Check Status', 'changeloger' ); ?></h2>
+	// Simplify interval display to daily
+	$cron_interval = 'Daily';
+
+	// Check if cron is actually running by checking if it runs via fallback heartbeat
+	$fallback_working = function_exists( 'cha_fallback_cron_heartbeat' );
+
+	// Check if premium features are available
+	$is_premium = class_exists( 'Changeloger_Version_Tracker' );
+
+	?>
+	<?php if ( $is_premium ) : ?>
+	<div class="card" style="max-width: 100%;">
+		<h2><?php esc_html_e( 'Version Check Status', 'changeloger' ); ?></h2>
 			<table class="widefat">
 				<tr>
-					<td><strong><?php esc_html_e( 'Daily Version Check:', 'changeloger' ); ?></strong></td>
+					<td><strong><?php esc_html_e( 'Cron Status:', 'changeloger' ); ?></strong></td>
+					<td>
+						<?php if ( $cron_timestamp ) : ?>
+							<span style="color: green;">✓ <?php esc_html_e( 'Scheduled', 'changeloger' ); ?></span>
+						<?php else : ?>
+							<span style="color: red;">✗ <?php esc_html_e( 'Not scheduled', 'changeloger' ); ?></span>
+						<?php endif; ?>
+					</td>
+				</tr>
+				<tr>
+					<td><strong><?php esc_html_e( 'Interval:', 'changeloger' ); ?></strong></td>
+					<td><?php echo esc_html( ucfirst( $cron_interval ) ); ?></td>
+				</tr>
+				<tr>
+					<td><strong><?php esc_html_e( 'Next Check:', 'changeloger' ); ?></strong></td>
 					<td>
 						<?php if ( $cron_timestamp ) : ?>
 							<?php
@@ -231,6 +110,16 @@ class Changeloger_Settings {
 					</td>
 				</tr>
 				<tr>
+					<td><strong><?php esc_html_e( 'Fallback Heartbeat:', 'changeloger' ); ?></strong></td>
+					<td>
+						<?php if ( $fallback_working ) : ?>
+							<span style="color: green;">✓ <?php esc_html_e( 'Active (Cron will run on admin page loads)', 'changeloger' ); ?></span>
+						<?php else : ?>
+							<span style="color: orange;">⚠ <?php esc_html_e( 'Inactive', 'changeloger' ); ?></span>
+						<?php endif; ?>
+					</td>
+				</tr>
+				<tr>
 					<td><strong><?php esc_html_e( 'Total Logs:', 'changeloger' ); ?></strong></td>
 					<td><?php echo esc_html( count( $all_logs ) ); ?></td>
 				</tr>
@@ -240,6 +129,7 @@ class Changeloger_Settings {
 		<br>
 
 		<div style="display: flex; gap: 10px;">
+
 			<form method="post" style="display: inline-block;">
 				<?php wp_nonce_field( 'cha_trigger_cron' ); ?>
 				<button type="submit" name="cha_trigger_cron" class="button button-primary">
@@ -258,30 +148,28 @@ class Changeloger_Settings {
 
 		<br>
 
-		<h2><?php esc_html_e( 'Version Tracking Event Logs', 'changeloger' ); ?></h2>
+	<h2><?php esc_html_e( 'Version Tracking Event Logs', 'changeloger' ); ?></h2>
 
-		<?php if ( empty( $all_logs ) ) : ?>
-			<div class="notice notice-info">
-				<p><?php esc_html_e( 'No logs found. Logs will appear here when version tracking events occur.', 'changeloger' ); ?></p>
-			</div>
-		<?php else : ?>
-			<?php
-				// Extract all version numbers from logs to find the latest
-				$all_versions = array();
-				foreach ( $all_logs as $log ) {
-					if ( isset( $log['data']['version'] ) && ! empty( $log['data']['version'] ) ) {
-						$all_versions[] = $log['data']['version'];
-					}
-				}
-				$latest_version = ! empty( $all_versions ) ? end( $all_versions ) : 'N/A';
-			?>
+	<?php
+	$all_logs = array();
+	if ( $is_premium ) {
+		$all_logs = Changeloger_Version_Tracker::get_notification_logs();
+		// Display logs in descending order (newest first)
+		$all_logs = array_reverse( $all_logs );
+	}
+	?>
+
+	<?php if ( empty( $all_logs ) ) : ?>
+		<div class="notice notice-info">
+			<p><?php esc_html_e( 'No notification logs found. Logs will appear here when notifications are sent.', 'changeloger' ); ?></p>
+		</div>
+	<?php else : ?>
 			<table class="wp-list-table widefat fixed striped">
 				<thead>
 					<tr>
 						<th style="width: 180px;"><?php esc_html_e( 'Timestamp', 'changeloger' ); ?></th>
 						<th style="width: 80px;"><?php esc_html_e( 'Post ID', 'changeloger' ); ?></th>
-						<th style="width: 120px;"><?php esc_html_e( 'Block ID', 'changeloger' ); ?></th>
-						<th style="width: 150px;"><?php esc_html_e( 'Event', 'changeloger' ); ?></th>
+						<th style="width: 150px;"><?php esc_html_e( 'Block ID', 'changeloger' ); ?></th>
 						<th style="width: 120px;"><?php esc_html_e( 'Version', 'changeloger' ); ?></th>
 					</tr>
 				</thead>
@@ -298,14 +186,11 @@ class Changeloger_Settings {
 							</td>
 							<td>
 								<small style="font-family: monospace;">
-									<?php echo esc_html( substr( $log['unique_id'] ?? '', 0, 15 ) ); ?>...
+									<?php echo esc_html( substr( $log['block_id'] ?? '', 0, 20 ) ); ?>
 								</small>
 							</td>
 							<td>
-								<strong><?php echo esc_html( $log['event'] ?? '' ); ?></strong>
-							</td>
-							<td>
-								<?php echo esc_html( $latest_version ); ?>
+								<strong><?php echo esc_html( $log['version'] ?? '' ); ?></strong>
 							</td>
 						</tr>
 					<?php endforeach; ?>
@@ -321,10 +206,11 @@ class Changeloger_Settings {
 				color: #135e96;
 			}
 		</style>
+
+	<?php endif; ?>
+
 		<?php
+		echo '</div>';
 	}
-
 }
-
-
 

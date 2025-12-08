@@ -19,9 +19,13 @@ class Changeloger_Block_Register
     {
         wp_register_style('changeloger', plugins_url('/', __FILE__) . '../build/changeloger/style-index.css');
 
-        if ($attributes['enablePagination'] == '1' || $attributes['enableFilter'] == '1') {
+        if ($attributes['enablePagination'] == '1' || $attributes['enableFilter'] == '1' && cha_fs()->is__premium_only()) {
             wp_enqueue_script('changeloger-filter');
         }
+	    if ($attributes['enableSubscription'] == '1' &&  cha_fs()->is__premium_only())  {
+		    wp_enqueue_script('cha-subscription');
+		    wp_enqueue_style('cha-subscription');
+	    }
         return $content;
     }
 

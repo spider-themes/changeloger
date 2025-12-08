@@ -34,6 +34,10 @@ function save(props) {
     enableSearch,
     changelogLayout,
     filterPosition,
+    enableSubscription,
+    subscriptionProductName,
+    emailEndingMessage,
+    searchPlaceholder,
   } = props.attributes;
 
   const blockProps = useBlockProps.save({
@@ -92,7 +96,7 @@ function save(props) {
 						type="search"
 						data-searchTarget={uniqueId}
 						className="changelog-search-control changelog_form_control noEnterSubmit"
-						placeholder='Search your changelog...'
+						placeholder={searchPlaceholder || 'Search your changelog...'}
                         checked={enableSearch}
 					/>
 				</div>
@@ -102,7 +106,14 @@ function save(props) {
 
       {isProChangeloger && (
           <div className={`changeloger-action-alignment align-${filterPosition}`}>
-              <div className="cha-subscription-button-container"></div>
+              {enableSubscription && (
+                <div
+                  className="cha-subscription-button-container"
+                  data-product-name={subscriptionProductName}
+                  data-ending-message={emailEndingMessage}
+                  data-block-id={uniqueId}
+                ></div>
+              )}
               {enableFilter && (
                 <FilterButton {...props} parsedChangelog={parsedChangelog} />
               )}
