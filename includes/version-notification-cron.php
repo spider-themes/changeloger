@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function cha_schedule_version_check_cron() {
     if ( ! wp_next_scheduled( 'cha_daily_version_check' ) ) {
-        wp_schedule_event( time(), 'hourly', 'cha_daily_version_check' );
+        wp_schedule_event( time(), 'daily', 'cha_daily_version_check' );
     }
 }
 
@@ -35,8 +35,6 @@ function cha_unschedule_version_check_cron() {
 add_action( 'cha_daily_version_check', 'cha_run_daily_version_check' );
 
 function cha_run_daily_version_check() {
-    // Load required files
-    require_once dirname( __FILE__ ) . '/version-tracker.php';
     require_once dirname( __FILE__ ) . '/class-changelog-renderer.php';
 
     // Get all posts and pages with changeloger blocks
@@ -432,7 +430,6 @@ add_action( 'admin_init', 'cha_test_manual_version_check' );
  * Get version tracking status for debugging
  */
 function cha_get_block_version_status( $post_id, $unique_id ) {
-    require_once dirname( __FILE__ ) . '/version-tracker.php';
 
     $tracked = Changeloger_Version_Tracker::get_tracked_changelog( $post_id, $unique_id );
     $last_seen = Changeloger_Version_Tracker::get_last_seen_version( $post_id, $unique_id );
@@ -479,17 +476,17 @@ function cha_fallback_cron_heartbeat() {
         $last_run = get_transient( 'cha_cron_last_run_time' );
         $current_time = time();
 
-        // Only run if it hasn't run in the last hour (to prevent duplicate runs)
-        if ( ! $last_run || ( $current_time - $last_run ) > 3600 ) {
+        // Only run if it hasn't run in the last 24 hours (to prevent duplicate runs)
+        if ( ! $last_run || ( $current_time - $last_run ) > 86400 ) {
             // Mark that we're running this now
-            set_transient( 'cha_cron_last_run_time', $current_time, 3600 );
+            set_transient( 'cha_cron_last_run_time', $current_time, 86400 );
 
             // Execute the cron job
             if ( function_exists( 'cha_run_daily_version_check' ) ) {
                 cha_run_daily_version_check();
 
-                // Re-schedule the cron hook
-                wp_schedule_event( time() + 3600, 'hourly', 'cha_daily_version_check' );
+                // Re-schedule the cron hook with daily interval
+                wp_schedule_event( time() + 86400, 'daily', 'cha_daily_version_check' );
             }
         }
     }

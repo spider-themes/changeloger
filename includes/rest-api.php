@@ -3,13 +3,8 @@
 class Changeloger_REST_API {
 	public function __construct() {
 		add_action( 'rest_api_init', [ $this, 'register_routes' ] );
-		$this->load_dependencies();
 	}
 
-	private function load_dependencies() {
-		require_once dirname( __FILE__ ) . '/version-tracker.php';
-		require_once dirname( __FILE__ ) . '/version-notification-cron.php';
-	}
 
 	public function register_routes() {
 		// Track Version Endpoint (Version Tracking & Notification)
@@ -54,6 +49,15 @@ class Changeloger_REST_API {
 			], 400 );
 		}
 
+		// Check if premium version tracker is available
+		if ( ! class_exists( 'Changeloger_Version_Tracker' ) ) {
+			return new WP_REST_Response( [
+				'success' => true,
+				'message' => __( 'Changelog saved successfully (Premium features not available)', 'changeloger' ),
+				'new_version_detected' => false
+			] );
+		}
+
 		$save_result = Changeloger_Version_Tracker::save_initial_changelog( $post_id, $unique_id, $parsed_changelog, $is_pro, $url );
 
 		if ( is_wp_error( $save_result ) ) {
@@ -91,7 +95,7 @@ class Changeloger_REST_API {
 	/**
 	 * Get detailed cron status information
 	 */
-	public function diagnostics_cron_status_callback( $request ) {
+	public function diagnostics_cron_status_callback( $request ): array {
 		// Get cron timestamp
 		$cron_timestamp = wp_next_scheduled( 'cha_daily_version_check' );
 

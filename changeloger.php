@@ -12,7 +12,7 @@
  * Text domain: changeloger
  * Domain Path: /languages
  *
- * @fs_premium_only /includes/subscription.php, /includes/version-comparison-helper.php ,/includes/version-tracker.php ,/js/subscription.js
+ * @fs_premium_only /includes/subscription.php, /includes/version-comparison-helper.php ,/includes/version-tracker.php ,/includes/version-notification-cron.php ,/assets/js/subscription.js ,/assets/css
  *
  */
 
@@ -66,9 +66,6 @@ if ( ! function_exists( 'cha_fs' ) ) {
 }
 
 
-// Load cron functions early so they're available for activation hook
-require_once __DIR__ . '/includes/version-notification-cron.php';
-
 if ( ! class_exists( 'CHANGELOGER_BLOCKS_CLASS' ) ) {
     final class CHANGELOGER_BLOCKS_CLASS {
         private $enqueue_assets;
@@ -92,6 +89,22 @@ if ( ! class_exists( 'CHANGELOGER_BLOCKS_CLASS' ) ) {
             add_filter( 'content_save_pre', [ $this, 'migrate_block_name' ] );
             add_filter( 'the_post', [ $this, 'migrate_block_name_in_post' ] );
 
+            // Disable cron if premium features are not available
+            if ( ! cha_fs()->is__premium_only() ) {
+                add_action( 'init', [ $this, 'disable_premium_cron' ] );
+            }
+
+        }
+
+        /**
+         * Disable premium cron jobs if not on premium version
+         */
+        public function disable_premium_cron() {
+            $cron_timestamp = wp_next_scheduled( 'cha_daily_version_check' );
+            if ( $cron_timestamp ) {
+                wp_unschedule_event( $cron_timestamp, 'cha_daily_version_check' );
+                wp_clear_scheduled_hook( 'cha_daily_version_check' );
+            }
         }
 
         /**
@@ -157,6 +170,7 @@ if ( ! class_exists( 'CHANGELOGER_BLOCKS_CLASS' ) ) {
             require_once __DIR__ . '/includes/class-changelog-renderer.php';
             require_once __DIR__ . '/admin/class-changeloger-admin.php';
 	        if ( cha_fs()->is__premium_only() ) {
+		        require_once __DIR__ . '/includes/version-notification-cron.php';
 		        require_once __DIR__ . '/includes/subscription.php';
 		        require_once __DIR__ . '/includes/version-tracker.php';
 	        }

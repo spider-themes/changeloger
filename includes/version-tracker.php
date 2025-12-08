@@ -163,11 +163,6 @@ class Changeloger_Version_Tracker {
             return $result;
         }
 
-        // Load comparison helper
-        if ( ! function_exists( 'cha_compare_versions' ) ) {
-            require_once dirname( __FILE__ ) . '/version-comparison-helper.php';
-        }
-
         // Compare highest versions using native WordPress version_compare
         if ( version_compare( $new_highest, $prev_highest, '>' ) ) {
             $result['has_new_version'] = true;

@@ -152,11 +152,6 @@ function cha_display_subscription_button() {
     if ( ! $subscription_settings['enable_subscription'] ) {
         return;
     }
-
-    // Get all changeloger blocks in this post
-    if ( ! class_exists( 'Changeloger_Version_Tracker' ) ) {
-        require_once dirname( __FILE__ ) . '/version-tracker.php';
-    }
     $blocks = Changeloger_Version_Tracker::get_post_blocks( $post->ID );
 
     if ( empty( $blocks ) ) {
