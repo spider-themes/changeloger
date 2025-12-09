@@ -94,7 +94,9 @@ function cha_run_daily_version_check(): array {
                 // Parse current changelog
                 $current_parsed = $renderer->parse( $current_raw_changelog );
 
-	            error_log(print_r($current_parsed, true));
+				$rendered_info_wrapper = $renderer->render( $block['attrs'] );
+	            $rendered_version_tree = $renderer->render_versiontree( $changelog);
+
 
                 if ( empty( $current_parsed ) ) {
                     Changeloger_Version_Tracker::log_version_event(
@@ -107,9 +109,6 @@ function cha_run_daily_version_check(): array {
                     );
                     continue;
                 }
-
-                // Get stored changelog for this specific block
-                $stored_changelog = Changeloger_Version_Tracker::get_tracked_changelog( $post->ID, $unique_id );
 
                 // Check for new version in THIS block
                 $version_check = Changeloger_Version_Tracker::check_for_new_version(

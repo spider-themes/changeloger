@@ -59,7 +59,8 @@ class Changeloger_Version_Tracker {
      * @return bool|WP_Error True on success, WP_Error on failure
      */
     public static function save_initial_changelog( $post_id, $unique_id, $parsed_changelog, $is_pro_user = false, $url = '' ) {
-        if ( ! $post_id || ! $unique_id || ! is_array( $parsed_changelog ) ) {
+
+		if ( ! $post_id || ! $unique_id || ! is_array( $parsed_changelog ) ) {
             return new WP_Error( 'invalid_data', __( 'Invalid data provided', 'changeloger' ) );
         }
 

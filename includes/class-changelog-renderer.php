@@ -150,13 +150,208 @@ class Changelog_Renderer {
 		return preg_replace( '/\[(.*?)\]\((.*?)\)/', '<a href="$2">$1</a>', $text );
 	}
 
-    /**
-     * Helper to get value from array using dot notation or key.
-     * Simplified for this use case (mostly direct keys).
-     */
-    private function get( $array, $key, $default = null ) {
-        return isset( $array[ $key ] ) ? $array[ $key ] : $default;
-    }
+	/**
+	 * Helper to get value from array using dot notation or key.
+	 * Simplified for this use case (mostly direct keys).
+	 */
+	private function get( $array, $key, $default = null ) {
+		return isset( $array[ $key ] ) ? $array[ $key ] : $default;
+	}
+
+	/**
+	 * Normalize version to semantic versioning format (major.minor.patch)
+	 *
+	 * @param string $version The version string.
+	 * @return string The normalized version.
+	 */
+	public function normalize_version( $version ) {
+		$segments = explode( '.', $version );
+
+		// Ensure at least three parts (major.minor.patch)
+		if ( count( $segments ) === 1 ) {
+			$segments[] = '0'; // Add minor version as 0
+			$segments[] = '0'; // Add patch version as 0
+		} elseif ( count( $segments ) === 2 ) {
+			$segments[] = '0'; // Add patch version as 0
+		}
+
+		return implode( '.', $segments );
+	}
+
+	/**
+	 * Compare two versions using semantic versioning rules.
+	 *
+	 * @param string $v1 First version.
+	 * @param string $v2 Second version.
+	 * @return int Returns 1 if v1 > v2, -1 if v1 < v2, 0 if equal.
+	 */
+	public function compare_versions( $v1, $v2 ) {
+		$a = array_map( 'intval', explode( '.', $v1 ) );
+		$b = array_map( 'intval', explode( '.', $v2 ) );
+
+		$max_length = max( count( $a ), count( $b ) );
+
+		// Pad with zeros to match length
+		$a = array_pad( $a, $max_length, 0 );
+		$b = array_pad( $b, $max_length, 0 );
+
+		// Compare each part of the version (major, minor, patch)
+		for ( $i = 0; $i < $max_length; $i++ ) {
+			if ( $a[ $i ] > $b[ $i ] ) {
+				return 1;
+			}
+			if ( $a[ $i ] < $b[ $i ] ) {
+				return -1;
+			}
+		}
+
+		return 0; // Versions are equal
+	}
+
+	/**
+	 * Get versions grouped by major.minor.x format and sorted in descending order.
+	 *
+	 * @param string $changelog_text The changelog text.
+	 * @return array The grouped and sorted versions.
+	 */
+	public function get_versions( $changelog_text ) {
+		$parsed_changes = $this->parse( $changelog_text );
+		$grouped = [];
+
+		// Group versions by major.minor.x format
+		foreach ( $parsed_changes as $change ) {
+			$normalized_version = $this->normalize_version( $change['version'] );
+
+			// Split the normalized version into major and minor (e.g., "2.7" from "2.7.0")
+			$parts = explode( '.', $normalized_version );
+			$major_minor = $parts[0] . '.' . $parts[1] . '.x'; // Group by "major.minor.x"
+
+			// If the group doesn't exist, create it
+			if ( ! isset( $grouped[ $major_minor ] ) ) {
+				$grouped[ $major_minor ] = [
+					'version'  => $major_minor,
+					'children' => [],
+				];
+			}
+
+			// Push the full version into its group
+			$change['version'] = $normalized_version;
+			$change['children'] = [];
+			$grouped[ $major_minor ]['children'][] = $change;
+		}
+
+		// Convert to array and sort versions (descending order)
+		$result = array_values( $grouped );
+
+		// Sort versions inside each group in descending order
+		foreach ( $result as &$group ) {
+			usort(
+				$group['children'],
+				function( $a, $b ) {
+					return $this->compare_versions( $b['version'], $a['version'] );
+				}
+			);
+		}
+
+		// Sort the groups themselves (major.minor.x) in descending order
+		usort(
+			$result,
+			function( $a, $b ) {
+				return $this->compare_versions( $b['version'], $a['version'] );
+			}
+		);
+
+		return $result;
+	}
+
+	/**
+	 * Convert parsed changelog data to plain text format.
+	 *
+	 * @param array $data The parsed changelog array.
+	 * @return string The plain text representation.
+	 */
+	public function convert_to_plain_text( $data ) {
+		$output = '';
+
+		foreach ( $data as $item ) {
+			$output .= '= ' . $item['version'] . ' (' . $item['date'] . ') =' . "\n";
+
+			foreach ( $item['changes'] as $change ) {
+				$output .= $change['category'] . ': ' . wp_strip_all_tags( $change['change'] ) . "\n";
+			}
+
+			$output .= "\n";
+		}
+
+		return trim( $output );
+	}
+
+	/**
+	 * Check if a new version has been added with a higher version number.
+	 *
+	 * @param array $prev_changelog Previous changelog array.
+	 * @param array $new_changelog New changelog array.
+	 * @return bool True if a new version with higher number was added.
+	 */
+	public function has_new_version_added( $prev_changelog, $new_changelog ) {
+		// Validate inputs
+		if ( ! is_array( $prev_changelog ) || ! is_array( $new_changelog ) ) {
+			return false;
+		}
+
+		// If previous changelog is empty, it's a new version
+		if ( empty( $prev_changelog ) && ! empty( $new_changelog ) ) {
+			return true;
+		}
+
+		// If new changelog is empty, no new version
+		if ( empty( $new_changelog ) ) {
+			return false;
+		}
+
+		// Get the highest version from previous changelog
+		$prev_versions = array_map(
+			function( $item ) {
+				return $item['version'];
+			},
+			$prev_changelog
+		);
+
+		$highest_prev_version = null;
+		if ( ! empty( $prev_versions ) ) {
+			$highest_prev_version = $prev_versions[0];
+			foreach ( $prev_versions as $version ) {
+				if ( $this->compare_versions( $version, $highest_prev_version ) > 0 ) {
+					$highest_prev_version = $version;
+				}
+			}
+		}
+
+		// Get the highest version from new changelog
+		$new_versions = array_map(
+			function( $item ) {
+				return $item['version'];
+			},
+			$new_changelog
+		);
+
+		$highest_new_version = null;
+		if ( ! empty( $new_versions ) ) {
+			$highest_new_version = $new_versions[0];
+			foreach ( $new_versions as $version ) {
+				if ( $this->compare_versions( $version, $highest_new_version ) > 0 ) {
+					$highest_new_version = $version;
+				}
+			}
+		}
+
+		// Check if highest new version is greater than highest previous version
+		if ( $highest_new_version && $highest_prev_version ) {
+			return $this->compare_versions( $highest_new_version, $highest_prev_version ) > 0;
+		}
+
+		return false;
+	}
 
     /**
      * Render the changelog HTML.
@@ -252,6 +447,74 @@ class Changelog_Renderer {
                 <?php endforeach; ?>
             </div>
         </div>
+        <?php
+        return ob_get_clean();
+    }
+
+    /**
+     * Render version tree HTML (equivalent to React VersionsTree component).
+     *
+     * @param string $changelog_text The changelog text to parse.
+     * @param string $unique_id The unique ID for anchors (e.g., 'changeloger-123').
+     * @param bool $is_child Whether this is a child tree (for recursive calls).
+     * @return string The rendered HTML for the version tree.
+     */
+    public function render_versiontree( $changelog_text, $unique_id = '', $is_child = false ) {
+        // If not a child call, get the grouped versions
+        if ( ! $is_child ) {
+            if ( empty( $unique_id ) ) {
+                $unique_id = 'changeloger-' . uniqid();
+            }
+            $versions = $this->get_versions( $changelog_text );
+        } else {
+            // For child calls, $changelog_text actually contains the versions array
+            $versions = $changelog_text;
+        }
+
+        ob_start();
+        ?>
+        <ul class="<?php echo ! $is_child ? 'changeloger-version-list-wrapper' : ''; ?>">
+            <?php foreach ( $versions as $version ) :
+                $has_children = ! empty( $version['children'] ) && is_array( $version['children'] ) && count( $version['children'] ) > 0;
+                ?>
+                <li class="<?php echo $is_child ? 'changeloger-version-list-main-item' : ''; ?>">
+                    <a href="#<?php echo esc_attr( $unique_id . '-' . $version['version'] ); ?>">
+                        Version <?php echo esc_html( $version['version'] ); ?>
+                    </a>
+                    <?php if ( $has_children ) : ?>
+                        <?php echo $this->render_versiontree_children( $version['children'], $unique_id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                    <?php endif; ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+        <?php
+        return ob_get_clean();
+    }
+
+    /**
+     * Helper function to render child version trees recursively.
+     *
+     * @param array $versions The child versions array.
+     * @param string $unique_id The unique ID for anchors.
+     * @return string The rendered HTML for child versions.
+     */
+    private function render_versiontree_children( $versions, $unique_id ) {
+        ob_start();
+        ?>
+        <ul class="changeloger-version-list-main-item">
+            <?php foreach ( $versions as $version ) :
+                $has_children = ! empty( $version['children'] ) && is_array( $version['children'] ) && count( $version['children'] ) > 0;
+                ?>
+                <li class="changeloger-version-list-main-item">
+                    <a href="#<?php echo esc_attr( $unique_id . '-' . $version['version'] ); ?>">
+                        Version <?php echo esc_html( $version['version'] ); ?>
+                    </a>
+                    <?php if ( $has_children ) : ?>
+                        <?php echo $this->render_versiontree_children( $version['children'], $unique_id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                    <?php endif; ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
         <?php
         return ob_get_clean();
     }
