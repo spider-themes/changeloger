@@ -34,7 +34,7 @@ function cha_unschedule_version_check_cron() {
  */
 add_action( 'cha_daily_version_check', 'cha_run_daily_version_check' );
 
-function cha_run_daily_version_check() {
+function cha_run_daily_version_check(): array {
     require_once dirname( __FILE__ ) . '/class-changelog-renderer.php';
 
     // Get all posts and pages with changeloger blocks
@@ -91,9 +91,10 @@ function cha_run_daily_version_check() {
                         $source = 'url';
                     }
                 }
-
                 // Parse current changelog
                 $current_parsed = $renderer->parse( $current_raw_changelog );
+
+	            error_log(print_r($current_parsed, true));
 
                 if ( empty( $current_parsed ) ) {
                     Changeloger_Version_Tracker::log_version_event(
