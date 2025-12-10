@@ -51,44 +51,110 @@ class Changeloger_Version_Tracker {
      * Save initial parsed changelog for a block
      *
      * @param int    $post_id Post ID
-     * @param string $unique_id Block unique ID
-     * @param array  $parsed_changelog Parsed changelog array from parser
+     * @param array  $block_attrs Block attributes containing unique_id and other settings
+     * @param string $rendered_info_wrapper Rendered changelog info wrapper HTML
+     * @param string $rendered_version_tree Rendered version tree HTML
      * @param bool   $is_pro_user Whether user is a pro user
      * @param string $url Optional URL for the changelog source
      *
      * @return bool|WP_Error True on success, WP_Error on failure
      */
-    public static function save_initial_changelog( $post_id, $unique_id, $parsed_changelog, $is_pro_user = false, $url = '' ) {
-
-		if ( ! $post_id || ! $unique_id || ! is_array( $parsed_changelog ) ) {
+    public static function save_initial_changelog( $post_id, $block_attrs, $rendered_info_wrapper, $rendered_version_tree, $is_pro_user = false, $url = '' ) {
+        if ( ! $post_id || ! is_array( $block_attrs ) ) {
             return new WP_Error( 'invalid_data', __( 'Invalid data provided', 'changeloger' ) );
         }
 
+        $unique_id = isset( $block_attrs['unique_id'] ) ? $block_attrs['unique_id'] : '';
+        $parsed_changelog = isset( $block_attrs['parsedChangelog'] ) ? $block_attrs['parsedChangelog'] : array();
+
+        if ( empty( $unique_id ) || ! is_array( $parsed_changelog ) ) {
+            return new WP_Error( 'invalid_data', __( 'Invalid block attributes', 'changeloger' ) );
+        }
+
+        // Limit versions based on pro status
         $max_versions = $is_pro_user ? PHP_INT_MAX : 20;
         if ( count( $parsed_changelog ) > $max_versions ) {
             $parsed_changelog = array_slice( $parsed_changelog, 0, $max_versions );
         }
 
+        // Save parsed changelog to post meta
         $meta_key = self::get_meta_key( self::META_PREFIX, $unique_id );
         $url_key = self::get_meta_key( self::META_PREFIX, $unique_id, '_url' );
 
-        if ( update_post_meta( $post_id, $meta_key, maybe_serialize( $parsed_changelog ) ) ) {
-            if ( ! empty( $url ) ) {
-                update_post_meta( $post_id, $url_key, $url );
-            }
-
-            $highest_version = self::get_highest_version_from_changelog( $parsed_changelog );
-            self::log_version_event( $post_id, $unique_id, 'changelog_saved', array(
-                'version'       => $highest_version,
-                'version_count' => count( $parsed_changelog ),
-                'timestamp'     => current_time( 'mysql' ),
-                'has_url'       => ! empty( $url ),
-            ) );
-
-            return true;
+        if ( ! update_post_meta( $post_id, $meta_key, maybe_serialize( $parsed_changelog ) ) ) {
+            return new WP_Error( 'save_failed', __( 'Failed to save changelog metadata', 'changeloger' ) );
         }
 
-        return new WP_Error( 'save_failed', __( 'Failed to save changelog', 'changeloger' ) );
+        if ( ! empty( $url ) ) {
+            update_post_meta( $post_id, $url_key, $url );
+        }
+
+        // Get the post object to update content
+        $post = get_post( $post_id );
+        if ( ! $post ) {
+            return new WP_Error( 'post_not_found', __( 'Post not found', 'changeloger' ) );
+        }
+
+		error_log('hello');
+
+        $post_content = $post->post_content;
+
+        // Replace changelog info wrapper content
+        $post_content = self::replace_content_between_markers(
+            $post_content,
+            'data-changeloger-content',
+            $rendered_info_wrapper
+        );
+
+        // Replace version tree content
+        $post_content = self::replace_content_between_markers(
+            $post_content,
+            'data-changeloger-version',
+            $rendered_version_tree
+        );
+
+        // Update post content
+        $updated = wp_update_post(
+            array(
+                'ID'           => $post_id,
+                'post_content' => $post_content,
+            ),
+            true
+        );
+
+        if ( is_wp_error( $updated ) ) {
+            return $updated;
+        }
+
+        // Log the version event
+        $highest_version = self::get_highest_version_from_changelog( $parsed_changelog );
+        self::log_version_event( $post_id, $unique_id, 'changelog_saved', array(
+            'version'       => $highest_version,
+            'version_count' => count( $parsed_changelog ),
+            'timestamp'     => current_time( 'mysql' ),
+            'has_url'       => ! empty( $url ),
+        ) );
+
+        return true;
+    }
+
+    /**
+     * Replace content between start and end markers in post content
+     *
+     * @param string $post_content The post content
+     * @param string $marker_name The marker name (e.g., 'data-changeloger-content')
+     * @param string $replacement_content The content to insert
+     *
+     * @return string Updated post content
+     */
+    private static function replace_content_between_markers( $post_content, $marker_name, $replacement_content ) {
+        // Pattern to find: <span data-marker-name="start">...anything...</span> ... <span data-marker-name="end">
+        $pattern = '/<span\s+[^>]*' . preg_quote( $marker_name, '/' ) . '\s*=\s*["\']start["\'][^>]*>.*?<span\s+[^>]*' . preg_quote( $marker_name, '/' ) . '\s*=\s*["\']end["\'][^>]*>/is';
+
+        // Replace with the new content wrapped in start/end markers
+        $replacement = '<span ' . $marker_name . '="start">' . $replacement_content . '<span ' . $marker_name . '="end"></span>';
+
+        return preg_replace( $pattern, $replacement, $post_content );
     }
 
     /**

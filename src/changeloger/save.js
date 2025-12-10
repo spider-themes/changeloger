@@ -267,7 +267,9 @@ function save(props) {
         {isRight && (
           <div className="changeloger-version-list-container changeloger-version-list-position-right">
             <h6 className="version-title">Versions</h6>
-            <VersionsTree versions={versions} uniqueId={uniqueId} />
+              <span data-changeloger-version="start"></span>
+                <VersionsTree versions={versions} uniqueId={uniqueId} />
+              <span data-changeloger-version="end"></span>
           </div>
         )}
       </div>
