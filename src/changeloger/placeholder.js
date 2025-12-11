@@ -2,12 +2,14 @@ import {__} from '@wordpress/i18n';
 import {
     Placeholder,
     Button,
-    Menu,
+    Popover,
+    MenuGroup,
+    MenuItem,
     FormFileUpload,
     TextareaControl
 } from '@wordpress/components';
 import {more} from '@wordpress/icons';
-import {useState, useEffect} from '@wordpress/element';
+import {useState, useEffect, useRef} from '@wordpress/element';
 import ChangelogParser from './parser';
 import {isProChangeloger} from '../utils/constants';
 import VersionLimitModal from '../components/version-limit-modal';
@@ -24,6 +26,9 @@ function CustomPlaceholder(props) {
     const [url, setUrl] = useState('');
     const [loader, setLoader] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [isAddChangelogMenuOpen, setIsAddChangelogMenuOpen] = useState(false);
+    const [triggerFileUpload, setTriggerFileUpload] = useState(false);
+    const openFileDialogRef = useRef(null);
 
     // Centralized state management using custom hook
     const changelogState = useChangelogState(changelog);
@@ -214,74 +219,114 @@ function CustomPlaceholder(props) {
                         'changeloger'
                     )}
                 >
+                    <div className="changeloger-placeholder-actions">
+                        <div style={{ position: 'relative' }}>
+                            <Button
+                                variant="primary"
+                                onClick={() => setIsAddChangelogMenuOpen(!isAddChangelogMenuOpen)}
+                            >
+                                {__('Add Changelog', 'changeloger')}
+                            </Button>
 
-                    <Button variant="secondary" onClick={openModal}>
-                        {__('Changelog URL', 'changeloger')}
-                    </Button>
-                    <TextUrl
-                        isOpen={isOpenTextUrl}
-                        onClose={() => setIsOpenTextUrl(false)}
-                        handleUrlFile={handleUrlFile}
-                        handleUrlChange={handleUrlChange}
-                        textUrl={url}
-                        loader={loader}
-                        errorMessage={errorMessage}
-                    />
+                            {isAddChangelogMenuOpen && (
+                                <Popover
+                                    className="add-changelog-popover"
+                                    position="bottom right"
+                                    onClose={() => setIsAddChangelogMenuOpen(false)}
+                                >
+                                    <MenuGroup>
+                                        <MenuItem
+                                            onClick={() => {
+                                                openModal();
+                                                setIsAddChangelogMenuOpen(false);
+                                            }}
+                                        >
+                                            {__('Changelog URL', 'changeloger')}
+                                        </MenuItem>
 
-                    <FormFileUpload
-                        variant="secondary"
-                        accept="text/plain"
-                        onChange={(event) => readFileContent(event)}
-                    >
-                        {__('Upload Changelog (.txt file)', 'changeloger')}
-                    </FormFileUpload>
+                                        <MenuItem
+                                            onClick={() => {
+                                                if (openFileDialogRef.current) {
+                                                    openFileDialogRef.current();
+                                                }
+                                                setIsAddChangelogMenuOpen(false);
+                                            }}
+                                        >
+                                            {__('Upload from File', 'changeloger')}
+                                        </MenuItem>
 
-                    <Button
-                        variant="primary"
-                        onClick={() =>
-                            setAttributes({
-                                showPlaceholder: false,
-                                showTextArea: true,
-                            })
-                        }
-                    >
-                        {__('Plain Text', 'changeloger')}
-                    </Button>
-                    <Button
-                        className="placeholder-sample-button"
-                        variant="tertiary"
-                        onClick={() => {
-                            const sampleData = `${changelog}\n` + '= 3.0.0 (01 April 2025) =\n' +
-                                'New: Added a bulk edit feature for faster modifications.\n' +
-                                'Tweaked: Adjusted UI spacing for better readability.\n' +
-                                'Updated: Refreshed third-party dependencies for stability.\n' +
-                                'Fixed: Resolved a bug causing layout shifts on mobile.\n' +
-                                'improvement: Enhanced performance for faster load times.\n' +
-                                '\n' +
-                                '= 2.0.0 (01 March 2025) =\n' +
-                                'New: Added a bulk edit feature for faster modifications.\n' +
-                                'Tweaked: Adjusted UI spacing for better readability.\n' +
-                                'Updated: Refreshed third-party dependencies for stability.\n' +
-                                'Fixed: Resolved a bug causing layout shifts on mobile.\n' +
-                                'improvement: Enhanced performance for faster load times.\n' +
-                                '\n' +
-                                '= 1.0.0 (01 Feb 2025) =\n' +
-                                'New: Added a bulk edit feature for faster modifications.\n' +
-                                'Tweaked: Adjusted UI spacing for better readability.\n' +
-                                'Updated: Refreshed third-party dependencies for stability.\n' +
-                                'Fixed: Resolved a bug causing layout shifts on mobile.\n' +
-                                'improvement: Enhanced performance for faster load times.\n';
+                                        <MenuItem
+                                            onClick={() => {
+                                                setAttributes({
+                                                    showPlaceholder: false,
+                                                    showTextArea: true,
+                                                });
+                                                setIsAddChangelogMenuOpen(false);
+                                            }}
+                                        >
+                                            {__('Plain Text', 'changeloger')}
+                                        </MenuItem>
+                                    </MenuGroup>
+                                </Popover>
+                            )}
+                        </div>
 
-                            const limitedData = limitChangelogVersions(sampleData);
-                            setAttributes({
-                                showPlaceholder: false,
-                                showTextArea: true,
-                                changelog: limitedData
-                            });
-                        }}
-                    >
-                        {__('Load Sample Data', 'changeloger')}
-                    </Button>
+                        <Button
+                            className="placeholder-sample-button"
+                            variant="tertiary"
+                            onClick={() => {
+                                const sampleData = `${changelog}\n` + '= 3.0.0 (01 April 2025) =\n' +
+                                    'New: Added a bulk edit feature for faster modifications.\n' +
+                                    'Tweaked: Adjusted UI spacing for better readability.\n' +
+                                    'Updated: Refreshed third-party dependencies for stability.\n' +
+                                    'Fixed: Resolved a bug causing layout shifts on mobile.\n' +
+                                    'improvement: Enhanced performance for faster load times.\n' +
+                                    '\n' +
+                                    '= 2.0.0 (01 March 2025) =\n' +
+                                    'New: Added a bulk edit feature for faster modifications.\n' +
+                                    'Tweaked: Adjusted UI spacing for better readability.\n' +
+                                    'Updated: Refreshed third-party dependencies for stability.\n' +
+                                    'Fixed: Resolved a bug causing layout shifts on mobile.\n' +
+                                    'improvement: Enhanced performance for faster load times.\n' +
+                                    '\n' +
+                                    '= 1.0.0 (01 Feb 2025) =\n' +
+                                    'New: Added a bulk edit feature for faster modifications.\n' +
+                                    'Tweaked: Adjusted UI spacing for better readability.\n' +
+                                    'Updated: Refreshed third-party dependencies for stability.\n' +
+                                    'Fixed: Resolved a bug causing layout shifts on mobile.\n' +
+                                    'improvement: Enhanced performance for faster load times.\n';
+
+                                const limitedData = limitChangelogVersions(sampleData);
+                                setAttributes({
+                                    showPlaceholder: false,
+                                    showTextArea: true,
+                                    changelog: limitedData
+                                });
+                            }}
+                        >
+                            {__('Load Sample Data', 'changeloger')}
+                        </Button>
+
+                        <TextUrl
+                            isOpen={isOpenTextUrl}
+                            onClose={() => setIsOpenTextUrl(false)}
+                            handleUrlFile={handleUrlFile}
+                            handleUrlChange={handleUrlChange}
+                            textUrl={url}
+                            loader={loader}
+                            errorMessage={errorMessage}
+                        />
+
+                        <FormFileUpload
+                            accept="text/plain"
+                            onChange={(event) => readFileContent(event)}
+                            render={({ openFileDialog }) => {
+                                // Store the openFileDialog callback in ref
+                                openFileDialogRef.current = openFileDialog;
+                                return null;
+                            }}
+                        />
+                    </div>
                 </Placeholder>
             )}
 

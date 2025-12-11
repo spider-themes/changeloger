@@ -1,11 +1,24 @@
-// @import './common.scss';
-
 .changeloger-container {
   & .placeholder-cancel-button {
     margin-right: 10px;
   }
-}
+  mark {
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
 
+}
+.changeloger-placeholder-actions{
+  display: flex;
+  gap: 15px;
+
+}
+.add-changelog-popover .components-menu-item__button{
+  box-shadow: none !important;
+}
 .changeloger-version-list-container {
   &.changeloger-version-list-position-right {
     .changeloger-version-list-wrapper {
@@ -59,8 +72,10 @@
   border: 1px solid rgba(0, 0, 0, 0.1);
   display: block;
   padding: 0;
+
   &.is-list {
     border-top-width: 0;
+
     &.is-first {
       border-top-width: 1px;
     }
@@ -79,6 +94,7 @@
     padding: 9.2px 12px;
     text-align: left;
     width: 100%;
+
     .component-color-indicator {
       background: linear-gradient(45deg, #ddd 25%, transparent 0),
       linear-gradient(-45deg, #ddd 25%, transparent 0),
@@ -160,13 +176,6 @@
   border: 1px dashed #ddd;
 }
 
-mark {
-  background-color: #fff3cd;
-  color: #856404;
-  padding: 2px 4px;
-  border-radius: 3px;
-  font-weight: 500;
-}
 
 .cha-pro-element.is-opened {
   background: gainsboro;
@@ -196,7 +205,7 @@ mark {
 }
 
 // Version Limit Modal Styles
-.changeloger-version-limit-modal , .changeloger-pro-features-modal{
+.changeloger-version-limit-modal, .changeloger-pro-features-modal {
   .components-modal__content {
     padding: 0;
   }
@@ -217,6 +226,7 @@ mark {
     .components-button {
       color: #fff;
       height: auto !important;
+
       &:hover {
         background: rgba(255, 255, 255, 0.1);
       }
@@ -290,244 +300,282 @@ mark {
           box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
         }
       }
+
+
+      /* 2. Loader Container */
+      .loader-wave {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        height: 60px;
+      }
+
+      /* 3. Individual Bars */
+      .wave-bar {
+        width: 4px;
+        /* Gradient from Orange to Red */
+        background: linear-gradient(135deg, #131548 0%, #C364FE 100%);
+        border-radius: 4px;
+        animation: wave 1s ease-in-out infinite;
+      }
+
+      .wave-bar:nth-child(1) {
+        animation-delay: 0.0s;
+        height: 8px;
+      }
+
+      .wave-bar:nth-child(2) {
+        animation-delay: 0.1s;
+        height: 12px;
+      }
+
+      .wave-bar:nth-child(3) {
+        animation-delay: 0.2s;
+        height: 16px;
+      }
+
+      .wave-bar:nth-child(4) {
+        animation-delay: 0.3s;
+        height: 12px;
+      }
+
+      .wave-bar:nth-child(5) {
+        animation-delay: 0.4s;
+        height: 8px;
+      }
+
+      /* 5. Keyframes */
+      @keyframes wave {
+        0%, 100% {
+          transform: scaleY(1);
+          opacity: 0.5;
+        }
+        50% {
+          transform: scaleY(1.5); /* Stretches vertical height */
+          opacity: 1;
+          filter: brightness(1.2); /* Makes it glow slightly */
+        }
+      }
+
     }
   }
 }
 
 // Text URL Input Styles
 .changeloger-text-url {
-    .changeloger-text-url-input {
-        input {
-            padding: 20px 10px !important;
-            border-radius: 10px !important;
-            border: 1px solid #cfcfcf !important;
-            outline: none !important;
-            width: 500px;
-        }
+  .changeloger-text-url-input {
+    input {
+      padding: 20px 10px !important;
+      border-radius: 10px !important;
+      border: 1px solid #cfcfcf !important;
+      outline: none !important;
+      width: 500px;
+    }
 
-        input:focus {
-            border-color: #4a8df6 !important;
-            box-shadow: 0 0 4px rgba(74, 141, 246, 0.4) !important;
-        }
+    input:focus {
+      border-color: #4a8df6 !important;
+      box-shadow: 0 0 4px rgba(74, 141, 246, 0.4) !important;
     }
-    p.changeloger-text-url-note {
-        padding-top: 0px;
-        margin-top: 7px;
-        font-style: italic;
-    }
-    .changeloger-modal-actions{
-        justify-content: center !important;
-        margin-top: 20px;
-    }
-    .changeloger-text-url-error{
-        margin-top: 10px;
-        color: #721c24;
-        background-color: #f8d7da;
-        border: 1px solid #f5c6cb;
-        padding: 10px;
-        border-radius: 5px;
-    }
+  }
+
+  p.changeloger-text-url-note {
+    padding-top: 0px;
+    margin-top: 7px;
+    font-style: italic;
+  }
+
+  .changeloger-modal-actions {
+    justify-content: center !important;
+    margin-top: 20px;
+  }
+
+  .changeloger-text-url-error {
+    margin-top: 10px;
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 5px;
+  }
 
 }
-.changeloger-modal-loader{
-    .changeloger-upgrade-button{
-        position: relative;
-        .loader-wave{
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        span{
-            opacity: 0;
-        }
+
+.changeloger-modal-loader {
+  .changeloger-upgrade-button {
+    position: relative;
+
+    .loader-wave {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
-    .changeloger-upgrade-button{
-        background: #e4e4e4 !important;
-        pointer-events: none;
-        box-shadow: none !important;
+
+    span {
+      opacity: 0;
     }
+  }
+
+  .changeloger-upgrade-button {
+    background: #e4e4e4 !important;
+    pointer-events: none;
+    box-shadow: none !important;
+  }
 }
- /* 2. Loader Container */
-        .loader-wave {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 4px;
-            height: 60px;
-        }
 
-        /* 3. Individual Bars */
-        .wave-bar {
-            width: 4px;
-            /* Gradient from Orange to Red */
-            background: linear-gradient(135deg, #131548 0%, #C364FE 100%);
-            border-radius: 4px;
-            animation: wave 1s ease-in-out infinite;
-        }
-        .wave-bar:nth-child(1) { animation-delay: 0.0s; height: 8px; }
-        .wave-bar:nth-child(2) { animation-delay: 0.1s; height: 12px; }
-        .wave-bar:nth-child(3) { animation-delay: 0.2s; height: 16px; }
-        .wave-bar:nth-child(4) { animation-delay: 0.3s; height: 12px; }
-        .wave-bar:nth-child(5) { animation-delay: 0.4s; height: 8px; }
+.changeloger-container {
+  .changelog-wrapper {
+    .changeloger-add-item {
+      padding: 3px 7px;
+      background-color: transparent;
+      border: 2px dashed #cbd5e1;
+      border-radius: 3px;
+      color: #33373d;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+      margin-bottom: 12px;
 
-        /* 5. Keyframes */
-        @keyframes wave {
-            0%, 100% {
-                transform: scaleY(1);
-                opacity: 0.5;
-            }
-            50% {
-                transform: scaleY(1.5); /* Stretches vertical height */
-                opacity: 1;
-                filter: brightness(1.2); /* Makes it glow slightly */
-            }
-        }   
-.changeloger-container{
-    .changelog-wrapper{
-        .changeloger-add-item{
-            padding: 3px 7px;
-            background-color: transparent;
-            border: 2px dashed #cbd5e1;
-            border-radius: 3px;
-            color: #33373d;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 12px;
-            margin-bottom: 12px;
+      span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #4c4945;
+        font-weight: 400;
+        font-size: 14px;
+      }
 
-            span {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                color: #4c4945;
-                font-weight: 400;
-                font-size:14px;
-            }
-            &:hover {
-                border-color: #5c6480;
-                background-color: #eff6ff;
-                color: #1d2746;
-                transform: translateY(-1px);
-            }
-        }
-
-        .timeline-add-version-wrapper {
-            position: relative;
-            display: flex;
-            justify-content: flex-start;
-            margin-left: 30%;
-            padding-bottom: 50px;
-            margin-top: 30px;
-        }
-
-        .timeline-line-extension {
-            height: 100%;
-            width: 2px;
-            background: #e2e5ee;
-            position: absolute;
-            left: 0;
-            top: 0;
-            transform: translateX(-50%);
-        }
-        
-
-        .timeline-circle-btn {
-            position: relative;
-            z-index: 10;
-            height: 40px;
-            width: 40px; 
-            background: white;
-            border: 2px solid #1d2746;
-            color: #1d2746;
-            border-radius: 999px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            margin-left: 0;   
-            transform: translateX(-50%);  
-        }
-
-        .timeline-circle-btn:hover {
-            width: 180px; 
-            background: #1d2746;
-            color: white;
-            box-shadow: 0 10px 15px -3px rgba(3, 4, 7, 0.3);
-        }
-
-        .btn-text {
-            opacity: 0;
-            white-space: nowrap;
-            margin-left: 0px;
-            width: 0;
-            transition: all 0.2s;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .timeline-circle-btn:hover .btn-text {
-            opacity: 1;
-            margin-left: 8px;
-            width: auto;
-        }
-        .changeloger-info-inner-wrapper{
-            .rich-text {
-                white-space: normal !important;
-                min-width: 115px !important;
-            }
-        }
-        .rich-text-delete{
-            .change{
-                display: flex;
-                align-items: center;
-                justify-items: self-start;
-            }
-            &:hover{
-                .rich-text-delete-btn{
-                    display: flex;
-                    opacity: 1;
-                }
-            }
-            .rich-text-delete-btn{
-                border: none;
-                color: #df0000;
-                background: transparent;
-                padding: 0;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                margin-left: 14px;
-                opacity: 0;
-                transition: all 0.8s;
-            }
-        }
-        .version{
-            &:hover{
-                .delete-version {
-                    display: flex;
-                }
-            }
-            .delete-version {
-                display: none;
-                border: 1px solid #ff0000;
-                background: #fff;
-                border-radius: 100%;
-                padding: 3px 3px;
-                cursor: pointer;
-                position: absolute;
-                top:0;
-                left: 9%;
-            }
-        }
-        
+      &:hover {
+        border-color: #5c6480;
+        background-color: #eff6ff;
+        color: #1d2746;
+        transform: translateY(-1px);
+      }
     }
+
+    .timeline-add-version-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: flex-start;
+      margin-left: 30%;
+      padding-bottom: 50px;
+      margin-top: 30px;
+    }
+
+    .timeline-line-extension {
+      height: 100%;
+      width: 2px;
+      background: #e2e5ee;
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform: translateX(-50%);
+    }
+
+
+    .timeline-circle-btn {
+      position: relative;
+      z-index: 10;
+      height: 40px;
+      width: 40px;
+      background: transparent;
+      border: 2px solid #1d2746;
+      color: #1d2746;
+      border-radius: 999px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      margin-left: 0;
+      transform: translateX(-50%);
+    }
+
+    .timeline-circle-btn:hover {
+      width: 180px;
+      background: #1d2746;
+      color: white;
+      box-shadow: 0 10px 15px -3px rgba(3, 4, 7, 0.3);
+    }
+
+    .btn-text {
+      opacity: 0;
+      white-space: nowrap;
+      margin-left: 0px;
+      width: 0;
+      transition: all 0.2s;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .timeline-circle-btn:hover .btn-text {
+      opacity: 1;
+      margin-left: 8px;
+      width: auto;
+    }
+
+    .changeloger-info-inner-wrapper {
+      .rich-text {
+        white-space: normal !important;
+        min-width: 115px !important;
+      }
+    }
+
+    .rich-text-delete {
+      .change {
+        display: flex;
+        align-items: center;
+        justify-items: self-start;
+      }
+
+      &:hover {
+        .rich-text-delete-btn {
+          display: flex;
+          opacity: 1;
+        }
+      }
+
+      .rich-text-delete-btn {
+        border: none;
+        color: #df0000;
+        background: transparent;
+        padding: 0;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin-left: 14px;
+        opacity: 0;
+        transition: all 0.8s;
+      }
+    }
+
+    .version {
+      &:hover {
+        .delete-version {
+          display: flex;
+        }
+      }
+
+      .delete-version {
+        display: none;
+        border: 1px solid #ff0000;
+        background: transparent;
+        border-radius: 100%;
+        padding: 3px 3px;
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        right: 77%;
+      }
+    }
+
+  }
 }
