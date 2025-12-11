@@ -2,6 +2,7 @@ import {__} from '@wordpress/i18n';
 import {
     Placeholder,
     Button,
+    Menu,
     FormFileUpload,
     TextareaControl
 } from '@wordpress/components';
@@ -83,7 +84,8 @@ function CustomPlaceholder(props) {
                         unique_id: uniqueId,
                         parsed_changelog: parsed,
                         is_pro: isProChangeloger,
-                        url: attributes.textUrl || ''
+                        url: attributes.textUrl || '',
+                        enableVersions: attributes.enableVersions || false
                     })
                 }
             )

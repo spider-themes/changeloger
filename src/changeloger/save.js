@@ -149,12 +149,14 @@ function save(props) {
                   <div className="date">
                     <span>{date}</span>
 
-                    <RichText.Content
-                      tagName="span"
-                      className="changeloger-version-name"
-                      placeholder={__('Version Name', 'changeloger')}
-                      value={versionName[version]}
-                    />
+                      {versionName && versionName[version] && (
+                        <RichText.Content
+                          tagName="span"
+                          className="changeloger-version-name"
+                          placeholder={__('Version Name', 'changeloger')}
+                          value={versionName[version]}
+                        />
+                      )}
                   </div>
                   <div className="version">
                     <span className="version-tag">{version}</span>
@@ -233,27 +235,29 @@ function save(props) {
                         );
                       })
                     )}
-                    <div className="changeloger-link-wrapper">
-                      {currentLinks.map((itemLink) => {
-                        return (
-                          <a
-                            href={itemLink.link}
-                            className="changeloger-custom-link"
-                            target="_blank"
-                          >
-                            {itemLink.icon && (
-                              <span
-                                className="changeloger-custom-link-icon"
-                                style={{
-                                  WebkitMaskImage: `url(${itemLink.icon})`,
-                                }}
-                              ></span>
-                            )}
-                            {itemLink.name}
-                          </a>
-                        );
-                      })}
-                    </div>
+                    {currentLinks && currentLinks.length > 0 && (
+                      <div className="changeloger-link-wrapper">
+                        {currentLinks.map((itemLink) => {
+                          return (
+                            <a
+                              href={itemLink.link}
+                              className="changeloger-custom-link"
+                              target="_blank"
+                            >
+                              {itemLink.icon && (
+                                <span
+                                  className="changeloger-custom-link-icon"
+                                  style={{
+                                    WebkitMaskImage: `url(${itemLink.icon})`,
+                                  }}
+                                ></span>
+                              )}
+                              {itemLink.name}
+                            </a>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 </div>
               );

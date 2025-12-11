@@ -67,6 +67,7 @@ function cha_run_daily_version_check(): array {
         // Process each block independently
         foreach ( $blocks as $block ) {
             $summary['blocks_checked']++;
+	        $block_attrs = isset( $block['attrs'] ) ? $block['attrs'] : '';
             $unique_id = isset( $block['unique_id'] ) ? $block['unique_id'] : '';
             $changelog = isset( $block['attrs']['changelog'] ) ? $block['attrs']['changelog'] : '';
             $text_url = isset( $block['attrs']['textUrl'] ) ? $block['attrs']['textUrl'] : '';
@@ -95,7 +96,9 @@ function cha_run_daily_version_check(): array {
                 $current_parsed = $renderer->parse( $current_raw_changelog );
 
 				$rendered_info_wrapper = $renderer->render( $block['attrs'] );
-	            $rendered_version_tree = $renderer->render_versiontree( $changelog);
+
+	            $rendered_version_tree = $renderer->render_versiontree( $changelog,$unique_id);
+
 
 
                 if ( empty( $current_parsed ) ) {
@@ -142,8 +145,10 @@ function cha_run_daily_version_check(): array {
                     // Save the parsed changelog for this block
                     Changeloger_Version_Tracker::save_initial_changelog(
                         $post->ID,
-                        $unique_id,
-                        $current_parsed,
+	                    $block_attrs,
+	                    $current_raw_changelog,
+	                    $rendered_info_wrapper,
+                        $rendered_version_tree,
                         $is_pro_user
                     );
 
