@@ -34,21 +34,20 @@ const VersionHeader = ({
                 ) : (
                     <span>{date}</span>
                 )}
-
-                <RichText
-                    tagName="span"
-                    className="changeloger-version-name"
-                    placeholder={__('Version Name', 'changeloger')}
-                    value={versionName[version]}
-                    onChange={(newContent) =>
-                        setAttributes({
-                            versionName: {
-                                ...versionName,
-                                [version]: newContent,
-                            },
-                        })
-                    }
-                />
+                    <RichText
+                        tagName="span"
+                        className="changeloger-version-name"
+                        placeholder={__('Version Name', 'changeloger')}
+                        value={versionName[version]}
+                        onChange={(newContent) =>
+                            setAttributes({
+                                versionName: {
+                                    ...versionName,
+                                    [version]: newContent,
+                                },
+                            })
+                        }
+                    />
             </div>
             <div className="version">
                 {isProChangeloger ? (

@@ -20,6 +20,12 @@ class Changeloger_REST_API {
 			'callback' => [ $this, 'diagnostics_cron_status_callback' ],
 			'permission_callback' => [ $this, 'check_manage_options' ],
 		] );
+
+		register_rest_route('changeloger/v1', '/fetch-txt', [
+			'methods' => 'GET',
+			'callback' => [$this, 'fetch_txt_callback'],
+			'permission_callback' => '__return_true',
+		]);
 	}
 
 	// ========== Permission Callbacks ==========
@@ -58,7 +64,41 @@ class Changeloger_REST_API {
 			] );
 		}
 
-		$save_result = Changeloger_Version_Tracker::save_initial_changelog( $post_id, $unique_id, $parsed_changelog, $is_pro, $url );
+		// Build block_attrs array for the save_initial_changelog function
+		$block_attrs = array(
+			'unique_id' => $unique_id,
+			'enableVersions' => isset( $params['enableVersions'] ) ? (bool) $params['enableVersions'] : false,
+		);
+
+		// Convert parsed_changelog to raw text format
+		$parser_class = 'Changeloger_Parser';
+		if ( class_exists( $parser_class ) ) {
+			$raw_changelog = call_user_func( array( $parser_class, 'convertToPlainText' ), $parsed_changelog );
+		} else {
+			$raw_changelog = '';
+		}
+
+		// Render the changelog info wrapper and version tree
+		$changelog_renderer_class = 'Changeloger_Changelog_Renderer';
+		$rendered_info_wrapper = '';
+		$rendered_version_tree = '';
+
+		if ( class_exists( $changelog_renderer_class ) ) {
+			$rendered_info_wrapper = call_user_func( array( $changelog_renderer_class, 'render_info_wrapper' ), $parsed_changelog );
+			if ( isset( $block_attrs['enableVersions'] ) && $block_attrs['enableVersions'] ) {
+				$rendered_version_tree = call_user_func( array( $changelog_renderer_class, 'render_version_tree' ), $parsed_changelog );
+			}
+		}
+
+		$save_result = Changeloger_Version_Tracker::save_initial_changelog(
+			$post_id,
+			$block_attrs,
+			$raw_changelog,
+			$rendered_info_wrapper,
+			$rendered_version_tree,
+			$is_pro,
+			$url
+		);
 
 		if ( is_wp_error( $save_result ) ) {
 			return new WP_REST_Response( [
@@ -90,6 +130,43 @@ class Changeloger_REST_API {
 			'message' => __( 'Changelog tracked successfully', 'changeloger' ),
 			'new_version_detected' => false
 		] );
+	}
+
+	// ========== Track Version Endpoint ==========
+	public function fetch_txt_callback($request) {
+		$url = $request->get_param('url');
+
+		if (!$url) {
+			return new WP_Error('no_url', 'No URL provided', ['status' => 400]);
+		}
+
+		$response = wp_remote_get($url);
+
+		if (is_wp_error($response)) {
+			return new WP_Error('fetch_failed', 'Failed to fetch the file', ['status' => 500]);
+		}
+
+		$status = wp_remote_retrieve_response_code($response);
+		if ($status !== 200) {
+			return new WP_Error('not_found', 'URL returned ' . $status, ['status' => 404]);
+		}
+
+		$content_type = wp_remote_retrieve_header($response, 'content-type');
+
+		if (strpos($content_type, 'text/plain') === false) {
+			return new WP_Error('invalid_type', 'This is not a .txt file', ['status' => 400]);
+		}
+
+		$body = wp_remote_retrieve_body($response);
+
+		if (trim($body) === "") {
+			return new WP_Error('empty_file', 'The file is empty', ['status' => 400]);
+		}
+
+		return rest_ensure_response([
+			'content' => $body
+		]);
+
 	}
 
 	/**

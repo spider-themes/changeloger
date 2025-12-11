@@ -81,41 +81,43 @@ const ChangelogItem = ({
                     )
                 }
 
-                <div className="changeloger-link-wrapper">
-                    {currentLinks.map((action, index) => (
-                        <CustomLink
-                            key={index}
-                            action={action}
-                            index={index}
-                            customLinks={customLinks}
-                            currentLinks={currentLinks}
-                            setAttributes={setAttributes}
-                            version={version}
-                        />
-                    ))}
+                {currentLinks && currentLinks.length > 0 && (
+                    <div className="changeloger-link-wrapper">
+                        {currentLinks.map((action, index) => (
+                            <CustomLink
+                                key={index}
+                                action={action}
+                                index={index}
+                                customLinks={customLinks}
+                                currentLinks={currentLinks}
+                                setAttributes={setAttributes}
+                                version={version}
+                            />
+                        ))}
 
-                    <Button
-                        isSmall
-                        isPressed
-                        icon={plus}
-                        label="Add Link"
-                        onClick={() =>
-                            setAttributes({
-                                customLinks: {
-                                    ...customLinks,
-                                    [version]: [
-                                        ...currentLinks,
-                                        {
-                                            name: 'Link',
-                                            link: `${uniqueId}#`,
-                                            icon: '',
-                                        },
-                                    ],
-                                },
-                            })
-                        }
-                    />
-                </div>
+                        <Button
+                            isSmall
+                            isPressed
+                            icon={plus}
+                            label="Add Link"
+                            onClick={() =>
+                                setAttributes({
+                                    customLinks: {
+                                        ...customLinks,
+                                        [version]: [
+                                            ...currentLinks,
+                                            {
+                                                name: 'Link',
+                                                link: `${uniqueId}#`,
+                                                icon: '',
+                                            },
+                                        ],
+                                    },
+                                })
+                            }
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );

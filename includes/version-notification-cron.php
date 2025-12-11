@@ -34,7 +34,7 @@ function cha_unschedule_version_check_cron() {
  */
 add_action( 'cha_daily_version_check', 'cha_run_daily_version_check' );
 
-function cha_run_daily_version_check() {
+function cha_run_daily_version_check(): array {
     require_once dirname( __FILE__ ) . '/class-changelog-renderer.php';
 
     // Get all posts and pages with changeloger blocks
@@ -67,6 +67,7 @@ function cha_run_daily_version_check() {
         // Process each block independently
         foreach ( $blocks as $block ) {
             $summary['blocks_checked']++;
+	        $block_attrs = isset( $block['attrs'] ) ? $block['attrs'] : '';
             $unique_id = isset( $block['unique_id'] ) ? $block['unique_id'] : '';
             $changelog = isset( $block['attrs']['changelog'] ) ? $block['attrs']['changelog'] : '';
             $text_url = isset( $block['attrs']['textUrl'] ) ? $block['attrs']['textUrl'] : '';
@@ -91,9 +92,14 @@ function cha_run_daily_version_check() {
                         $source = 'url';
                     }
                 }
-
                 // Parse current changelog
                 $current_parsed = $renderer->parse( $current_raw_changelog );
+
+				$rendered_info_wrapper = $renderer->render( $block['attrs'] );
+
+	            $rendered_version_tree = $renderer->render_versiontree( $changelog,$unique_id);
+
+
 
                 if ( empty( $current_parsed ) ) {
                     Changeloger_Version_Tracker::log_version_event(
@@ -106,9 +112,6 @@ function cha_run_daily_version_check() {
                     );
                     continue;
                 }
-
-                // Get stored changelog for this specific block
-                $stored_changelog = Changeloger_Version_Tracker::get_tracked_changelog( $post->ID, $unique_id );
 
                 // Check for new version in THIS block
                 $version_check = Changeloger_Version_Tracker::check_for_new_version(
@@ -142,8 +145,10 @@ function cha_run_daily_version_check() {
                     // Save the parsed changelog for this block
                     Changeloger_Version_Tracker::save_initial_changelog(
                         $post->ID,
-                        $unique_id,
-                        $current_parsed,
+	                    $block_attrs,
+	                    $current_raw_changelog,
+	                    $rendered_info_wrapper,
+                        $rendered_version_tree,
                         $is_pro_user
                     );
 
