@@ -43,43 +43,43 @@ class Changeloger_Block_Assets {
 			uniqid(),
 			true
 		);
+		if ( cha_fs()->is__premium_only() ) {
+			wp_register_script(
+				'changeloger-filter',
+				plugins_url( '/', __FILE__ ) . '../assets/js/filter.js',
+				array( 'jquery' ),
+				uniqid(),
+				true
+			);
 
-		wp_register_script(
-			'changeloger-filter',
-			plugins_url( '/', __FILE__ ) . '../assets/js/filter.js',
-			array( 'jquery' ),
-			uniqid(),
-			true
-		);
+			// for text highlighting
+			wp_register_script(
+				'mark',
+				plugins_url( '/', __FILE__ ) . '../assets/js/jquery.mark.min.js',
+				array( 'jquery' ),
+				true
+			);
 
-		// for text highlighting
-		wp_register_script(
-			'mark',
-			plugins_url( '/', __FILE__ ) . '../assets/js/jquery.mark.min.js',
-			array( 'jquery' ),
-			true
-		);
+			// Subscription assets (enqueued in footer when changeloger block is present)
+			wp_register_style(
+				'cha-subscription',
+				plugins_url( '/', __FILE__ ) . '../assets/css/subscription.css',
+			);
 
-		// Subscription assets (enqueued in footer when changeloger block is present)
-		wp_register_style(
-			'cha-subscription',
-			plugins_url( '/', __FILE__ ) . '../assets/css/subscription.css',
-		);
-
-		wp_register_script(
-			'cha-subscription',
-			plugins_url( '/', __FILE__ ) . '../assets/js/subscription.js',
-			array( 'jquery' ),
-			null,
-			true
-		);
-
+			wp_register_script(
+				'cha-subscription',
+				plugins_url( '/', __FILE__ ) . '../assets/js/subscription.js',
+				array( 'jquery' ),
+				null,
+				true
+			);
+		}
 		$licensing = array( 'can_use_premium_code' => cha_fs()->can_use_premium_code() );
 		wp_localize_script( 'jquery', 'changeloger_local_object', array(
 			'ajax_url'  => admin_url( 'admin-ajax.php' ),
 			'nonce'     => wp_create_nonce( 'changeloger_nonce' ),
 			'licensing' => $licensing['can_use_premium_code'],
-			'post_id'  => $post->ID,
+			'post_id'  => $post->ID ?? 0,
 		) );
 	}
 

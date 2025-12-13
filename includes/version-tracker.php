@@ -66,10 +66,16 @@ class Changeloger_Version_Tracker {
         $unique_id = isset( $block_attrs['unique_id'] ) ? $block_attrs['unique_id'] : '';
 	    $has_version_tree = ! empty( $block_attrs['enableVersions'] );
 
-        // Save parsed changelog to post meta
-        $meta_key = self::get_meta_key( self::META_PREFIX, $unique_id );
-        $url_key = self::get_meta_key( self::META_PREFIX, $unique_id, '_url' );
+        // Parse the raw changelog to get the array format
+        require_once dirname( __FILE__ ) . '/class-changelog-renderer.php';
+        $renderer = new Changelog_Renderer();
+        $parsed_array = $renderer->parse( $raw_changelog );
 
+        // Save parsed changelog array to post meta for version tracking
+        $meta_key = self::get_meta_key( self::META_PREFIX, $unique_id );
+        update_post_meta( $post_id, $meta_key, maybe_serialize( $parsed_array ) );
+
+        $url_key = self::get_meta_key( self::META_PREFIX, $unique_id, '_url' );
 
         if ( ! empty( $url ) ) {
             update_post_meta( $post_id, $url_key, $url );
@@ -141,7 +147,37 @@ class Changeloger_Version_Tracker {
         // Replace with the new content wrapped in start/end markers
         $replacement = '<span ' . $marker_name . '="start"></span>' . $replacement_content . '<span ' . $marker_name . '="end"></span>';
 
-        return preg_replace( $pattern, $replacement, $post_content );
+        // Perform replacement with count
+        $updated_content = preg_replace( $pattern, $replacement, $post_content, -1, $count );
+
+        // If no replacement happened (markers not found), try to insert markers and content
+        // This handles the case where the block was just created or markers don't exist yet
+        if ( $count === 0 ) {
+            // Search for the block by looking for the changeloger-info-inner-wrapper or changeloger-version-list-container
+            if ( $marker_name === 'data-changeloger-content' ) {
+                // Try to find and replace the changeloger-info-inner-wrapper
+                $wrapper_pattern = '/(<div class="changeloger-info-inner-wrapper">)(.*?)(<\/div>)/is';
+                $wrapper_replacement = '$1' . $replacement . '$3';
+                $updated_content = preg_replace( $wrapper_pattern, $wrapper_replacement, $post_content, 1, $wrapper_count );
+
+                if ( $wrapper_count === 0 ) {
+                    // Markers still not found, return original content
+                    return $post_content;
+                }
+            } elseif ( $marker_name === 'data-changeloger-version' ) {
+                // Try to find and replace the VersionsTree component or its container
+                $version_pattern = '/(<div class="changeloger-version-list-container[^"]*">.*?<h6[^>]*>Versions<\/h6>)(.*?)(<\/div>)/is';
+                $version_replacement = '$1' . $replacement . '$3';
+                $updated_content = preg_replace( $version_pattern, $version_replacement, $post_content, 1, $version_count );
+
+                if ( $version_count === 0 ) {
+                    // Markers still not found, return original content
+                    return $post_content;
+                }
+            }
+        }
+
+        return $updated_content;
     }
 	private static function replace_changelog_in_content($content, $new_changelog) {
 		// Pattern to match "changelog":"..." accounting for escaped characters
@@ -210,6 +246,14 @@ class Changeloger_Version_Tracker {
         $new_highest = self::get_highest_version_from_changelog( $new_changelog );
         if ( ! $new_highest ) {
             $result['error'] = __( 'No valid versions found in changelog', 'changeloger' );
+            return $result;
+        }
+
+        // Check if this version has already been notified (critical check)
+        if ( self::is_version_notified( $post_id, $unique_id, $new_highest ) ) {
+            // This version was already notified, so it's not "new" anymore
+            $result['has_new_version'] = false;
+            $result['new_version']     = $new_highest;
             return $result;
         }
 

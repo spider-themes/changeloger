@@ -67,7 +67,6 @@ function cha_run_daily_version_check(): array {
         // Process each block independently
         foreach ( $blocks as $block ) {
             $summary['blocks_checked']++;
-	        $block_attrs = isset( $block['attrs'] ) ? $block['attrs'] : '';
             $unique_id = isset( $block['unique_id'] ) ? $block['unique_id'] : '';
             $changelog = isset( $block['attrs']['changelog'] ) ? $block['attrs']['changelog'] : '';
             $text_url = isset( $block['attrs']['textUrl'] ) ? $block['attrs']['textUrl'] : '';
@@ -75,6 +74,11 @@ function cha_run_daily_version_check(): array {
             if ( empty( $unique_id ) || empty( $changelog ) ) {
                 continue;
             }
+
+            // Build block_attrs with unique_id (underscore) for save_initial_changelog
+	        $block_attrs = isset( $block['attrs'] ) ? $block['attrs'] : array();
+	        $block_attrs['unique_id'] = $unique_id;
+	        $block_attrs['enableVersions'] = isset( $block['attrs']['enableVersions'] ) ? $block['attrs']['enableVersions'] : false;
 
             try {
                 $renderer = new Changelog_Renderer();
@@ -95,11 +99,13 @@ function cha_run_daily_version_check(): array {
                 // Parse current changelog
                 $current_parsed = $renderer->parse( $current_raw_changelog );
 
-				$rendered_info_wrapper = $renderer->render( $block['attrs'] );
+                // Create updated attributes with the NEW changelog for rendering
+                $updated_attrs = $block['attrs'];
+                $updated_attrs['changelog'] = $current_raw_changelog;
 
-	            $rendered_version_tree = $renderer->render_versiontree( $changelog,$unique_id);
+				$rendered_info_wrapper = $renderer->render( $updated_attrs );
 
-
+	            $rendered_version_tree = $renderer->render_versiontree( $current_raw_changelog, $unique_id );
 
                 if ( empty( $current_parsed ) ) {
                     Changeloger_Version_Tracker::log_version_event(
@@ -124,6 +130,27 @@ function cha_run_daily_version_check(): array {
                 if ( $version_check['has_new_version'] && ! empty( $version_check['new_version'] ) ) {
                     $summary['versions_found']++;
 
+                    // CHECK IF VERSION WAS ALREADY NOTIFIED - Do this FIRST before any other action
+                    $was_notified = Changeloger_Version_Tracker::is_version_notified(
+                        $post->ID,
+                        $unique_id,
+                        $version_check['new_version']
+                    );
+
+                    if ( $was_notified ) {
+                        // Version was already notified, skip everything
+                        Changeloger_Version_Tracker::log_version_event(
+                            $post->ID,
+                            $unique_id,
+                            'version_notification_skipped',
+                            array(
+                                'version' => $version_check['new_version'],
+                                'reason' => 'Already notified',
+                            )
+                        );
+                        continue; // Skip to next block
+                    }
+
                     // Update last seen version for this block
                     Changeloger_Version_Tracker::update_last_seen_version(
                         $post->ID,
@@ -131,7 +158,7 @@ function cha_run_daily_version_check(): array {
                         $version_check['new_version']
                     );
 
-                    // Add to version history for this block
+                    // Add to version history for this block (mark as NOT notified initially)
                     Changeloger_Version_Tracker::add_to_version_history(
                         $post->ID,
                         $unique_id,
@@ -152,26 +179,6 @@ function cha_run_daily_version_check(): array {
                         $is_pro_user
                     );
 
-                    // CHECK IF VERSION WAS ALREADY NOTIFIED
-                    $was_notified = Changeloger_Version_Tracker::is_version_notified(
-                        $post->ID,
-                        $unique_id,
-                        $version_check['new_version']
-                    );
-
-                    if ( $was_notified ) {
-                        // Version was already notified, skip email sending
-                        Changeloger_Version_Tracker::log_version_event(
-                            $post->ID,
-                            $unique_id,
-                            'version_notification_skipped',
-                            array(
-                                'version' => $version_check['new_version'],
-                                'reason' => 'Already notified',
-                            )
-                        );
-                        continue; // Skip to next block
-                    }
 
                     // Send notifications to THIS block's subscribers only
                     $confirmed_meta_key = 'cha_subscription_confirmed_' . $unique_id;
