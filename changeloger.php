@@ -65,8 +65,6 @@ if ( ! function_exists( 'cha_fs' ) ) {
     do_action( 'cha_fs_loaded' );
 }
 
-
-
 if ( ! class_exists( 'CHANGELOGER_BLOCKS_CLASS' ) ) {
     final class CHANGELOGER_BLOCKS_CLASS {
         private $enqueue_assets;
@@ -170,7 +168,7 @@ if ( ! class_exists( 'CHANGELOGER_BLOCKS_CLASS' ) ) {
             require_once __DIR__ . '/includes/rest-api.php';
             require_once __DIR__ . '/includes/class-changelog-renderer.php';
             require_once __DIR__ . '/admin/class-changeloger-admin.php';
-	        require_once __DIR__ . '/includes/notices.php';
+//	        require_once __DIR__ . '/includes/notices.php';
 	        if ( cha_fs()->is__premium_only() ) {
 		        require_once __DIR__ . '/includes/version-notification-cron.php';
 		        require_once __DIR__ . '/includes/subscription.php';

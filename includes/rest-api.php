@@ -110,6 +110,8 @@ class Changeloger_REST_API {
 		$version_check = Changeloger_Version_Tracker::check_for_new_version( $post_id, $unique_id, $parsed_changelog, $is_pro );
 
 		if ( $version_check['has_new_version'] && $version_check['new_version'] ) {
+			// Only track the version, don't send emails here
+			// The cron job will handle email notifications
 			Changeloger_Version_Tracker::update_last_seen_version( $post_id, $unique_id, $version_check['new_version'] );
 			Changeloger_Version_Tracker::add_to_version_history( $post_id, $unique_id, $version_check['new_version'], [
 				'old_version' => $version_check['old_version'],
@@ -118,7 +120,7 @@ class Changeloger_REST_API {
 
 			return new WP_REST_Response( [
 				'success' => true,
-				'message' => sprintf( __( 'Version %s tracked successfully! Subscribers will be notified on the next scheduled check.', 'changeloger' ), $version_check['new_version'] ),
+				'message' => sprintf( __( 'New version %s detected! Subscribers will be notified on the next scheduled cron check (daily).', 'changeloger' ), $version_check['new_version'] ),
 				'new_version_detected' => true,
 				'version' => $version_check['new_version'],
 				'notification_scheduled' => true
